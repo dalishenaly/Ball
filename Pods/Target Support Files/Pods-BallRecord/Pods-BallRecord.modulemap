@@ -1,0 +1,6 @@
+framework module Pods_BallRecord {
+  umbrella header "Pods-BallRecord-umbrella.h"
+
+  export *
+  module * { export * }
+}

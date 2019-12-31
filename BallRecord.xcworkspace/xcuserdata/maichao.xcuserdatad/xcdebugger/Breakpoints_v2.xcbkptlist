@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "7814B7D8-7BD0-42F5-A927-D76F2240D3AA"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            uuid = "05BC4FA6-22E3-4D4A-BA20-F2772AE69624"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            scope = "1"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "03235FC9-10AE-4C0B-B694-D8220216C411"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Scource/LoginVC/View/THCustomCodeView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "textFieldDidChange(textField:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B1B40BCE-2B5D-425A-9D4D-1749F34D89BF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Controller/THVideoEditController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "cutAudioWithAsset(asset:audioRange:catAudioPath:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F394AC77-0325-4F99-92BA-0E16EFB3F83B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Controller/THVideoEditController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "cutAudioWithAsset(asset:audioRange:catAudioPath:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3FA258E8-B17F-4A46-A76A-7B7E61CC9FC2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "-exportWithStartTime:duration:toFile:presetName:progress:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "73B8F379-51D7-48C5-BD72-391B64063E1A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "-exportWithStartTime:duration:toFile:presetName:progress:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "-exportWithStartTime:duration:toFile:presetName:progress:success:failure:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4 - b8d34a36bee780b8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[_SJAVAssetExporter exportWithStartTime:duration:toFile:presetName:progress:success:failure:]"
+                  moduleName = "SJBaseVideoPlayer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "173"
+                  endingLineNumber = "173"
+                  offsetFromSymbolStart = "2836">
+               </Location>
+               <Location
+                  uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4 - a75edf3382b156ca"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__94-[_SJAVAssetExporter exportWithStartTime:duration:toFile:presetName:progress:success:failure:]_block_invoke.144"
+                  moduleName = "SJBaseVideoPlayer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "174"
+                  endingLineNumber = "174"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4 - a41bfcc285c2ced4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_e8_32s40s48s56s64s72s80w"
+                  moduleName = "SJBaseVideoPlayer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "173"
+                  endingLineNumber = "173"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "70277CB4-0358-49F6-B0C5-96EA9B966D2D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "weChatLoginEvent(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "36383323-30ED-4E2E-830F-9A2E1470A170"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Scource/Mine/ViewController/THAccountSafeVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
