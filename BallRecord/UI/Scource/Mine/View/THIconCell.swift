@@ -10,14 +10,11 @@ import UIKit
 
 class THIconCell: UITableViewCell {
     
-    lazy var iconView: UIImageView = {
-        let imgV = UIImageView()
-        return imgV
-    }()
+    var iconView = UIImageView()
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "hello"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = COLOR_324057
         label.setContentHuggingPriority(.required, for: .horizontal)

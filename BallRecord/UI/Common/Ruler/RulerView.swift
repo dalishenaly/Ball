@@ -38,6 +38,11 @@ class RulerView: UIView {
     
     // 配置
     func displayRuler() {
+        
+        removeAllSubviews()
+        layer.sublayers?.forEach({ (subLayer) in
+            subLayer.removeFromSuperlayer()
+        })
         layer.addSublayer(shapeLayer)
         //计算尺子长度
         rulerLength = Double((dialRange.upperBound - dialRange.lowerBound) / dialSpan) * dialBlank
@@ -77,12 +82,11 @@ class RulerView: UIView {
         shapeLayer.lineWidth = 0.3
     }
     
-    func displayRulerContent(arr: [videoModel]) {
+    func displayRulerContent(arr: [THCatVideoModel]) {
         
-        arr.forEach { (model: videoModel) in
+        arr.forEach { (model: THCatVideoModel) in
             
-            let sting1 = model.startTime.components(separatedBy: " ").last ?? "00:00"
-            let beginTime = sting1.components(separatedBy: ".").first!
+            let beginTime = timeString(timeInterval: TimeInterval(model.startTime), format: "HH:mm:ss")
             
             let shapeLayer = CAShapeLayer()
             layer.addSublayer(shapeLayer)

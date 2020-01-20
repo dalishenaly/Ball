@@ -12,6 +12,11 @@ class THPlaygroundVC: THBaseVC {
 
     let titleView = THPlaygroundTitleView()
     let cityMenuView = THCityMenuView()
+    var cityModelArr = [THCityModel]()
+    var playgroundModelArr = [THPGModel]()
+    var selectCityModel: THCityModel?
+    var type = "1"  //  热度
+    var page = 0
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
@@ -20,7 +25,6 @@ class THPlaygroundVC: THBaseVC {
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorInset = UIEdgeInsets.zero
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.backgroundColor = UIColor.white
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView(frame: CGRect.zero)
         tableView.delegate = self
@@ -34,10 +38,15 @@ class THPlaygroundVC: THBaseVC {
         configUI()
         configFrame()
         configData()
-        
+        configRefresh()
     }
     
     func configUI() {
+        
+        let model = THCityModel()
+        model.city = "全国"
+        model.cityCode = 0
+        selectCityModel = model
         
         titleView.delegate = self
         navigationItem.titleView = titleView
@@ -55,8 +64,92 @@ class THPlaygroundVC: THBaseVC {
         }
     }
     
-    func configData() {
+    
+    func configRefresh() {
+        tableView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
+            self.headerRefreshing()
+        })
         
+        tableView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
+            self.footerRefreshing()
+        })
+    }
+    
+    func headerRefreshing() {
+        page = 0
+        requestPlaygroundData {
+            self.tableView.mj_header.endRefreshing()
+            self.tableView.mj_footer.resetNoMoreData()
+        }
+    }
+    
+    func footerRefreshing() {
+        page += 1
+        requestPlaygroundData {
+            self.tableView.mj_footer.endRefreshing()
+        }
+    }
+    
+//    func requestData(completion: (()->Void)?) {
+//
+//        THMineRequestManager.requestMyCommentData(param: [:], successBlock: { (result) in
+//            completion?()
+//            let modelArr = NSArray.yy_modelArray(with: THPraiseModel.self, json: result) as? [THPraiseModel] ?? []
+//            if modelArr.count <= 0 {
+//                self.tableView.mj_footer.endRefreshingWithNoMoreData()
+//            }
+//            self.dataArr += modelArr
+//
+//            self.tableView.reloadData()
+//        }) { (error) in
+//            completion?()
+//        }
+//    }
+    
+    func configData() {
+        requestCityData()
+        requestPlaygroundData(nil)
+    }
+    
+    func requestPlaygroundData(_ completion: (()->Void)?) {
+        QMUITips.showLoading(in: view)
+        let longitude = THLocationManager.instance.longitude ?? 0
+        let latitude = THLocationManager.instance.latitude ?? 0
+        let param = ["type": type, "cityId": self.selectCityModel?.cityCode ?? 0, "longitude": "\(longitude)", "latitude": "\(latitude)", "page": self.page] as [String : Any]
+        THPlaygroundManager.requestPlaygroundListData(param: param, successBlock: { (result) in
+            completion?()
+            QMUITips.hideAllTips()
+            
+            let modelArr = NSArray.yy_modelArray(with: THPGModel.self, json: result) as? [THPGModel] ?? [THPGModel]()
+            if self.page == 0 {
+                self.playgroundModelArr.removeAll()
+            }
+            if modelArr.count <= 0 {
+                self.tableView.mj_footer.endRefreshingWithNoMoreData()
+            }
+            
+            self.playgroundModelArr += modelArr
+            self.tableView.reloadData()
+        }) { (error) in
+            completion?()
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: error.localizedDescription)
+        }
+    }
+    
+    
+    func requestCityData() {
+        THPlaygroundManager.requestCityListData(param: nil, successBlock: { (result) in
+            self.cityModelArr = NSArray.yy_modelArray(with: THCityModel.self, json: result) as? [THCityModel] ?? [THCityModel]()
+            if self.cityModelArr.count > 0 {
+                let model = self.cityModelArr.first!
+                model.hasSelect = true
+                self.selectCityModel = model
+            }
+            self.cityMenuView.updateCityList(modelArr: self.cityModelArr)
+        }) { (error) in
+            
+        }
     }
     
 }
@@ -66,15 +159,34 @@ extension THPlaygroundVC: THPlaygroundTitleViewDelegate, THCityMenuViewDelegate 
     func onClickTitleView(index: Int, isSelected: Bool) {
         
         if index == 0 {
-            cityMenuView.isHidden = !cityMenuView.isHidden
+            cityMenuView.tableView.reloadData()
+            cityMenuView.isHidden = !isSelected
+        } else if index == 1 {
+            titleView.distanceBtn.isSelected = false
+            self.type = "1"
+            tableView.mj_header.beginRefreshing()
+//            requestPlaygroundData(nil)
         } else {
-            
+            titleView.hotBtn.isSelected = false
+            self.type = "2"
+            tableView.mj_header.beginRefreshing()
+//            requestPlaygroundData(nil)
         }
-        
     }
     
     func cityMenuViewDidSelectRowAt(indexPath: IndexPath) {
+        self.selectCityModel?.hasSelect = false
+        cityMenuView.isHidden = true
         
+        self.selectCityModel = cityModelArr[indexPath.row]
+        self.selectCityModel?.hasSelect = true
+        
+        titleView.cityBtn.isSelected = false
+        titleView.cityBtn.titleLabel?.text = self.selectCityModel?.city
+        titleView.cityBtn.setTitle(self.selectCityModel?.city, for: .normal)
+        titleView.cityBtn.setTitle(self.selectCityModel?.city, for: .selected)
+        
+        requestPlaygroundData(nil)
     }
     
 }
@@ -86,15 +198,16 @@ extension THPlaygroundVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return playgroundModelArr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let model = playgroundModelArr[indexPath.row]
         var cell = tableView.dequeueReusableCell(withIdentifier: "THPlaygroundCell") as? THPlaygroundCell
         if cell == nil {
             cell = THPlaygroundCell(style: .default, reuseIdentifier: "THPlaygroundCell")
         }
+        cell?.updateModel(model: model)
         return cell!
     }
     
@@ -115,8 +228,12 @@ extension THPlaygroundVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = THPlaygroundDetailVC()
-        navigationPushVC(vc: vc)
+        THLoginController.instance.pushLoginVC {
+            let model = self.playgroundModelArr[indexPath.row]
+            let vc = THPlaygroundDetailVC()
+            vc.playgroundModel = model
+            self.navigationPushVC(vc: vc)
+        }
     }
 }
 
@@ -136,18 +253,19 @@ class THPlaygroundTitleView: UIView {
         let button = UIButton()
         button.tag = 55
         button.setTitle("全国", for: .normal)
-        button.setTitle("呼和浩特市", for: .selected)
+        button.setTitle("全国", for: .selected)
         button.setImage(UIImage(named: "down_arrow"), for: .normal)
         button.setImage(UIImage(named: "up_arrow"), for: .selected)
-        button.setTitleColor(COLOR_333333, for: .normal)
+        button.setTitleColor(MAIN_COLOR, for: .normal)
         button.setTitleColor(MAIN_COLOR, for: .selected)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
         return button
     }()
-    lazy var recentBtn: UIButton = {
+    lazy var hotBtn: UIButton = {
         let button = UIButton()
         button.tag = 56
+        button.isSelected = true
         button.setTitle("热度", for: .normal)
         button.setTitleColor(COLOR_333333, for: .normal)
         button.setTitleColor(MAIN_COLOR, for: .selected)
@@ -155,7 +273,7 @@ class THPlaygroundTitleView: UIView {
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
         return button
     }()
-    lazy var facusBtn: UIButton = {
+    lazy var distanceBtn: UIButton = {
         let button = UIButton()
         button.tag = 57
         button.setTitle("距离", for: .normal)
@@ -179,8 +297,8 @@ class THPlaygroundTitleView: UIView {
     
     func configUI() {
         addSubview(cityBtn)
-        addSubview(recentBtn)
-        addSubview(facusBtn)
+        addSubview(hotBtn)
+        addSubview(distanceBtn)
     }
     
     func configFrame() {
@@ -191,19 +309,19 @@ class THPlaygroundTitleView: UIView {
             make.bottom.equalTo(self)
         }
         
-        recentBtn.snp.makeConstraints { (make) in
+        hotBtn.snp.makeConstraints { (make) in
             make.left.equalTo(cityBtn.snp_right).offset(20)
-            make.width.equalTo(recentBtn)
+            make.width.equalTo(hotBtn)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
         }
         
-        facusBtn.snp.makeConstraints { (make) in
-            make.left.equalTo(recentBtn.snp_right).offset(20)
+        distanceBtn.snp.makeConstraints { (make) in
+            make.left.equalTo(hotBtn.snp_right).offset(20)
             make.right.equalTo(self)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
-            make.width.equalTo(facusBtn)
+            make.width.equalTo(distanceBtn)
         }
     }
     
@@ -212,14 +330,35 @@ class THPlaygroundTitleView: UIView {
     }
     
     @objc func clickButtonEvent(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
         
-        if sender.tag != 55 && cityBtn.isSelected {
-            cityBtn.isSelected = false
-            delegate?.onClickTitleView(index: cityBtn.tag - 55, isSelected: cityBtn.isSelected)
+        if sender.tag == 57 {
+            THLoginController.instance.pushLoginVC {
+                if sender.isSelected && sender.tag != 55 {
+                    return
+                }
+                sender.isSelected = !sender.isSelected
+                if sender.tag != 55 && self.cityBtn.isSelected {
+                    self.cityBtn.isSelected = false
+                    self.delegate?.onClickTitleView(index: self.cityBtn.tag - 55, isSelected: self.cityBtn.isSelected)
+                }
+                self.delegate?.onClickTitleView(index: sender.tag - 55, isSelected: sender.isSelected)
+                self.cityBtn.layoutButtonWithEdgInsetStyle(.ImageRight, 5)
+            }
+        } else {
+            if sender.isSelected && sender.tag != 55 {
+                return
+            }
+            sender.isSelected = !sender.isSelected
+            
+            if sender.tag != 55 && cityBtn.isSelected {
+                cityBtn.isSelected = false
+                delegate?.onClickTitleView(index: cityBtn.tag - 55, isSelected: cityBtn.isSelected)
+            }
+            delegate?.onClickTitleView(index: sender.tag - 55, isSelected: sender.isSelected)
+            cityBtn.layoutButtonWithEdgInsetStyle(.ImageRight, 5)
         }
-        delegate?.onClickTitleView(index: sender.tag - 55, isSelected: sender.isSelected)
-        cityBtn.layoutButtonWithEdgInsetStyle(.ImageRight, 5)
+        
+        
     }
     
     func updateCityBtn(title: String) {
@@ -243,16 +382,17 @@ class THPlaygroundTitleView: UIView {
 class THCityMenuView: UIView, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     weak var delegate: THCityMenuViewDelegate?
-    
     let bgView = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: SCREEN_WIDTH*0.8))
+    
+    
+    var modelArr = [THCityModel]()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: SCREEN_WIDTH*0.8), style: UITableView.Style.plain)
         tableView.estimatedRowHeight = SCREEN_HEIGHT
         tableView.rowHeight = UITableView.automaticDimension;
         tableView.showsVerticalScrollIndicator = false
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
-        tableView.backgroundColor = UIColor.white
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView(frame: CGRect.zero)
         tableView.delegate = self
@@ -282,6 +422,12 @@ class THCityMenuView: UIView, UITableViewDelegate, UITableViewDataSource, UIGest
         
         bgView.addCorner(with: [.bottomLeft, .bottomRight], cornerSize: CGSize(width: 8, height: 8))
     }
+    
+    func updateCityList(modelArr: [THCityModel]) {
+        self.modelArr = modelArr
+        
+        tableView.reloadData()
+    }
 
     func addGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismiss))
@@ -295,15 +441,18 @@ class THCityMenuView: UIView, UITableViewDelegate, UITableViewDataSource, UIGest
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return self.modelArr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let model = self.modelArr[indexPath.row]
         var cell = tableView.dequeueReusableCell(withIdentifier: "THCityCell") as? THCityCell
         if cell == nil {
             cell = THCityCell(style: .default, reuseIdentifier: "THCityCell")
         }
+        cell?.titleLabel.text = model.city
+        let color = model.hasSelect ? MAIN_COLOR : COLOR_324057
+        cell?.titleLabel.textColor = color
         return cell!
     }
     
@@ -324,7 +473,7 @@ class THCityMenuView: UIView, UITableViewDelegate, UITableViewDataSource, UIGest
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.cityMenuViewDidSelectRowAt(indexPath: indexPath)
+        self.delegate?.cityMenuViewDidSelectRowAt(indexPath: indexPath)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

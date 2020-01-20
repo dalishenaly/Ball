@@ -13,7 +13,7 @@ import IQKeyboardManager
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow.init()
@@ -22,10 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = THMainTabbarVC()
         
         
+        THReachability.INSTANCE.startListening()
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
         
+        THLocationManager.instance.getLocation()
+        
         configMobShare()
+        
+        THLoginController.instance.refreshToken()
         
         return true
     }
@@ -35,12 +40,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        NotificationCenter.default.post(name: NSNotification.Name(kAppEnterBackGroundNotificationName), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kAppEnterBackGroundNotificationName), object: nil)
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kAppEnterForegroundNotificationName), object: nil)
     }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return .all
     }
+}
+
+// MARK:- 公开常用属性
+extension AppDelegate{
+    
+    /// 当前 应用层 的窗口
+    static var WINDOW: UIWindow?{ return (UIApplication.shared.delegate as? AppDelegate)?.window }
+    
+    /// 当前显示的 tabBar VC
+    static var CURRENT_TAB_VC: THMainTabbarVC?{ return WINDOW?.rootViewController as? THMainTabbarVC }
+    
+    /// 当前显示的导航 VC
+    static var CURRENT_NAV_VC: THBaseNavVC?{ return CURRENT_TAB_VC?.selectedViewController as? THBaseNavVC }
+    
+    /// 当前显示的 VC
+    static var CURRENT_VC: UIViewController?{ return CURRENT_NAV_VC?.topViewController }
+    
 }
 
 /// configVonder
@@ -53,15 +79,19 @@ extension AppDelegate {
             //微信
             platformsRegister?.setupWeChat(withAppId: SPEWechatKey, appSecret: SPEWechatSecret)
             //新浪
-            platformsRegister?.setupSinaWeibo(withAppkey: "", appSecret: "", redirectUrl: "")
+            platformsRegister?.setupSinaWeibo(withAppkey: sinaAPPKey, appSecret: sinaAPPSecret, redirectUrl: "http://www.sharesdk.cn")
         }
     }
 }
 
-let SPEQQAPPKey = "1101961128"
-let SPEQQAPPSecret = "BTnN5UnEtdN2uzfe"
+let SPEQQAPPKey = "1110222860"
+let SPEQQAPPSecret = "v7v6ogAwDnwmuGIb"
+
 let SPEWechatKey = "wx568ef5bd0ed2b572"
 let SPEWechatSecret = "c774adc77c378a43b6fe2c1e0bb5b69d"
+
+let sinaAPPKey = "2209030890"
+let sinaAPPSecret = "86bd05eb3bfd1821ecccb4e2c9a304c1"
 
 
 

@@ -26,6 +26,7 @@
 #import "SJAVMediaPlaybackController.h"
 #import "SJBaseVideoPlayerConst.h"
 #import "SJVideoPlayerPlayStatusDefines.h"
+#import "NSString+SJBaseVideoPlayerExtended.h"
 #import "NSTimer+SJAssetAdd.h"
 #import "SJBarrageItem.h"
 #import "SJBarrageQueueController.h"

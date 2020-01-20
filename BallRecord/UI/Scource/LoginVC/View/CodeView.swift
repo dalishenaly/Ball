@@ -57,7 +57,6 @@ extension CodeView {
         height = self.frame.size.height
         textFiled = Base.textFiled
         textFiled.delegate = self
-        textFiled.becomeFirstResponder()
         textFiled.autocapitalizationType = .none
         textFiled.keyboardType = .numberPad
         addSubview(textFiled)

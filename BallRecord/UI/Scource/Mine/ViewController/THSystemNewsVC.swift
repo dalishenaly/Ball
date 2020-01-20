@@ -10,10 +10,22 @@ import UIKit
 
 class THSystemNewsVC: THBaseTableViewVC {
 
+    var dataArr = [THDialogNewsModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = "系统消息"
         tableView.separatorStyle = .none
+    }
+    
+    override func configData() {
+        
+        THMineRequestManager.requestSystemNewsData(param: [:], successBlock: { (result) in
+            self.dataArr = NSArray.yy_modelArray(with: THDialogNewsModel.self, json: result) as? [THDialogNewsModel] ?? [THDialogNewsModel]()
+            self.tableView.reloadData()
+        }) { (error) in
+            
+        }
     }
 
 }
@@ -21,22 +33,17 @@ class THSystemNewsVC: THBaseTableViewVC {
 extension THSystemNewsVC {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return dataArr.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if indexPath.row % 2 == 1{
-            var cell = tableView.dequeueReusableCell(withIdentifier: "THMineDialogCell") as? THMineDialogCell
-            if cell == nil {
-                cell = THMineDialogCell(style: .default, reuseIdentifier: "THMineDialogCell")
-            }
-            return cell!
-        }
+        let model = dataArr[indexPath.row]
         var cell = tableView.dequeueReusableCell(withIdentifier: "THSystemDialogCell") as? THSystemDialogCell
         if cell == nil {
             cell = THSystemDialogCell(style: .default, reuseIdentifier: "THSystemDialogCell")
         }
+        cell?.titleLabel.text = model.content
+        
         return cell!
     }
 }

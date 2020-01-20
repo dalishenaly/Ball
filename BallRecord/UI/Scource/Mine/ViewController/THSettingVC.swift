@@ -13,11 +13,33 @@ class THSettingVC: THBaseTableViewVC {
     
     let titleArr = ["账号与安全", "允许3G/4G下播放视频", "清理缓存", "给球志打分"]
     
+    lazy var logoutBtn: UIButton = {
+        let button = UIButton()
+        button.setTitle("退出登录", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = MAIN_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(clickLogoutBtnEvent), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "设置"
+        
+        view.addSubview(logoutBtn)
+        logoutBtn.snp.makeConstraints { (make) in
+            make.left.equalTo(40)
+            make.right.equalTo(-40)
+            make.height.equalTo(40)
+            make.bottom.equalTo(-40)
+        }
+        logoutBtn.setCorner(cornerRadius: 4)
     }
-
+    
+    @objc func clickLogoutBtnEvent() {
+        THLoginController.instance.logout()
+    }
 }
 
 extension THSettingVC {

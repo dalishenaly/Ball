@@ -10,16 +10,34 @@ import UIKit
 import QMUIKit
 import IQKeyboardManager
 
-struct detailModel {
+class detailModel: NSObject {
     var title: String?
     var desc: String?
+    var key: String?
+    init(title: String, key: String) {
+        super.init()
+        self.title = title
+        self.key = key
+    }
 }
 
 class THPlaygroundDetailVC: THBaseVC {
     
+    
+    var dynPage = 0
+    var cmtPage = 0
+    var playgroundModel: THPGModel?
+    var model: THPGDetailModel?
+    var dynamicArr = [THDynamicModel]()
+    var commentArr = [THCommentModel]()
+    var cid: String?
     lazy var itemArray = [ShopItem]()
     
-    var detailData = [detailModel(title: "球场地址", desc: "aklshflkah"), detailModel(title: "球场地址", desc: "aklshflkah"), detailModel(title: "球场地址", desc: "aklshflkah"), detailModel(title: "球场地址", desc: "aklshflkah"), detailModel(title: "球场地址", desc: "aklshflkah"), detailModel(title: "联系电话", desc: "aklshflkah"), detailModel(title: "营业时间", desc: "aklshflkah"), detailModel(title: "收费标准", desc: "aklshflkah"), detailModel(title: "球场简介", desc: "aklshflkahaklshflkahaklshflkahaklshflkahaklshflkahaklshflkahaklshflkahaklshflkahaklshflkahaklshflkahaklshflkahaklshflkah")]
+    var detailData = [detailModel(title: "球场地址", key: "location"),
+                      detailModel(title: "联系电话", key: "phoneNumber"),
+                      detailModel(title: "营业时间", key: "businessTime"),
+                      detailModel(title: "收费标准", key: "chargeStandard"),
+                      detailModel(title: "球场简介", key: "courtIntroduce")]
     
     
     var keyboardManager: QMUIKeyboardManager?
@@ -72,13 +90,13 @@ class THPlaygroundDetailVC: THBaseVC {
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
-    lazy var facusBtn: UIButton = {
+    lazy var focusBtn: UIButton = {
         let button = UIButton()
-        button.tag = 55
         button.setTitle("关注", for: .normal)
-        button.setTitleColor(UIColor.colorWithString("5E6D82"), for: .normal)
-        button.setTitleColor(UIColor.colorWithString("324057"), for: .selected)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.backgroundColor = COLOR_D6E7FD
+        button.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_B3D0FB, borderWidth: 1)
+        button.setTitleColor(COLOR_666666, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(clickButtonEvent), for: .touchUpInside)
         return button
     }()
@@ -113,13 +131,11 @@ class THPlaygroundDetailVC: THBaseVC {
         let layout = THFlowLayout()
         layout.delegate = self
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
         collectionView.register(THHomeCollectionCell.self, forCellWithReuseIdentifier: "THHomeCollectionCell")
         return collectionView
     }()
@@ -135,12 +151,11 @@ class THPlaygroundDetailVC: THBaseVC {
         tableView.rowHeight = UITableView.automaticDimension;
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.backgroundColor = UIColor.colorWithString("#F9FAFC")
+        tableView.backgroundColor = .white
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView(frame: CGRect.zero)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.bounces = false
         return tableView
     }()
     
@@ -157,6 +172,11 @@ class THPlaygroundDetailVC: THBaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.cid = self.playgroundModel?.cid
+        self.iconView.setImage(urlStr: self.playgroundModel?.imageUrl, placeholder: placeholder_square)
+        self.titleLabel.text = self.playgroundModel?.name
+        self.detailLabel.text = self.playgroundModel?.location
+        
         configUI()
         configFrame()
         configData()
@@ -182,7 +202,7 @@ extension THPlaygroundDetailVC {
         view.addSubview(iconView)
         view.addSubview(titleLabel)
         view.addSubview(detailLabel)
-        view.addSubview(facusBtn)
+        view.addSubview(focusBtn)
         view.addSubview(tagselectView)
         view.addSubview(scrollView)
         
@@ -223,7 +243,7 @@ extension THPlaygroundDetailVC {
             make.height.equalTo(titleLabel)
         }
         
-        facusBtn.snp.makeConstraints { (make) in
+        focusBtn.snp.makeConstraints { (make) in
             make.left.equalTo(detailLabel)
             make.width.equalTo(70)
             make.height.equalTo(30)
@@ -297,28 +317,141 @@ extension THPlaygroundDetailVC {
     }
     
     func configData() {
-        getDataSource()
+        //getDataSource()
+        
+        configRefresh()
+        
+        requestDetailData()
+        requestDynamicData(nil)
+        requestCommentData(nil)
     }
     
-    func getDataSource() {
+    func configRefresh() {
         
-        let path = Bundle.main.path(forResource: "shop", ofType: "plist")
-        let arr = NSArray(contentsOfFile: path!)
+        dynamicView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
+            self.dynPage = 0
+            self.requestDynamicData {
+                self.dynamicView.mj_header.endRefreshing()
+                self.dynamicView.mj_footer.resetNoMoreData()
+            }
+        })
+        dynamicView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
+            self.dynPage += 1
+            self.requestDynamicData {
+                self.dynamicView.mj_footer.endRefreshing()
+            }
+        })
+        dynamicView.mj_footer.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
         
-        for dic in arr! {
-            let shop = ShopItem()
-            let dict = dic as! NSDictionary
-            shop.h = dict["h"] as? CGFloat
-            shop.w = dict["w"] as? CGFloat
-            shop.img = dict["img"] as? String
-            shop.price = dict["price"] as? String
-            itemArray.append(shop)
-        }
-        dynamicView.reloadData()
+        commentTView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
+            self.cmtPage = 0
+            self.requestCommentData {
+                self.commentTView.mj_header.endRefreshing()
+                self.commentTView.mj_footer.resetNoMoreData()
+            }
+        })
+        commentTView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
+            self.cmtPage += 1
+            self.requestCommentData {
+                self.commentTView.mj_footer.endRefreshing()
+            }
+        })
     }
+    
+    func requestDetailData() {
+        let param = ["cid": self.cid ?? ""]
+        QMUITips.showLoading(in: view)
+        THPlaygroundManager.requestPlaygroundDetailData(param: param, successBlock: { (result) in
+            QMUITips.hideAllTips()
+            self.model = THPGDetailModel.yy_model(withJSON: result)
+            
+            if self.model?.isFan ?? false {
+                self.focusBtn.setTitle("已关注", for: .normal)
+                self.focusBtn.backgroundColor = COLOR_E7E7E7
+                self.focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_LINE, borderWidth: 1)
+            } else {
+                self.focusBtn.setTitle("关注", for: .normal)
+                self.focusBtn.backgroundColor = COLOR_D6E7FD
+                self.focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_B3D0FB, borderWidth: 1)
+            }
+            
+            
+            if let dict = self.model?.information {
+                for item in self.detailData {
+                    item.desc = dict[item.key!] as? String ?? ""
+                }
+            }
+            
+            self.detailView.reloadData()
+        }) { (error) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: error.localizedDescription)
+        }
+    }
+    
+    func requestDynamicData(_ completion: (()->Void)?) {
+        let param = ["cid": self.cid ?? "", "page": self.dynPage] as [String : Any]
+        THPlaygroundManager.requestPlayGroundDynamicData(param: param, successBlock: { (result) in
+            completion?()
+            let modelArr = NSArray.yy_modelArray(with: THDynamicModel.self, json: result) as? [THDynamicModel] ?? [THDynamicModel]()
+            
+            if self.dynPage == 0 {
+                self.dynamicArr.removeAll()
+            }
+            if modelArr.count <= 0 {
+                self.dynamicView.mj_footer.endRefreshingWithNoMoreData()
+            }
+            
+            self.dynamicArr += modelArr
+            self.dynamicView.reloadData()
+            
+        }) { (error) in
+            completion?()
+        }
+    }
+    
+    func requestCommentData(_ completion: (()->Void)?) {
+        let param = ["cid": self.cid ?? "", "page": self.cmtPage] as [String : Any]
+        THPlaygroundManager.requestPlaygroundCommentData(param: param, successBlock: { (reuslt) in
+            completion?()
+            let modelArr = NSArray.yy_modelArray(with: THCommentModel.self, json: reuslt) as? [THCommentModel] ?? [THCommentModel]()
+            
+            THCommentController.INSTANCE.cacheNotesDataSource(dataSource: modelArr)
+            if self.cmtPage == 0 {
+                self.commentArr.removeAll()
+            }
+            if modelArr.count <= 0 {
+                self.commentTView.mj_footer.endRefreshingWithNoMoreData()
+            }
+            
+            self.commentArr += modelArr
+            self.commentTView.reloadData()
+            
+        }) { (error) in
+            completion?()
+        }
+    }
+
     
     @objc func clickButtonEvent() {
         
+        if focusBtn.titleLabel?.text == "关注" {
+            self.focusBtn.setTitle("已关注", for: .normal)
+            self.focusBtn.backgroundColor = COLOR_E7E7E7
+            self.focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_LINE, borderWidth: 1)
+        } else {
+            self.focusBtn.setTitle("关注", for: .normal)
+            self.focusBtn.backgroundColor = COLOR_D6E7FD
+            self.focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_B3D0FB, borderWidth: 1)
+        }
+        
+        let concern = focusBtn.titleLabel?.text == "关注" ? 0 : 1
+        let param = ["cid": self.cid ?? "", "concern": concern] as [String : Any]
+        THPlaygroundManager.requestPlaygroundFocus(param: param, successBlock: { (result) in
+            
+        }) { (error) in
+            
+        }
     }
     
     @objc func clickWriteCommentBtnEvent() {
@@ -327,6 +460,22 @@ extension THPlaygroundDetailVC {
     
     @objc func clickPublishBtnEvent() {
         print(#function)
+        
+        QMUITips.showLoading(in: view)
+        if let content = textView.text {
+            let param = ["content": content, "placeId": self.cid ?? ""]
+            THPlaygroundManager.requestPlaygroundWriteComment(param: param, successBlock: { (result) in
+                QMUITips.hideAllTips()
+                self.textView.resignFirstResponder()
+                self.textView.text = ""
+                self.commentTView.mj_header.beginRefreshing()
+                QMUITips.show(withText: "提交成功待审核")
+            }) { (error) in
+                QMUITips.hideAllTips()
+            }
+        } else {
+            QMUITips.show(withText: "请输入您的评论")
+        }
     }
 }
 
@@ -391,7 +540,7 @@ extension THPlaygroundDetailVC: UITableViewDelegate, UITableViewDataSource {
             }
             return detailData.count
         }
-        return 10
+        return self.commentArr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -401,27 +550,40 @@ extension THPlaygroundDetailVC: UITableViewDelegate, UITableViewDataSource {
                 if cell == nil {
                     cell = THPlaygroundVideoCell(style: .default, reuseIdentifier: "THPlaygroundVideoCell")
                 }
-                
-                cell?.clickItemBlock = { [weak self] (idx: Int) in
+                cell?.clickItemBlock = { (idx: Int) in
+                    let model = self.model?.halfList?[idx]
+                    if model?.videoCount == 0 {
+                        QMUITips.show(withText: "暂无视频，请稍后再来")
+//                        return
+                    }
                     let vc = THVideoCatVC()
-                    self?.navigationPushVC(vc: vc)
+                    vc.cid = self.cid
+                    vc.cvid = model?.cvid ?? ""
+                    self.navigationPushVC(vc: vc)
                 }
+                cell?.updateModel(modelArr: self.model?.halfList ?? [])
                 return cell!
             }
+            
             let model = detailData[indexPath.row]
             var cell = tableView.dequeueReusableCell(withIdentifier: "THPlaygroundDetailCell") as? THPlaygroundDetailCell
             if cell == nil {
                 cell = THPlaygroundDetailCell(style: .default, reuseIdentifier: "THPlaygroundDetailCell")
             }
-            
             cell?.titleLabel.text = model.title
             cell?.descLabel.text = model.desc
             return cell!
         }
+        
+        var model = self.commentArr[indexPath.row]
+        model = THCommentController.INSTANCE.getCommentModel(commentId: model.commentId)!
         var cell = tableView.dequeueReusableCell(withIdentifier: "THCommentCell") as? THCommentCell
         if cell == nil {
            cell = THCommentCell(style: .default, reuseIdentifier: "THCommentCell")
         }
+        cell?.updateModel(model: model)
+        cell?.vidOrCid = self.cid
+        cell?.isVideo = false
         return cell!
     }
     
@@ -469,22 +631,37 @@ extension THPlaygroundDetailVC: UITableViewDelegate, UITableViewDataSource {
 extension THPlaygroundDetailVC: THCollectionViewFlowLayoutDelegate {
     
     func th_setCellHeght(layout: THFlowLayout, indexPath: NSIndexPath, itemWidth: CGFloat) -> CGFloat {
-        let item = itemArray[indexPath.item]
-        let heigth = itemWidth * item.h! / item.w!;
-        return 300//heigth
+        /// 获取宽度
+        let width: CGFloat = SCREEN_WIDTH
+        /// 获取列间距总和
+        let colMagin: CGFloat = 10
+        let cellWidth: CGFloat = (width - 10 - 10 - colMagin) / 2
+        let model = dynamicArr[indexPath.row]
+        return model.caculateCellHeight(width: cellWidth, font: UIFont.systemFont(ofSize: 13))
     }
 }
 
 extension THPlaygroundDetailVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return itemArray.count
+        return dynamicArr.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let model = dynamicArr[indexPath.row]
         let cell:THHomeCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "THHomeCollectionCell", for: indexPath) as! THHomeCollectionCell
         setshadow(cell: cell)
+        cell.updateModel(model: model)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let model = dynamicArr[indexPath.row]
+        let vc = THVideoDetailVC()
+        vc.vid = model.vid
+        vc.aliVideoId = model.vUrl
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
@@ -537,7 +714,7 @@ class THTagSelectView: UIView {
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
         return button
     }()
-    lazy var facusBtn: UIButton = {
+    lazy var focusBtn: UIButton = {
         let button = UIButton()
         button.tag = 57
         button.setTitle("评论", for: .normal)
@@ -574,7 +751,7 @@ class THTagSelectView: UIView {
     func configUI() {
         addSubview(recommendBtn)
         addSubview(recentBtn)
-        addSubview(facusBtn)
+        addSubview(focusBtn)
         addSubview(indicator)
         addSubview(line)
     }
@@ -583,7 +760,7 @@ class THTagSelectView: UIView {
         let width = (SCREEN_WIDTH / 4)
         recommendBtn.frame = CGRect(x: 0, y: 0, width: width, height: 44)
         recentBtn.frame = CGRect(x: width, y: 0, width: width, height: 44)
-        facusBtn.frame = CGRect(x: width*2, y: 0, width: width, height: 44)
+        focusBtn.frame = CGRect(x: width*2, y: 0, width: width, height: 44)
         line.frame = CGRect(x: 0, y: 43.5, width: SCREEN_WIDTH, height: 0.5)
         selectBtn = recommendBtn
         selectBtn?.isSelected = true

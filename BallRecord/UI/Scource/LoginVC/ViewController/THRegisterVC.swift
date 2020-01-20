@@ -8,6 +8,7 @@
 
 import UIKit
 import QMUIKit
+import SwiftyRSA
 
 class THRegisterVC: THBaseVC {
     
@@ -32,9 +33,27 @@ class THRegisterVC: THBaseVC {
         
     }
 
-    @IBAction func clickSendCodeEvent(_ sender: Any) {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(onTimerInterval), userInfo: nil, repeats: true)
-        timer?.fire()
+    @IBAction func clickSendCodeEvent(_ sender: UIButton) {
+        sender.isEnabled = false
+        guard let phone = phoneField.text else {
+            QMUITips.show(withText: "请输入手机号")
+            return
+        }
+        if !(phone.count == 11 && phone.first == "1") {
+            QMUITips.show(withText: "请输入正确手机号")
+            return
+        }
+        
+        let param = ["type": "0", "phone": phone]
+        THLoginRequestManager.requestSendVcode(param: param, successBlock: { (result) in
+            sender.isEnabled = false
+            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.onTimerInterval), userInfo: nil, repeats: true)
+            self.timer?.fire()
+            
+        }) { (error) in
+            QMUITips.show(withText: "验证码发送失败")
+            sender.isEnabled = true
+        }
     }
     
     @IBAction func clickResigetrEvent(_ sender: Any) {
@@ -42,12 +61,28 @@ class THRegisterVC: THBaseVC {
             QMUITips.show(withText: "请输入手机号")
             return
         }
-        
-        if phone.count == 11 && phone.first == "1" {
-            
-            
-        } else {
+        guard let code = codeField.text else {
+            QMUITips.show(withText: "请输入验证码")
+            return
+        }
+        guard let password = passwordField.text else {
+            QMUITips.show(withText: "请输入密码")
+            return
+        }
+        if !(phone.count == 11 && phone.first == "1") {
             QMUITips.show(withText: "请输入正确手机号")
+            return
+        }
+        
+        let param = ["phone": phone, "code": code, "password": password]
+        QMUITips.showLoading(in: view)
+        THLoginRequestManager.requestRegisterData(param: param, successBlock: { (result) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: "注册成功")
+            self.navigationController?.popViewController(animated: true)
+        }) { (error) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: error.localizedDescription)
         }
     }
    
@@ -59,9 +94,10 @@ class THRegisterVC: THBaseVC {
 
         if second <= 0{
             timer?.invalidate()
-            second = 61
+            second = 60
             sendCodeBtn.titleLabel?.text = "发送验证码"
             sendCodeBtn.setTitle("发送验证码", for: .normal)
+            sendCodeBtn.isEnabled = true
         }
     }
 }

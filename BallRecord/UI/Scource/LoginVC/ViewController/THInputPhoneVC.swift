@@ -28,19 +28,19 @@ class THInputPhoneVC: THBaseVC {
     }
 
     @IBAction func nextEvent(_ sender: Any) {
-        
         guard let phone = phoneTextfield.text else {
             QMUITips.show(withText: "请输入手机号")
             return
         }
-        
-        if phone.count == 11 && phone.first == "1" {
-            let vc = THInputCodeVC()
-            vc.phone = phone
-            navigationPushVC(vc: vc)
-        } else {
+        if !(phone.count == 11 && phone.first == "1") {
             QMUITips.show(withText: "请输入正确手机号")
+            return
         }
+        
+        let vc = THInputCodeVC()
+        vc.phone = phone
+        vc.type = self.type
+        navigationPushVC(vc: vc)
     }
     
 }

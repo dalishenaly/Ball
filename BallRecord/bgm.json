@@ -1,0 +1,57 @@
+
+{
+   "code": 0,
+   "message":"",
+   "data": [{
+                   "audioType":"经典",
+                   "subList":[{
+                           "audioName":"肖邦",
+                           "audioUrl":"http://ball.moonsky.cn/sanshi.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"http://ball.moonsky.cn/sanshi.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"http://ball.moonsky.cn/sanshi.mp3"
+                   }]
+           },{
+                   "audioType":"动感",
+                   "subList":[{
+                           "audioName":"肖邦",
+                           "audioUrl":"http://music.163.com/song/media/outer/url?id=476592630.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"http://music.163.com/song/media/outer/url?id=476592630.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"http://music.163.com/song/media/outer/url?id=476592630.mp3"
+                   }]
+           },{
+                   "audioType":"开心",
+                   "subList":[{
+                           "audioName":"肖邦",
+                           "audioUrl":"https://m3.8js.net//20181222/AGuoJiQu%20HaiLaiAMu.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"https://m3.8js.net//20181222/AGuoJiQu%20HaiLaiAMu.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"https://m3.8js.net//20181222/AGuoJiQu%20HaiLaiAMu.mp3"
+                   }]
+           },{
+                   "audioType":"悲伤",
+                   "subList":[{
+                           "audioName":"肖邦",
+                           "audioUrl":"https://m3.8js.net//1826/411204264134970.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"https://m3.8js.net//1826/411204264134970.mp3"
+                   },{
+                           "audioName":"肖邦",
+                           "audioUrl":"https://m3.8js.net//1826/411204264134970.mp3"
+                   }]
+       }]
+ }
+
+
+

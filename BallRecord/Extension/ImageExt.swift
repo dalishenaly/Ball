@@ -8,6 +8,10 @@
 
 import Foundation
 
+let placeholder_header = UIImage(named: "placeholder_header")
+let placeholder_round = UIImage(named: "placeholder_round")
+let placeholder_square = UIImage(named: "placeholder_square")
+
 extension UIImage {
     
     class func getImage(videoUrl: String) -> UIImage {

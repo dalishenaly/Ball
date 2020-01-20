@@ -7,8 +7,15 @@
 //
 
 import UIKit
-
+@objcMembers
 class THPGDynamicListModel: NSObject {
     var videoList: [THDynamicModel]?
+    
+    ///  容器类 指定key 对应的类
+    ///
+    ///  - returns: 字典 static
+    class func modelContainerPropertyGenericClass() ->[String : AnyObject]? {
+        return ["videoList": THDynamicModel.self]
+    }
 }
 

@@ -11,7 +11,7 @@ import FSPagerView
 
 class THBannerView: UIView {
 
-    var bannerArr = [String]()
+    var bannerArr = [THHomeBannerModel]()
     
     lazy var viewPager: FSPagerView = {
         let viewPager = FSPagerView()
@@ -41,6 +41,7 @@ class THBannerView: UIView {
         label.text = "推荐动态"
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = COLOR_333333
+        label.isHidden = true
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
@@ -51,7 +52,7 @@ class THBannerView: UIView {
         
         configUI()
         configFrame()
-        configData()
+        updateData(array: [])
     }
     
     required init?(coder: NSCoder) {
@@ -71,8 +72,9 @@ class THBannerView: UIView {
         titleLabel.frame = CGRect(x: 15, y: pagerControl.frame.maxY + 6, width: SCREEN_WIDTH - 30, height: 20)
     }
     
-    func configData() {
-        
+    func updateData(array: [THHomeBannerModel]) {
+        self.bannerArr = array
+        self.viewPager.reloadData()
     }
 }
 
@@ -81,16 +83,17 @@ extension THBannerView: FSPagerViewDelegate, FSPagerViewDataSource {
     
     func numberOfItems(in pagerView: FSPagerView) -> Int {
         //设置下标的个数
-        pagerControl.numberOfPages = 8
-        return 8
+        pagerControl.numberOfPages = self.bannerArr.count
+        return self.bannerArr.count
     }
     
     func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         
+        let model = self.bannerArr[index]
         let cell: FSPagerViewCell = pagerView.dequeueReusableCell(withReuseIdentifier: "FSPagerViewCell", at: index)
         cell.imageView?.contentMode = .scaleAspectFill
-        cell.backgroundColor = UIColor.randomColor()
         cell.setCorner(cornerRadius: 8)
+        cell.imageView?.sd_setImage(with: URL(string: model.imgUrl ?? ""), completed: nil)
         return cell
     }
     
@@ -104,6 +107,11 @@ extension THBannerView: FSPagerViewDelegate, FSPagerViewDataSource {
     
     func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
         
-        THReplyListView.show()
+        let model = self.bannerArr[index]
+        let currentVC = getTopVC()
+        let vc = THBaseWebViewVC(urlString: model.webUrl ?? "")
+        vc.hidesBottomBarWhenPushed = true
+        currentVC?.navigationController?.pushViewController(vc, animated: true)
+//        THReplyListView.show()
     }
 }

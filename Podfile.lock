@@ -321,179 +321,56 @@ PODS:
   - SDWebImage (5.2.3):
     - SDWebImage/Core (= 5.2.3)
   - SDWebImage/Core (5.2.3)
-  - SJBaseVideoPlayer (3.1.4):
+  - SJBaseVideoPlayer (3.1.8):
     - Masonry
     - Reachability
-    - SJBaseVideoPlayer/AVPlayer (= 3.1.4)
-    - SJBaseVideoPlayer/Common (= 3.1.4)
+    - SJBaseVideoPlayer/AVPlayer (= 3.1.8)
+    - SJBaseVideoPlayer/Common (= 3.1.8)
     - SJUIKit/AttributesFactory (>= 0.0.0.38)
     - SJUIKit/ObserverHelper (>= 0.0.0.38)
     - SJUIKit/Queues (>= 0.0.0.38)
-  - SJBaseVideoPlayer/AVPlayer (3.1.4):
+  - SJBaseVideoPlayer/AVPlayer (3.1.8):
     - Masonry
     - Reachability
     - SJBaseVideoPlayer/Common
     - SJUIKit/AttributesFactory (>= 0.0.0.38)
     - SJUIKit/ObserverHelper (>= 0.0.0.38)
     - SJUIKit/Queues (>= 0.0.0.38)
-  - SJBaseVideoPlayer/Common (3.1.4):
+  - SJBaseVideoPlayer/Common (3.1.8):
     - Masonry
     - Reachability
     - SJBaseVideoPlayer/ResourceLoader
     - SJUIKit/AttributesFactory (>= 0.0.0.38)
     - SJUIKit/ObserverHelper (>= 0.0.0.38)
     - SJUIKit/Queues (>= 0.0.0.38)
-  - SJBaseVideoPlayer/ResourceLoader (3.1.4):
+  - SJBaseVideoPlayer/ResourceLoader (3.1.8):
     - Masonry
     - Reachability
     - SJUIKit/AttributesFactory (>= 0.0.0.38)
     - SJUIKit/ObserverHelper (>= 0.0.0.38)
     - SJUIKit/Queues (>= 0.0.0.38)
-  - SJUIKit/AttributesFactory (0.0.0.38):
-    - SJUIKit/AttributesFactory/Deprecated (= 0.0.0.38)
-    - SJUIKit/AttributesFactory/UIKitText (= 0.0.0.38)
-  - SJUIKit/AttributesFactory/Deprecated (0.0.0.38)
-  - SJUIKit/AttributesFactory/UIKitText (0.0.0.38)
-  - SJUIKit/ObserverHelper (0.0.0.38)
-  - SJUIKit/Queues (0.0.0.38)
-  - SJVideoPlayer (3.0.8):
+  - SJUIKit/AttributesFactory (0.0.0.39):
+    - SJUIKit/AttributesFactory/Deprecated (= 0.0.0.39)
+    - SJUIKit/AttributesFactory/UIKitText (= 0.0.0.39)
+  - SJUIKit/AttributesFactory/Deprecated (0.0.0.39)
+  - SJUIKit/AttributesFactory/UIKitText (0.0.0.39)
+  - SJUIKit/ObserverHelper (0.0.0.39)
+  - SJUIKit/Queues (0.0.0.39)
+  - SJVideoPlayer (3.1.1):
+    - SJBaseVideoPlayer (>= 3.1.7)
+    - SJVideoPlayer/Common (= 3.1.1)
+    - SJVideoPlayer/ControlLayers (= 3.1.1)
+    - SJVideoPlayer/ResourceLoader (= 3.1.1)
+  - SJVideoPlayer/Common (3.1.1):
     - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
+    - SJBaseVideoPlayer (>= 3.1.7)
     - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters (= 3.0.8)
-    - SJVideoPlayer/Common (= 3.0.8)
-    - SJVideoPlayer/Settings (= 3.0.8)
-    - SJVideoPlayer/SJEdgeControlLayer (= 3.0.8)
-    - SJVideoPlayer/SJFilmEditingControlLayer (= 3.0.8)
-    - SJVideoPlayer/SJFloatSmallViewControlLayer (= 3.0.8)
-    - SJVideoPlayer/SJLoadFailedControlLayer (= 3.0.8)
-    - SJVideoPlayer/SJMoreSettingControlLayer (= 3.0.8)
-    - SJVideoPlayer/SJNotReachableControlLayer (= 3.0.8)
-    - SJVideoPlayer/SJProgressSlider (= 3.0.8)
-    - SJVideoPlayer/SJSwitchVideoDefinitionControlLayer (= 3.0.8)
-    - SJVideoPlayer/Switcher (= 3.0.8)
-  - SJVideoPlayer/Adapters (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
+    - SJVideoPlayer/ResourceLoader
+  - SJVideoPlayer/ControlLayers (3.1.1):
+    - SJBaseVideoPlayer (>= 3.1.7)
     - SJVideoPlayer/Common
-  - SJVideoPlayer/Common (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-  - SJVideoPlayer/Settings (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/SJEdgeControlLayer/ResourceLoader
-    - SJVideoPlayer/SJFilmEditingControlLayer/ResourceLoader
-    - SJVideoPlayer/SJFloatSmallViewControlLayer/ResourceLoader
-  - SJVideoPlayer/SJEdgeControlLayer (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/Common
-    - SJVideoPlayer/SJEdgeControlLayer/Defines (= 3.0.8)
-    - SJVideoPlayer/SJEdgeControlLayer/ResourceLoader (= 3.0.8)
-    - SJVideoPlayer/SJEdgeControlLayer/View (= 3.0.8)
-    - SJVideoPlayer/SJProgressSlider
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJEdgeControlLayer/Defines (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/Common
-    - SJVideoPlayer/SJProgressSlider
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJEdgeControlLayer/ResourceLoader (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/Common
-    - SJVideoPlayer/SJProgressSlider
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJEdgeControlLayer/View (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/Common
-    - SJVideoPlayer/SJEdgeControlLayer/Defines
-    - SJVideoPlayer/SJEdgeControlLayer/ResourceLoader
-    - SJVideoPlayer/SJProgressSlider
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJFilmEditingControlLayer (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/SJFilmEditingControlLayer/Core (= 3.0.8)
-    - SJVideoPlayer/SJFilmEditingControlLayer/ResourceLoader (= 3.0.8)
-    - SJVideoPlayer/SJProgressSlider
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJFilmEditingControlLayer/Core (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/SJFilmEditingControlLayer/ResourceLoader
-    - SJVideoPlayer/SJProgressSlider
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJFilmEditingControlLayer/ResourceLoader (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/SJProgressSlider
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJFloatSmallViewControlLayer (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/Common
-    - SJVideoPlayer/SJFloatSmallViewControlLayer/ResourceLoader (= 3.0.8)
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJFloatSmallViewControlLayer/ResourceLoader (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/Common
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/SJLoadFailedControlLayer (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/SJNotReachableControlLayer
-  - SJVideoPlayer/SJMoreSettingControlLayer (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/SJEdgeControlLayer
-  - SJVideoPlayer/SJNotReachableControlLayer (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/SJEdgeControlLayer
-  - SJVideoPlayer/SJProgressSlider (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-  - SJVideoPlayer/SJSwitchVideoDefinitionControlLayer (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
-    - SJVideoPlayer/Adapters
-    - SJVideoPlayer/Common
-    - SJVideoPlayer/Switcher
-  - SJVideoPlayer/Switcher (3.0.8):
-    - Masonry
-    - SJBaseVideoPlayer (>= 3.1.4)
-    - SJUIKit/AttributesFactory
+  - SJVideoPlayer/ResourceLoader (3.1.1):
+    - SJBaseVideoPlayer (>= 3.1.7)
   - SnapKit (4.2.0)
   - SwiftyRSA (1.5.0):
     - SwiftyRSA/ObjC (= 1.5.0)
@@ -555,14 +432,14 @@ SPEC CHECKSUMS:
   QMUIKit: 4914306e357359d79a118557cc34513dfb3b12ab
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 46a7f73228f84ce80990c786e4372cf4db5875ce
-  SJBaseVideoPlayer: 25055f019982c0e72cba5f97e269557fdb02cbbb
-  SJUIKit: 3a8af44f281bc620f94e277f8cc586d6e4e0913a
-  SJVideoPlayer: 48842c0191ff8b0333266e75a23ae6ad4f05707d
+  SJBaseVideoPlayer: 7c3d6d0e8c9cbd731143d2ddb53a2157e74479de
+  SJUIKit: 5479a150083e606937a796801ecaae6317e046f5
+  SJVideoPlayer: 02bafffeb014806167be201f2860462fdc4d9e87
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftyRSA: 6e528fb1b1a87d5111c48081083b141d6d65f1cf
   VODUpload: a76d07081e4faf9bd9e7535265901cde2cea507f
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: f4efa7c5d3199597904c5e935497a48118fe2ac5
+PODFILE CHECKSUM: 41ce160eb85f0c2cc99c5e9723ca0802f5a52b7c
 
 COCOAPODS: 1.8.4

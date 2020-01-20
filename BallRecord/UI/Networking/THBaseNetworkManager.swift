@@ -10,17 +10,18 @@ import UIKit
 import Alamofire
 import YYModel
 
-let BASEURL = "https://api-course.xiaobangguihua.com"
+let BASEURL = "http://qiuzhi.cool"//"http://ball.moonsky.cn"
 
 typealias successHandler = (_ response: Any)->()
 typealias errorHandler = (_ error: Error)->()
 
+@objcMembers
 class ResponseModel: NSObject{
     
-    var code: Int?
-    var data: Dictionary<String, Any>?
+    var code: Int = 0
+    var data: Any?
     var message: String?
-    var status: Int?
+    var status: Int = 0
     
 }
 
@@ -36,9 +37,21 @@ class THBaseNetworkManager: NSObject {
         
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
         let deviceId = UIDevice.current.identifierForVendor?.uuidString
-//        let ticket = CYGLoginRegisterManager.sharedInstance.currentUser.ticket
-        let header = HTTPHeaders(dictionaryLiteral:("version", version), ("clientDeviceId", deviceId!))
+        let usrModel = THLoginController.instance.getTokenInfo()
+        let header = HTTPHeaders(dictionaryLiteral:("version", version), ("clientDeviceId", deviceId!), ("token", usrModel.token), ("uid", usrModel.uid))
         return header
+    }()
+    
+    var commonParam: [String: Any] = {
+        var param = [String: Any]()
+        let userModel = THLoginController.instance.getTokenInfo()
+        if userModel.uid != "" {
+            param["uid"] = userModel.uid
+        }
+        if userModel.token != "" {
+            param["token"] = userModel.token
+        }
+        return param
     }()
     
     let requestContentType: [String] = ["application/json", "text/json", "text/javascript", "text/html", "text/plain"]
@@ -57,7 +70,7 @@ extension THBaseNetworkManager {
         if respose.code == 200 {
             successCompletion?(respose.data as Any)
         } else {
-            let error = NSError(domain: "", code: respose.code ?? 0, userInfo: [NSLocalizedDescriptionKey: respose.message ?? ""])
+            let error = NSError(domain: "", code: respose.code, userInfo: [NSLocalizedDescriptionKey: respose.message ?? ""])
             failureCompletion?(error)
         }
     }
@@ -71,12 +84,18 @@ extension THBaseNetworkManager {
         successCompletion = successBlock
         failureCompletion = errorBlock
 
-        let urlString = BASEURL
-
+        let urlString = BASEURL + self.subUrl
+        var param = commonParam
+        if let dict = params {
+            for (key, value) in dict {
+                param[key] = value
+            }
+        }
+        
         //使用Alamofire进行网络请求时，调用该方法的参数都是通过getRequest(urlString， params, success :, failture :）传入的，而success传入的其实是一个接受[String : AnyObject]类型 返回void类型的函数
         Alamofire.request(urlString,
                           method: .get,
-                          parameters: params,
+                          parameters: param,
                           encoding: URLEncoding.default,
                           headers: header)
             .validate(contentType: requestContentType)
@@ -103,10 +122,17 @@ extension THBaseNetworkManager {
         successCompletion = successBlock
         failureCompletion = errorBlock
 
-        let urlString = BASEURL
+        let urlString = BASEURL + self.subUrl
+        var param = commonParam
+        if let dict = params {
+            for (key, value) in dict {
+                param[key] = value
+            }
+        }
+        
         Alamofire.request(urlString,
                           method: .post,
-                          parameters: params,
+                          parameters: param,
                           encoding: URLEncoding.default,
                           headers: header)
             .validate(contentType: requestContentType)
@@ -114,7 +140,7 @@ extension THBaseNetworkManager {
                 switch response.result {
                     case .success(let value):
                        print(value)
-                       guard let data = ResponseModel.yy_model(withJSON: value) else { return }
+                       guard let data = ResponseModel.mj_object(withKeyValues: value) else { return }
                        self.handleRequestResponse(respose: data)
                        break
                       
@@ -212,4 +238,38 @@ extension THBaseNetworkManager {
         }
     }
     
+}
+
+class THReachability: NSObject {
+    
+    static let INSTANCE = THReachability()
+    
+    let net = NetworkReachabilityManager()
+    
+    override init() {
+        super.init()
+    }
+    
+    func startListening() {
+        net?.listener = { status in
+            
+            NotificationCenter.default.post(name: NSNotification.Name(kAppNetChangeNotificationName), object: nil)
+            
+            if self.net?.isReachable ?? false {
+                switch status{
+                case .notReachable:
+                    print("Reachability: the noework is not reachable")
+                case .unknown:
+                    print("ReachabilityIt: is unknown whether the network is reachable")
+                case .reachable(.ethernetOrWiFi):
+                    print("Reachability: 通过WiFi链接")
+                case .reachable(.wwan):
+                    print("Reachability: 通过移动网络链接")
+                }
+            } else {
+                print("Reachability: 网络不可用")
+            }
+        }
+        net?.startListening()
+    }
 }

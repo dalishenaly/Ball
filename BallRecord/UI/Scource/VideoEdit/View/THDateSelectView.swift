@@ -8,7 +8,17 @@
 
 import UIKit
 
+@objc protocol THDateSelectViewDelegate {
+    func dateSelectViewChangeValue(idx: Int)
+}
+
 class THDateSelectView: UIView {
+    
+    var currentIdx: Int?
+    weak var delegate: THDateSelectViewDelegate?
+    
+    var dataArr =  [THTimeModel]()
+    
     
     lazy var leftBtn: UIButton = {
         let button = UIButton()
@@ -76,11 +86,48 @@ class THDateSelectView: UIView {
         
     }
     
+    func updateDate(arr: [THTimeModel]) {
+        if arr.count == 0 {
+            return
+        }
+        if arr.count == 1 {
+            self.leftBtn.isEnabled = false
+            self.rightBtn.isEnabled = false
+        }
+        
+        self.dataArr = arr
+        let model = arr.last
+        self.currentIdx = arr.count - 1
+        timeLabel.text = model?.itemTime
+        self.rightBtn.isEnabled = false
+        
+    }
+    
     @objc func clickLeftBtnEvent() {
-        print(#function)
+        
+        self.currentIdx = (self.currentIdx ?? 1) - 1
+        let model = self.dataArr[self.currentIdx ?? 0]
+        timeLabel.text = model.itemTime
+        
+        self.rightBtn.isEnabled = true
+        if self.currentIdx == 0 {
+            self.leftBtn.isEnabled = false
+        }
+        
+        delegate?.dateSelectViewChangeValue(idx: self.currentIdx ?? 0)
     }
     
     @objc func clickRightBtnEvent() {
-        print(#function)
+        
+        self.currentIdx = (self.currentIdx ?? 0) + 1
+        let model = self.dataArr[self.currentIdx ?? 0]
+        timeLabel.text = model.itemTime
+        
+        self.leftBtn.isEnabled = true
+        if self.currentIdx == self.dataArr.count - 1 {
+            self.rightBtn.isEnabled = false
+        }
+        
+        delegate?.dateSelectViewChangeValue(idx: self.currentIdx ?? 0)
     }
 }

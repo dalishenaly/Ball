@@ -15,18 +15,17 @@ class THPlaygroundVideoCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        configUI()
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configUI() {
-        let arr = [1,2,3]
+    func updateModel(modelArr: [THPGVideoModel]) {
         let itemW = (SCREEN_WIDTH - 75) / 2
         var itemH: CGFloat = 0
-        for idx in 0..<arr.count {
+        for idx in 0..<modelArr.count {
             let lie = idx%2
             let hang = idx/2
             let itemX = 25 + (itemW + 25) * CGFloat(lie)
@@ -42,22 +41,14 @@ class THPlaygroundVideoCell: UITableViewCell {
                 make.width.equalTo(itemW)
                 make.top.equalTo(itemY)
                 make.height.equalTo(item)
-                if idx == arr.count - 1 {
+                if idx == modelArr.count - 1 {
                     make.bottom.equalTo(-20)
                 }
             }
+            item.updateModel(model: modelArr[idx])
             layoutIfNeeded()
             itemH = item.height
         }
-        
-    }
-    
-    func configFrame() {
-        
-    }
-    
-    func configData() {
-        
     }
     
     @objc func onTapVideoItem(gesture: UITapGestureRecognizer) {
@@ -77,6 +68,7 @@ class THVideoItemView: UIView {
     
     lazy var playView: UIImageView = {
         let imgV = UIImageView()
+        imgV.image = UIImage(named: "play_icon")
         return imgV
     }()
     
@@ -92,8 +84,8 @@ class THVideoItemView: UIView {
     lazy var countLabel: UILabel = {
         let label = UILabel()
         label.text = "45678"
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = COLOR_324057
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = MAIN_COLOR
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
@@ -110,7 +102,7 @@ class THVideoItemView: UIView {
     }
     
     func configUI() {
-        iconView.backgroundColor = UIColor.randomColor()
+        
         addSubview(iconView)
         addSubview(playView)
         addSubview(titleLabel)
@@ -135,7 +127,7 @@ class THVideoItemView: UIView {
         playView.snp.makeConstraints { (make) in
             make.right.equalTo(self)
             make.centerY.equalTo(titleLabel)
-            make.width.height.equalTo(25)
+            make.width.height.equalTo(20)
         }
         
         countLabel.snp.makeConstraints { (make) in
@@ -152,6 +144,12 @@ class THVideoItemView: UIView {
     
     func configData() {
         
+    }
+    
+    func updateModel(model: THPGVideoModel) {
+        iconView.setImage(urlStr: model.imageUrl, placeholder: placeholder_square)
+        titleLabel.text = model.title
+        countLabel.text = model.playCount ?? "0" + "次播放"
     }
 
 }

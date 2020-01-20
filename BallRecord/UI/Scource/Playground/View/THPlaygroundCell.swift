@@ -121,4 +121,17 @@ extension THPlaygroundCell {
     func configData() {
         
     }
+    
+    func updateModel(model: THPGModel) {
+        iconView.setImage(urlStr: model.imageUrl, placeholder: placeholder_square)
+        titleLabel.text = model.name
+        detailLabel.text = model.location
+        likeCountLabel.text = "\(model.collectionCount)人点赞"
+        if model.distince == 0 {
+            distanceLabel.isHidden = true
+        } else {
+            distanceLabel.text = "  \(model.distince)km  "
+            distanceLabel.isHidden = false
+        }
+    }
 }

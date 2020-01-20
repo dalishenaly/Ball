@@ -17,7 +17,7 @@ class THInfoEditCell: UITableViewCell {
         let label = UILabel()
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = COLOR_666666
+        label.textColor = COLOR_333333
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label

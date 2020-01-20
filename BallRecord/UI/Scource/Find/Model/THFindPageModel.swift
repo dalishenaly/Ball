@@ -7,10 +7,10 @@
 //
 
 import UIKit
-
+@objcMembers
 class THFindPageModel: NSObject {
     
-    var type: Int?
+    var type: Int = 0
     var banner: [THHomeBannerModel]?
     var list: [THDynamicModel]?
     
@@ -22,24 +22,31 @@ class THFindPageModel: NSObject {
                 "list": THDynamicModel.self]
     }
 }
-
+@objcMembers
 class THHomeBannerModel: NSObject {
-    var type: Int?
-    var imageUrl: String?
+    var material_id: Int?
+    var imgUrl: String?
     var webUrl: String?
 }
 
+@objcMembers
 class THDynamicModel: NSObject {
     
     var vid: String = ""
     var vUrl: String = ""
     var imageUrl: String = ""
-    var title: String = ""
+    var content: String = ""
     var publisherIcon: String = ""
     var publisherName: String = ""
-    var praiseCount: String = ""
-    
-    
+    var praiseCount: Int = 0
+    var hasPraise: Bool?
+//    "praiseName": "",
+//    "praiseTime": "2020-01-07 15:48:35",
+//    "vid": 1,
+//    "vUrl": "",
+//    "imageUrl": "",
+//    "content": "\u7403\u573a\u98de\u4eba",
+//    "praiseCount": 0
     func caculateCellHeight(width: CGFloat, font: UIFont) -> CGFloat {
         
         var cellH: CGFloat = 0
@@ -48,7 +55,7 @@ class THDynamicModel: NSObject {
         cellH += imageH
         cellH += 10
         //  图片高度
-        let text: NSString = title as NSString
+        let text: NSString = content as NSString
         let size = CGSize(width: width, height:1000) //CGSizeMake(width,1000)
         let dic = NSDictionary(object: font, forKey : kCTFontAttributeName as! NSCopying)
         let textSize = text.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: dic as? [NSAttributedString.Key:Any], context:nil).size

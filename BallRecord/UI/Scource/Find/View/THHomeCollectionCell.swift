@@ -10,16 +10,13 @@ import UIKit
 
 class THHomeCollectionCell: UICollectionViewCell {
 
-    lazy var coverView: UIImageView = {
-        let imgV = UIImageView()
-        imgV.backgroundColor = UIColor.randomColor()
-        return imgV
-    }()
+    var model: THDynamicModel?
+    var coverView = videoCoverView()
+    
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "sdfasfasfasfasfadsf"
         label.numberOfLines = 2
-        label.backgroundColor = UIColor.randomColor()
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = COLOR_333333
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -28,7 +25,6 @@ class THHomeCollectionCell: UICollectionViewCell {
     }()
     lazy var iconView: UIImageView = {
         let imgV = UIImageView()
-        imgV.backgroundColor = UIColor.randomColor()
         return imgV
     }()
     lazy var nameLabel: UILabel = {
@@ -44,7 +40,9 @@ class THHomeCollectionCell: UICollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(named: "like_normal"), for: .normal)
         button.setImage(UIImage(named: "like_selected"), for: .selected)
-        button.addTarget(self, action: #selector(clickButtonEvent), for: .touchUpInside)
+        button.setTitleColor(UIColor.colorWithString("5E6D82"), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+//        button.addTarget(self, action: #selector(clickButtonEvent), for: .touchUpInside)
         return button
     }()
 
@@ -106,11 +104,16 @@ extension THHomeCollectionCell {
         
     }
     
-    func configData() {
+    func updateModel(model: THDynamicModel) {
+        self.model = model
+        coverView.setImage(urlStr: model.imageUrl, placeholder: placeholder_square)
+        titleLabel.text = model.content
+        iconView.setImage(urlStr: model.publisherIcon, placeholder: placeholder_round)
+        nameLabel.text = model.publisherName
         
-    }
-    
-    @objc func clickButtonEvent(sender: UIButton) {
+        let count = model.praiseCount > 0 ? "\(model.praiseCount)" : ""
+        likeBtn.setTitle(count, for: .normal)
+        likeBtn.isSelected = model.hasPraise ?? false
         
     }
 }

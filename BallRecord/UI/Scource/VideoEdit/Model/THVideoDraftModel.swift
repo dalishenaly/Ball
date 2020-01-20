@@ -35,12 +35,13 @@ class THVideoDraftModel: NSObject {
     var coverImgPath: String = ""
     /// bgm Path
     var bgmPath: String = ""
+    
     /// 视频片段的集合
     var videoPartArr = [CatVideoModel]()
-    
+    var cid: String = ""
     /// bgm
-    var editBgm = musicModel(titleName: "")
-    
+//    var editBgm = THBGMModel()
+    var tempBgmPath = ""
     
     /// bgm音量
     var bgmVolume: CGFloat = 0
@@ -86,6 +87,12 @@ extension THVideoDraftModel {
     //  MARK: 保存草稿到本地
     func saveToLocal() {
         
+        //  更新 dateStr 保持保存草稿箱的最新编辑时间
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateStr = dateFormatter.string(from: date)
+        
         //判断是否需要创建草稿箱目录
         if !FileManager.default.fileExists(atPath: PublishDraft) {
             try? FileManager.default.createDirectory(atPath: PublishDraft, withIntermediateDirectories: true, attributes: nil)
@@ -120,9 +127,10 @@ extension THVideoDraftModel {
         
         
         //  保存音乐    "～/PublishDraft/yyyyMMdd_HHmmss/xxx.mp3"
-        if let musicUrl = URL(string: self.editBgm.musicTempPath) {
+        if self.tempBgmPath != "" {
+            let musicUrl = URL(fileURLWithPath: self.tempBgmPath)
             bgmPath = draftFileName + "/" + draftId + "/\(musicUrl.lastPathComponent)"
-            copyItemAtPath(fromPath: self.editBgm.musicTempPath, toPath: documentAppendPath(path: bgmPath))
+            copyItemAtPath(fromPath: self.tempBgmPath, toPath: documentAppendPath(path: bgmPath))
         }
         
         

@@ -8,19 +8,29 @@
 
 import UIKit
 
+@objcMembers
 class THBGMListModel: NSObject {
     var audioList: [THBGMTypeModel]?
 }
 
+@objcMembers
 class THBGMTypeModel: NSObject {
     var audioType: String?
     var subList: [THBGMModel]?
+    
+    ///  容器类 指定key 对应的类
+    ///
+    ///  - returns: 字典 static
+    class func modelContainerPropertyGenericClass() ->[String : AnyObject]? {
+        return ["subList": THBGMModel.self]
+    }
 }
 
+@objcMembers
 class THBGMModel: NSObject {
     var audioName: String?
     var audioUrl: String?
-    var hasDownLoad: Bool?
+    var hasDownload: Bool?
     
     /// bgm下载临时Temp目录下的路径
     var musicTempPath: String?

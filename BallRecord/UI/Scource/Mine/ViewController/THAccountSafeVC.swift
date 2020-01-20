@@ -21,13 +21,13 @@ class THAccountSafeVC: THBaseTableViewVC {
         title = "账户与安全"
         
         let phoneModel = PersonalModel(title: "手机号")
-        if THLoginController.instance.hasLogin ?? false {
-            phoneModel.content = "phone"
+        if let model = THLoginController.instance.userInfo {
+            phoneModel.content = model.phone
         }
         
         let pwdModel = PersonalModel(title: "设置密码")
         let bindModel = PersonalModel(title: "去绑定", content: "去绑定")
-        if THLoginController.instance.hasBind ?? false {
+        if THLoginController.instance.hasBind {
             bindModel.content = "已绑定"
         }
         
@@ -87,28 +87,42 @@ extension THAccountSafeVC {
         let model = arr[indexPath.row]
         
         if model.title == "设置密码" {
-            let vc = THResetPasswordVC()
-            navigationPushVC(vc: vc)
+            if let model = THLoginController.instance.userInfo, model.phone != "" {
+                let vc = THInputCodeVC()
+                vc.phone = model.phone
+                vc.type = .findPwd
+                navigationPushVC(vc: vc)
+            }
         }
         
         if model.title == "去绑定" {
+            if THLoginController.instance.hasBind { return }
+            
             THBindAlert.show { (state: SSDKResponseState, user: SSDKUser?) in
                 if state == .success {
                     
                     var platform = ""
                     if user?.platformType == SSDKPlatformType.typeWechat {
                         platform = "wechat"
-                    } else if user?.platformType == SSDKPlatformType.typeQQ {
-                        platform = "qq"
-                    } else {
+                    } else if user?.platformType == SSDKPlatformType.typeSinaWeibo {
                         platform = "weibo"
+                    } else {
+                        platform = "qq"
                     }
-                    let param = ["openid": user?.uid, "nickname": user?.nickname, "avatar": user?.icon, "type": platform]
                     
-                    
-                    model.content = "已绑定"
-                    tableView.reloadData()
-                    QMUITips.show(withText: "绑定成功！")
+                    if let us = user {
+                        let param = ["openid": us.uid ?? "", "nickname": us.nickname ?? "", "avatar": us.icon ?? "", "type": platform]
+                        QMUITips.showLoading(in: self.view)
+                        THMineRequestManager.requestBindingThird(param: param, successBlock: { (result) in
+                            QMUITips.hideAllTips()
+                            model.content = "已绑定"
+                            tableView.reloadData()
+                            QMUITips.show(withText: "绑定成功！")
+                        }) { (error) in
+                            QMUITips.hideAllTips()
+                            QMUITips.show(withText: error.localizedDescription)
+                        }
+                    }
                 } else {
                     QMUITips.show(withText: "绑定失败！")
                 }

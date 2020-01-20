@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objcMembers
 class THCityListModel: NSObject {
     var citys: [THCityModel]?
     
@@ -19,8 +20,15 @@ class THCityListModel: NSObject {
     }
 }
 
+@objcMembers
 class THCityModel: NSObject {
-    var cityId: Int?
-    var cityName: String?
+    var cityCode: Int = 0
+    var city: String = ""
+    var hasSelect: Bool = false
+//    init(cityCode: Int, city: String) {
+//        super.init()
+//        self.cityCode = cityCode
+//        self.city = city
+//    }
 }
 

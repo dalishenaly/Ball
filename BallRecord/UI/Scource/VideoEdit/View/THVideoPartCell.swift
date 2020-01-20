@@ -30,7 +30,7 @@ class THVideoPartCell: UICollectionViewCell {
     
     lazy var deleteBtn: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "delete_icon"), for: .normal)
+        button.setImage(UIImage(named: "deleteVideoPart_icon"), for: .normal)
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
         return button
     }()

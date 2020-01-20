@@ -19,12 +19,13 @@ class THPGListModel: NSObject {
     }
 }
 
+@objcMembers
 class THPGModel: NSObject {
-    var cid: Int? //    int    列表id
-    var imageUrl: Int? //    int    列表图片
-    var title: Int? //    int    视频标题
-    var location: Int? //    int    视频位置
-    var collectionCount: Int? //    int    收藏个数
-    var distance: Int? //    int    距离（当选择热度的时候，这个值是空）
-    var isCollection: Bool? //    bool    是否已关注
+    
+    var cid: String = "" //列表id
+    var imageUrl: String? //
+    var name: String? //
+    var location: String? //球场位置
+    var collectionCount: Int = 0 //收藏个数
+    var distince: Int = 0 //    int    距离（当选择热度的时候，这个值是空）
 }

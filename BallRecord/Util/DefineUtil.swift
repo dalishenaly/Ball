@@ -20,6 +20,13 @@ let TABBAR_HEIGHT = (isiPhoneX() ? CGFloat(83)  : CGFloat(49))
 let NAVIGATIONBAR_HEIGHT = (isiPhoneX() ? CGFloat(88) : CGFloat(64))
 let BOTTOM_SAFEAREA_HEIGHT = (isiPhoneX() ? CGFloat(34)  : CGFloat(0))
 
+let infoDic: [String : Any]? = Bundle.main.infoDictionary
+// 获取App的版本
+let appVersion: String = infoDic?["CFBundleShortVersionString"] as? String ?? ""
+let appBundleId: String = infoDic?["CFBundleIdentifier"] as? String ?? "" // 获取App的bundleId
+let appBuildVersion: String = infoDic?["CFBundleVersion"] as? String ?? "" // 获取App的build版本
+let appName: String = infoDic?["CFBundleDisplayName"] as? String ?? "" // 获取App的名称
+
 func isiPhoneX() ->Bool {
     return STATUS_BAR_HEIGHT > 20 ? true : false
 }

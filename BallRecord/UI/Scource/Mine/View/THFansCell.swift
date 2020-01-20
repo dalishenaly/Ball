@@ -10,8 +10,6 @@ import UIKit
 
 class THFansCell: UITableViewCell {
     
-    var isFans: Bool?
-    
     lazy var iconView: UIImageView = {
         let imgV = UIImageView()
         return imgV
@@ -29,11 +27,11 @@ class THFansCell: UITableViewCell {
     
     lazy var facusBtn: UIButton = {
         let button = UIButton()
-        button.tag = 55
         button.setTitle("已关注", for: .normal)
-        button.setTitleColor(UIColor.colorWithString("5E6D82"), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(clickFacusBtnEvent), for: .touchUpInside)
+        button.setTitleColor(COLOR_999999, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.backgroundColor = COLOR_F4F4F4
+//        button.addTarget(self, action: #selector(clickFacusBtnEvent), for: .touchUpInside)
         return button
     }()
     
@@ -94,7 +92,7 @@ extension THFansCell {
         
         iconView.setCorner(cornerRadius: 20)
         
-        facusBtn.setCorner(cornerRadius: 8, borderColor: COLOR_99A9BF, borderWidth: 1)
+        facusBtn.setCorner(cornerRadius: 8, borderColor: COLOR_LINE, borderWidth: 1)
     }
     
     func configData() {

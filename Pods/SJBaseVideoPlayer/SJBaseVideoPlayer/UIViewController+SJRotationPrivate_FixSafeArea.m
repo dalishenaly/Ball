@@ -23,7 +23,7 @@ API_AVAILABLE(ios(13.0)) @implementation UIViewController (SJRotationPrivate_Fix
            [self.view viewWithTag:SJBaseVideoPlayerViewTag] != nil;
 }
 
-- (void)sj_setContentOverlayInsets:(UIEdgeInsets)insets andLeftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin {
+- (void)sj_setContentOverlayInsets:(UIEdgeInsets)insets andLeftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin {    
     BOOL isFullscreen = self.view.bounds.size.width > self.view.bounds.size.height;
     if ( ![NSStringFromClass(self.class) isEqualToString:@"SJFullscreenModeViewController"] || isFullscreen ) {
         if ( isFullscreen || insets.top != 0 || [self sj_containsPlayerView] == NO ) {
@@ -32,6 +32,7 @@ API_AVAILABLE(ios(13.0)) @implementation UIViewController (SJRotationPrivate_Fix
     }
 }
 @end
+
 
 #pragma mark -
 
@@ -43,6 +44,7 @@ API_AVAILABLE(ios(13.0)) @implementation SJBaseVideoPlayer (SJRotationPrivate_Fi
             Class cls = UIViewController.class;
             SEL originalSelector = @selector(_setContentOverlayInsets:andLeftMargin:rightMargin:);
             SEL swizzledSelector = @selector(sj_setContentOverlayInsets:andLeftMargin:rightMargin:);
+            
             Method originalMethod = class_getInstanceMethod(cls, originalSelector);
             Method swizzledMethod = class_getInstanceMethod(cls, swizzledSelector);
             method_exchangeImplementations(originalMethod, swizzledMethod);

@@ -12,6 +12,12 @@ import QMUIKit
 
 class THReplyListView: UIView {
     
+    var model: THCommentModel?
+    var vidOrCid: String?
+    var isVideo: Bool?
+    
+    var dataArr = [THCommentModel]()
+    var page = 0
     lazy var topView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 50))
         view.backgroundColor = .white
@@ -41,12 +47,11 @@ class THReplyListView: UIView {
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
-        tableView.estimatedRowHeight = SCREEN_HEIGHT
+        tableView.estimatedRowHeight = 250
         tableView.rowHeight = UITableView.automaticDimension;
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorInset = UIEdgeInsets.zero
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.backgroundColor = UIColor.colorWithString("#F9FAFC")
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView(frame: CGRect.zero)
         tableView.delegate = self
@@ -81,8 +86,8 @@ class THReplyListView: UIView {
         label.text = "写评论..."
         label.textAlignment = .left
         label.isUserInteractionEnabled = true
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = COLOR_324057
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = COLOR_999999
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
@@ -96,6 +101,7 @@ class THReplyListView: UIView {
         configUI()
         configFrame()
         configData()
+        configRefresh()
     }
     
     required init?(coder: NSCoder) {
@@ -171,7 +177,7 @@ extension THReplyListView {
         iconView.snp.makeConstraints { (make) in
             make.left.equalTo(inputCmtView).offset(10)
             make.centerY.equalTo(inputCmtView)
-            make.width.height.equalTo(25)
+            make.width.height.equalTo(21)
         }
         
         placeholderLabel.snp.makeConstraints { (make) in
@@ -189,6 +195,63 @@ extension THReplyListView {
         self.inputCmtView.addGestureRecognizer(tap)
     }
     
+    func configRefresh() {
+        tableView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
+            self.page = 0
+            self.requestListData {
+                self.tableView.mj_header.endRefreshing()
+                self.tableView.mj_footer.resetNoMoreData()
+            }
+        })
+        
+        tableView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
+            self.page += 1
+            self.requestListData {
+                self.tableView.mj_footer.endRefreshing()
+            }
+        })
+    }
+    
+    func requestListData(_ completion: (()->Void)?) {
+        
+        if self.isVideo ?? false {
+            let param = ["commentId": model?.commentId ?? "0"]
+            THFindRequestManager.requestLookReply(param: param, successBlock: { (result) in
+                completion?()
+                let arr = NSArray.yy_modelArray(with: THCommentModel.self, json: result) as? [THCommentModel] ?? [THCommentModel]()
+                if self.page == 0 {
+                    self.dataArr.removeAll()
+                }
+                if arr.count <= 0 {
+                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                }
+                self.dataArr += arr
+                self.tableView.reloadData()
+                
+            }) { (error) in
+                completion?()
+            }
+        } else {
+            let param = ["cid": self.vidOrCid ?? "", "page": self.page, "commentId": model?.commentId ?? "0"] as [String : Any]
+            THPlaygroundManager.requestPlaygroundCommentData(param: param, successBlock: { (result) in
+                completion?()
+                let arr = NSArray.yy_modelArray(with: THCommentModel.self, json: result) as? [THCommentModel] ?? [THCommentModel]()
+                if self.page == 0 {
+                    self.dataArr.removeAll()
+                }
+                if arr.count <= 0 {
+                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                }
+                self.dataArr += arr
+                self.tableView.reloadData()
+                
+            }) { (error) in
+                completion?()
+            }
+        }
+    }
+    
+    
     @objc func clickCloseBtnEvent() {
         removeFromSuperview()
     }
@@ -197,37 +260,74 @@ extension THReplyListView {
         self.inputPublishView.textViewBecomeFirstResponder()
     }
     
-    class func show() {
+    class func show(model: THCommentModel, vidOrCid: String, isVideo: Bool) {
         let shareView = THReplyListView()
+        shareView.model = model
+        shareView.vidOrCid = vidOrCid
+        shareView.isVideo = isVideo
+        shareView.requestListData(nil)
         if let window = UIApplication.shared.delegate?.window {
             window?.addSubview(shareView)
         }
     }
+    
+    
+    
+    func updateModel() {
+        
+    }
+    
 }
 
 extension THReplyListView: THInputViewDelegate {
     
     func clickPublishEvent() {
-        
+        if inputPublishView.textView.text.count <= 0 {
+            QMUITips.show(withText: "请输入评论")
+            return
+        }
+        QMUITips.showLoading(in: AppDelegate.WINDOW!)
+        let param = ["content": inputPublishView.textView.text!, "placeId": self.vidOrCid ?? "", "replyId": model?.commentId ?? ""]
+        THPlaygroundManager.requestPlaygroundWriteComment(param: param, successBlock: { (result) in
+            QMUITips.hideAllTips()
+            self.inputPublishView.textView.resignFirstResponder()
+            self.inputPublishView.textView.text = ""
+            self.tableView.mj_header.beginRefreshing()
+            QMUITips.show(withText: "提交成功")
+        }) { (error) in
+            QMUITips.hideAllTips()
+        }
     }
 }
 
 extension THReplyListView: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+   
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return self.dataArr.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        if indexPath.row == 0 {
+            var cell = tableView.dequeueReusableCell(withIdentifier: "THReplyLZCell") as? THReplyLZCell
+            if cell == nil {
+                cell = THReplyLZCell(style: .default, reuseIdentifier: "THReplyLZCell")
+            }
+            if let model = self.model {
+                cell?.updateModel(model: model)
+            }
+            return cell!
+        }
+        
+        let model = self.dataArr[indexPath.row - 1]
         var cell = tableView.dequeueReusableCell(withIdentifier: "THCommentCell") as? THCommentCell
         if cell == nil {
             cell = THCommentCell(style: .default, reuseIdentifier: "THCommentCell")
         }
+        cell?.replyBtn.isHidden = true
+        cell?.likeBtn.isHidden = true
+        cell?.updateModel(model: model)
         return cell!
     }
     

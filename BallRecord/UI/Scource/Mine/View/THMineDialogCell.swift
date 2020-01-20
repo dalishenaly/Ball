@@ -12,7 +12,6 @@ class THMineDialogCell: UITableViewCell {
 
     lazy var iconView: UIImageView = {
         let imgV = UIImageView()
-        imgV.backgroundColor = UIColor.randomColor()
         return imgV
     }()
     
@@ -24,7 +23,7 @@ class THMineDialogCell: UITableViewCell {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "应建立在对股票投资具有充分的客观认识的基础上，通过认真地比较分析以后而进行的投资活动。"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
         label.textColor = .white

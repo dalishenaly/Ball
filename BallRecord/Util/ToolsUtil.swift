@@ -199,6 +199,13 @@ func gotoAppStore(appId: String){
     }
 }
 
+
+var milliStamp : CLongLong {
+    let timeInterval: TimeInterval = NSDate().timeIntervalSince1970
+    let millisecond = CLongLong(round(timeInterval*1000))
+    return millisecond
+}
+
 class ToolsUtil: NSObject {
 
 }

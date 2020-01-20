@@ -11,8 +11,8 @@ import QMUIKit
 
 class THResetPasswordVC: THBaseVC {
 
-    
-    
+    var code: String?
+    var phone: String?
     @IBOutlet weak var firstTextField: UITextField!
     
     @IBOutlet weak var secondTextField: UITextField!
@@ -42,11 +42,21 @@ class THResetPasswordVC: THBaseVC {
             return
         }
         
-        
-        THLoginRequestManager.requestSetNewPwd(param: [:], successBlock: { (response) in
+        let param = ["phone": phone ?? "" , "code": code ?? "", "newPassword": firstTextField.text!]
+        QMUITips.showLoading(in: view)
+        THLoginRequestManager.requestSetNewPwd(param: param, successBlock: { (response) in
+            QMUITips.hideAllTips()
+            
+            let vc = THResetPwdResultVC()
+            vc.resetReuslt = .success
+            self.navigationPushVC(vc: vc)
+
             
         }) { (error) in
-            
+            QMUITips.hideAllTips()
+            let vc = THResetPwdResultVC()
+            vc.resetReuslt = .failure
+            self.navigationPushVC(vc: vc)
         }
         
         

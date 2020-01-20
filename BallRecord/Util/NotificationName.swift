@@ -11,3 +11,7 @@ import Foundation
 
 let kVideoPartDeleteNotificationName = "kVideoPartDeleteNotificationName"
 let kAppEnterBackGroundNotificationName = "kVideoPartDeleteNotificationName"
+let kAppEnterForegroundNotificationName = "kAppEnterForegroundNotificationName"
+
+let kAppNetChangeNotificationName = "kAppNetChangeNotificationName"
+

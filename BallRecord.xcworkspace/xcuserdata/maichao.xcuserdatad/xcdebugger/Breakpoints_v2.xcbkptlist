@@ -7,7 +7,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
-            uuid = "05BC4FA6-22E3-4D4A-BA20-F2772AE69624"
+            uuid = "D166059A-D6B5-42CF-AFC7-79DB1F74D90C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -18,142 +18,79 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "03235FC9-10AE-4C0B-B694-D8220216C411"
+            uuid = "C80BE474-D7F3-48BB-BE89-43F35775679B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BallRecord/UI/Scource/LoginVC/View/THCustomCodeView.swift"
+            filePath = "BallRecord/UI/Scource/VideoEdit/Model/THVideoDraftModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "textFieldDidChange(textField:)"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "saveToLocal()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B1B40BCE-2B5D-425A-9D4D-1749F34D89BF"
+            uuid = "4AD44415-6D8A-426C-A698-5B156D4E4974"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BallRecord/UI/Controller/THVideoEditController.swift"
+            filePath = "BallRecord/UI/Scource/Find/ViewController/THVideoDetailVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "cutAudioWithAsset(asset:audioRange:catAudioPath:completion:)"
+            startingLineNumber = "306"
+            endingLineNumber = "306"
+            landmarkName = "clickShareBtnEvent()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F394AC77-0325-4F99-92BA-0E16EFB3F83B"
+            uuid = "E2A4612C-4857-449A-BDEA-80BAAA1773CF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BallRecord/UI/Controller/THVideoEditController.swift"
+            filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
-            landmarkName = "cutAudioWithAsset(asset:audioRange:catAudioPath:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3FA258E8-B17F-4A46-A76A-7B7E61CC9FC2"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
-            landmarkName = "-exportWithStartTime:duration:toFile:presetName:progress:success:failure:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "73B8F379-51D7-48C5-BD72-391B64063E1A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "-exportWithStartTime:duration:toFile:presetName:progress:success:failure:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "-exportWithStartTime:duration:toFile:presetName:progress:success:failure:"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "qqLoginEvent(_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4 - b8d34a36bee780b8"
+                  uuid = "E2A4612C-4857-449A-BDEA-80BAAA1773CF - 3d5da42db7e3e49a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[_SJAVAssetExporter exportWithStartTime:duration:toFile:presetName:progress:success:failure:]"
-                  moduleName = "SJBaseVideoPlayer"
+                  symbolName = "&#x7403;&#x5fd7;.THLoginVC.qqLoginEvent(Any) -&gt; ()"
+                  moduleName = "&#x7403;&#x5fd7;"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maichao/Desktop/BallRecord/Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "173"
-                  endingLineNumber = "173"
-                  offsetFromSymbolStart = "2836">
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "116">
                </Location>
                <Location
-                  uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4 - a75edf3382b156ca"
+                  uuid = "E2A4612C-4857-449A-BDEA-80BAAA1773CF - 935356b7a00da0a3"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__94-[_SJAVAssetExporter exportWithStartTime:duration:toFile:presetName:progress:success:failure:]_block_invoke.144"
-                  moduleName = "SJBaseVideoPlayer"
+                  symbolName = "closure #1 (__C.SSDKResponseState, Swift.Optional&lt;__C.SSDKUser&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in &#x7403;&#x5fd7;.THLoginVC.qqLoginEvent(Any) -&gt; ()"
+                  moduleName = "&#x7403;&#x5fd7;"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maichao/Desktop/BallRecord/Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "174"
-                  endingLineNumber = "174"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  uuid = "9467C6CE-EE1B-4529-8225-AA57BF1202A4 - a41bfcc285c2ced4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_e8_32s40s48s56s64s72s80w"
-                  moduleName = "SJBaseVideoPlayer"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maichao/Desktop/BallRecord/Pods/SJBaseVideoPlayer/SJBaseVideoPlayer/AVPlayer/Core/AVAsset+SJAVMediaExport.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "173"
-                  endingLineNumber = "173"
-                  offsetFromSymbolStart = "16">
+                  startingLineNumber = "86"
+                  endingLineNumber = "86"
+                  offsetFromSymbolStart = "188">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -161,15 +98,143 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "70277CB4-0358-49F6-B0C5-96EA9B966D2D"
+            uuid = "47540EC0-5CCF-47D4-8A7F-C2DAF4BA9076"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "weChatLoginEvent(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "47540EC0-5CCF-47D4-8A7F-C2DAF4BA9076 - c65aaad8308c66b8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x7403;&#x5fd7;.THLoginVC.weChatLoginEvent(Any) -&gt; ()"
+                  moduleName = "&#x7403;&#x5fd7;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "47540EC0-5CCF-47D4-8A7F-C2DAF4BA9076 - c283fb8ad332dba9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.SSDKResponseState, Swift.Optional&lt;__C.SSDKUser&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in &#x7403;&#x5fd7;.THLoginVC.weChatLoginEvent(Any) -&gt; ()"
+                  moduleName = "&#x7403;&#x5fd7;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "79"
+                  endingLineNumber = "79"
+                  offsetFromSymbolStart = "188">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3DDC91AB-785A-4BED-A6B0-94B01265A51C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "weiboLoginEvent(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3DDC91AB-785A-4BED-A6B0-94B01265A51C - 753fabb645fc8371"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x7403;&#x5fd7;.THLoginVC.weiboLoginEvent(Any) -&gt; ()"
+                  moduleName = "&#x7403;&#x5fd7;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "92"
+                  endingLineNumber = "92"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "3DDC91AB-785A-4BED-A6B0-94B01265A51C - d260a904d2fca689"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.SSDKResponseState, Swift.Optional&lt;__C.SSDKUser&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in &#x7403;&#x5fd7;.THLoginVC.weiboLoginEvent(Any) -&gt; ()"
+                  moduleName = "&#x7403;&#x5fd7;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maichao/Desktop/BallRecord/BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "188">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "11B65492-DFA4-4565-9AD1-D473F1ECF660"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "weiboLoginEvent(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "29042BA5-BC5D-408B-A9FD-638731DC401E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "qqLoginEvent(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B1D16A06-8BCB-43C8-AEE2-2D00EE0E2972"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "weChatLoginEvent(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -177,16 +242,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "36383323-30ED-4E2E-830F-9A2E1470A170"
+            uuid = "DEC276D6-B82C-411F-B090-35D340AFA113"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BallRecord/UI/Scource/Mine/ViewController/THAccountSafeVC.swift"
+            filePath = "BallRecord/UI/Scource/LoginVC/ViewController/THLoginVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "tableView(_:didSelectRowAt:)"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "authorizeHandle(status:user:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

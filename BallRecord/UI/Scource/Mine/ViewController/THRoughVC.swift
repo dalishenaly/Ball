@@ -27,7 +27,6 @@ class THRoughVC: THBaseTableViewVC {
         tableView.reloadData()
     }
 
-    
 }
 
 
@@ -44,14 +43,26 @@ extension THRoughVC {
             cell = THRoughCell(style: .default, reuseIdentifier: "THRoughCell")
         }
         cell?.updateData(model: model)
+        cell?.deleteBlock = {
+            let alert = UIAlertController(title: "确定要删除吗？", message: "删除后,视频将不可恢复", preferredStyle: .alert)
+            let sure = UIAlertAction(title: "确定", style: .default) { (action) in
+                model.removeDraft()
+                self.drafts = THVideoDraftModel.getLocalDraftModels()
+                tableView.reloadData()
+            }
+            let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            alert.addAction(sure)
+            self.present(alert, animated: true, completion: nil)
+        }
         return cell!
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let draftModel = drafts[indexPath.row]
         let vc = THVideoEditVC()
+        vc.fromDraft = true
         vc.draftModel = draftModel
         navigationPushVC(vc: vc)
-        
     }
 }

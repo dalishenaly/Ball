@@ -1,5 +1,6 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
+#source 'https://cdn.cocoapods.org/'
 
 target 'BallRecord' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -22,12 +23,18 @@ target 'BallRecord' do
   pod 'MJExtension'
   
   pod 'SJVideoPlayer'
+#  pod 'SJBaseVideoPlayer/AliPlayer'
+#  pod 'SJVideoPlayer'
+#  pod 'AliPlayerSDK_iOS', :git => 'https://gitee.com/changsanjiang/AliPlayerSDK.git'
+  
   pod 'FSPagerView'
   pod 'SwiftyRSA'
   # 键盘
   pod 'IQKeyboardManager'
+  
   # 阿里云上传服务
   pod 'VODUpload'
+#  pod 'AliPlayerSDK_iOS'
   
   # MobShare
   pod 'mob_sharesdk','4.3.2'

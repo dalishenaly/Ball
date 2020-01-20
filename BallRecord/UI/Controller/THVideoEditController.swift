@@ -15,6 +15,7 @@ let DownloadBgmPath = NSTemporaryDirectory() + "DownloadBgmPath"
 /// 视频下载目录（temp/DownloadVideoPath）
 let DownloadVideoPath = NSTemporaryDirectory() + "DownloadVideoPath"
 
+let DownloadM3u8Path = NSTemporaryDirectory() + "DownloadM3u8Path"
 
 
 /// 裁剪后的mp3目录（temp/CatBgmPath）
@@ -97,7 +98,7 @@ class THVideoEditController: NSObject {
     class func getVideoCoverImage(url:String) -> UIImage {
         if url.isEmpty {
             //默认封面图
-            return UIImage(named: "")!
+            return placeholder_square!
         }
         var asset: AVURLAsset?
         if url.contains("http") {
@@ -113,7 +114,7 @@ class THVideoEditController: NSObject {
             let cgimgref = try assetImg.copyCGImage(at: CMTime(seconds: 1, preferredTimescale: 50), actualTime: nil)
             return UIImage(cgImage: cgimgref)
         } catch {
-            return UIImage(named: "")!
+            return placeholder_square!
         }
     }
         
@@ -140,16 +141,14 @@ class THVideoEditController: NSObject {
         } else {
             //  下载音乐
             THVideoEditController.downloadTask(urlStr: url, savePath: videoPath, downloadProgress: { (process: Progress) in
-                
                 let persent: CGFloat = 1.0 * CGFloat(process.completedUnitCount/process.totalUnitCount * 100)
                 print("当前线程：%@，加载中%d%%", Thread.current, persent)
-                
-            }, completionHandler: { (savePath: String) in
-                
-                exportVideoToAlbum(videoPath: savePath)
-                
-            }) { (error: Error) in
-                print("文件下载失败: %@", error)
+            }) { (savePath, error) in
+                if error == nil {
+                    exportVideoToAlbum(videoPath: savePath)
+                } else {
+                    print("文件下载失败: %@", error)
+                }
             }
         }
     }
@@ -303,29 +302,27 @@ class THVideoEditController: NSObject {
         
         
         let musicPath = DownloadBgmPath + "/" + musicUrl.lastPathComponent
-        
         if FileManager.default.fileExists(atPath: musicPath) {  //先判断本地是否存在
             completion?(musicPath)
         } else {
             //  下载音乐
             THVideoEditController.downloadTask(urlStr: url, savePath: musicPath, downloadProgress: { (process: Progress) in
+                let persent: Int = Int(process.fractionCompleted * 100)
+                print("当前线程：\(Thread.current)，加载中\(persent)%")
+            }) { (savePath, error) in
                 
-                let persent: CGFloat = 1.0 * CGFloat(process.completedUnitCount/process.totalUnitCount * 100)
-                print("当前线程：%@，加载中%d%%", Thread.current, persent)
-                
-            }, completionHandler: { (savePath: String) in
-                
-                completion?(savePath)
-                
-            }) { (error: Error) in
-                print("文件下载失败: %@", error)
+                if error != nil {
+                    print("文件下载失败: \(error)")
+                } else {
+                    completion?(savePath)
+                }
             }
         }
     }
     
     
     //  MARK: 文件下载
-    class func downloadTask(urlStr: String, savePath: String, downloadProgress: ((_ progress: Progress)->Void)?, completionHandler: ((_ savePath: String)->Void)?, errorHandler: ((_ error: Error)->())?) {
+    class func downloadTask(urlStr: String, savePath: String, downloadProgress: ((_ progress: Progress)->Void)?, completionHandler: ((_ savePath: String, _ error: Error?)->Void)?) {
         
         guard let url = URL(string: urlStr) else { return }
         
@@ -339,11 +336,109 @@ class THVideoEditController: NSObject {
             downloadProgress?(process)
         }.response { (response: DefaultDownloadResponse) in
             print(response)
-            if response.error == nil {
-                completionHandler?(response.destinationURL?.absoluteString ?? "")
-            } else {
-                errorHandler?(response.error!)
+            completionHandler?(response.destinationURL?.absoluteString ?? "", response.error)
+        }
+    }
+}
+
+//  MARK: - m3u8 处理
+extension THVideoEditController {
+    
+    // 处理m3u8文件
+    class func dealM3u8PlayList(m3u8Url: String) {
+        guard let url = URL(string: m3u8Url) else { return }
+        
+        let savePath = (DownloadM3u8Path as NSString).appendingPathComponent(url.lastPathComponent)
+        let tsBasePath = "http://qnestadiumarchiving.reee.cn"//(m3u8Url as NSString).deletingLastPathComponent    //  ts文件的基础路径地址
+        
+        downloadTask(urlStr: m3u8Url, savePath: savePath, downloadProgress: { (progress: Progress) in
+            
+        }) { (path, error) in
+            if error == nil {
+                // 读取m3u8文件内容
+                let content = try? String(contentsOfFile: savePath, encoding: String.Encoding.utf8)
+//                print("文件内容: \(String(describing: content))")
+                
+                // 筛选出 .ts 文件
+                let array = content?.components(separatedBy: "\n") ?? []
+                var listArr = [String]()
+                for content in array {
+                    if content.contains(".ts") {
+                        listArr.append(content)
+                    }
+                    if listArr.count == 10 {
+                        break
+                    }
+                }
+                
+                let firstStr = listArr.first ?? "\(milliStamp).ts"
+                var videoFloder = (firstStr as NSString).lastPathComponent
+                videoFloder = (videoFloder as NSString).deletingPathExtension
+                downloadVideo(listArr: listArr, idx: 0, videoFloder: videoFloder, tsBasePath: tsBasePath)
             }
         }
+    }
+    
+    // 循环下载 ts 文件
+    class func downloadVideo(listArr: [String], idx: Int, videoFloder: String, tsBasePath: String) {
+        if idx >= listArr.count {
+            print("m3u8: 视频下载完成")
+            self.combTsVideos(videoFloder: videoFloder)
+            return
+        }
+        print("共有 \(listArr.count) 个ts文件, 下载中：\(Float(idx)/Float(listArr.count) * 100)%%")
+        
+        // 拼接ts全路径，有的文件直接包含，不需要拼接
+        //  tsPath = http://qnestadiumarchiving.reee.cn/ts/190727/CG00030/CA00061_1907271200000000200_0_003601.ts
+
+        //  http://qnestadiumarchiving.reee.cn/m3u8/20190727/CG00030/CA00061/20190727120000/6fcc14ac2e6f4d43a9dd23531baa691c.m3u8
+        
+        let downloadURL = (tsBasePath as NSString).appendingPathComponent(listArr[idx])
+        
+        // 存储路径
+        let listName = listArr[idx] as NSString
+        let fileName = videoFloder + "/video_\(idx)." + listName.pathExtension
+        let downloadVideoPath = DownloadVideoPath
+        let destinationPath = (downloadVideoPath as NSString).appendingPathComponent(fileName)
+        if FileManager.default.fileExists(atPath: destinationPath) {
+            downloadVideo(listArr: listArr, idx: idx+1, videoFloder: videoFloder, tsBasePath: tsBasePath)
+            return
+        }
+        downloadTask(urlStr: downloadURL, savePath: destinationPath, downloadProgress: nil) { (savePath, error) in
+            if error == nil {
+                downloadVideo(listArr: listArr, idx: idx+1, videoFloder: videoFloder, tsBasePath: tsBasePath)
+            } else {
+                print("文件下载失败 idx: %d LastPathComponent: %@", idx, listArr[idx])
+            }
+        }
+    }
+    
+    /// 合并ts视频
+    class func combTsVideos(videoFloder: String) {
+
+        let filePath = documentPath + "/" + videoFloder + ".ts"
+        if FileManager.default.fileExists(atPath: filePath) {
+            try? FileManager.default.removeItem(atPath: filePath)
+        }
+        
+        let downloadVideoPath = DownloadVideoPath + "/" + videoFloder
+        var videoCount = 0
+        let contentArr = try? FileManager.default.contentsOfDirectory(atPath: downloadVideoPath)
+        let dataArr = NSMutableData()
+        
+        contentArr?.forEach({ (content) in
+            if content.contains("video_") {
+                
+                let videoName = "video_\(videoCount)." + (content as NSString).pathExtension
+                let videoPath = downloadVideoPath + "/" + videoName
+                let data = NSData(contentsOfFile: videoPath)
+                dataArr.append(data! as Data)
+                videoCount += 1
+            }
+        })
+        
+        dataArr.write(toFile: filePath, atomically: true)
+        // TODO: 转码
+        
     }
 }

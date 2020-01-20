@@ -19,6 +19,7 @@ class THVideoCacheManager: NSObject {
     
     func getVideoPathFromAllVideoPart(completion: ((_ savePath: String, _ error: Error?)->Void)?) {
         videoBox.clean()
+        videoBox.ratio = .ratioHighQuality
         catVideoArr.forEach { (model: CatVideoModel) in
             let path: String?
             if model.tempVideoPath.filePathExists() {
@@ -31,7 +32,9 @@ class THVideoCacheManager: NSObject {
         }
         let savePath = DownloadVideoPath + "/editVideo.mp4"
         videoBox.asyncFinishEdit(byFilePath: savePath) { (error: Error?) in
-            completion?(savePath, error)
+            DispatchQueue.main.async {
+                completion?(savePath, error)
+            }
         }
     }
     

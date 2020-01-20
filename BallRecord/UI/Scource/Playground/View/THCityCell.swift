@@ -51,7 +51,7 @@ extension THCityCell {
     func configFrame() {
         
         titleLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(contentView).offset(30)
+            make.left.equalTo(contentView).offset(20)
             make.right.equalTo(arrowView.snp_left).offset(-10)
             make.height.equalTo(40)
             make.top.equalTo(contentView)
@@ -59,7 +59,7 @@ extension THCityCell {
         }
         
         arrowView.snp.makeConstraints { (make) in
-            make.right.equalTo(contentView).offset(-30)
+            make.right.equalTo(contentView).offset(-20)
             make.centerY.equalTo(contentView.snp_centerY)
             make.width.height.equalTo(20)
         }

@@ -12,7 +12,7 @@ class THAboutVC: THBaseVC {
     
     lazy var iconView: UIImageView = {
         let imgV = UIImageView()
-        imgV.backgroundColor = UIColor.randomColor()
+        imgV.image = UIImage(named: "aboutMine_icon")
         return imgV
     }()
     lazy var titleLabel: UILabel = {
@@ -27,9 +27,9 @@ class THAboutVC: THBaseVC {
     }()
     lazy var versionLabel: UILabel = {
         let label = UILabel()
-        label.text = "iPhone版本："
+        label.text = "版本号："
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = COLOR_324057
+        label.textColor = COLOR_666666
         label.textAlignment = .center
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -39,7 +39,7 @@ class THAboutVC: THBaseVC {
         let label = UILabel()
         label.text = "商务合作请联系"
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = COLOR_324057
+        label.textColor = COLOR_666666
         label.textAlignment = .center
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -47,9 +47,9 @@ class THAboutVC: THBaseVC {
     }()
     lazy var phoneLabel: UILabel = {
         let label = UILabel()
-        label.text = "电话"
+        label.text = "电话：18548910804"
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = COLOR_324057
+        label.textColor = COLOR_666666
         label.textAlignment = .center
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -57,9 +57,9 @@ class THAboutVC: THBaseVC {
     }()
     lazy var emailLabel: UILabel = {
         let label = UILabel()
-        label.text = "邮箱"
+        label.text = "邮箱：641316732@qq.com"
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = COLOR_324057
+        label.textColor = COLOR_666666
         label.textAlignment = .center
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -82,7 +82,7 @@ extension THAboutVC {
         title = "关于我们"
         
         view.addSubview(iconView)
-        view.addSubview(titleLabel)
+//        view.addSubview(titleLabel)
         view.addSubview(versionLabel)
         view.addSubview(tipsLabel)
         view.addSubview(phoneLabel)
@@ -94,20 +94,21 @@ extension THAboutVC {
         
         iconView.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
-            make.width.height.equalTo(100)
+            make.width.equalTo(100)
+            make.height.equalTo(135)
             make.top.equalTo(30)
         }
         
-        titleLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.top.equalTo(iconView.snp_bottom).offset(10)
-            make.height.equalTo(titleLabel)
-        }
+//        titleLabel.snp.makeConstraints { (make) in
+//            make.left.equalTo(view)
+//            make.right.equalTo(view)
+//            make.top.equalTo(iconView.snp_bottom).offset(10)
+//            make.height.equalTo(titleLabel)
+//        }
         versionLabel.snp.makeConstraints { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
-            make.top.equalTo(titleLabel.snp_bottom).offset(10)
+            make.top.equalTo(iconView.snp_bottom).offset(10)
             make.height.equalTo(versionLabel)
         }
         
@@ -121,7 +122,7 @@ extension THAboutVC {
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(emailLabel.snp_top).offset(-10)
-            make.height.equalTo(titleLabel)
+            make.height.equalTo(phoneLabel)
         }
         emailLabel.snp.makeConstraints { (make) in
             make.left.equalTo(view)
@@ -135,5 +136,6 @@ extension THAboutVC {
     
     func configData() {
         
+        versionLabel.text = "版本号：" + appVersion
     }
 }

@@ -15,7 +15,12 @@
 #import "WAVideoBox.h"
 #import "ExtAudioConverter.h"
 #import "MJExtension.h"
+#import "MJRefresh.h"
 #import <VODUpload/VODUploadClient.h>
 #import <ShareSDK/ShareSDK.h>
-
+#import "SDWebImage.h"
+#import "QMUIKit.h"
+#import "YYText.h"
+#import "SJProgressSlider.h"
+//#import "SJAliMediaPlaybackController.h"
 #endif /* BridgingHeader_h */

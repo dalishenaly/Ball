@@ -45,10 +45,10 @@ extension THMyNewsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
-            let vc = THCommentVC()
+            let vc = THCommentNewsVC()
             navigationPushVC(vc: vc)
         } else if indexPath.row == 1 {
-            let vc = THLikeVC()
+            let vc = THPraiseNewsVC()
             navigationPushVC(vc: vc)
         } else {
             let vc = THSystemNewsVC()

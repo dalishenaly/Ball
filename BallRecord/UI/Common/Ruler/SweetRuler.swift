@@ -11,11 +11,14 @@ import UIKit
 protocol SweetRulerDelegate: NSObjectProtocol {
     ///刻度尺代理方法
     func sweetRuler(ruler: SweetRuler, figure: Int)
+    func sweetRulerWillBeginDragging()
+    func sweetRulerWillEndDragging()
 }
 
 class SweetRuler: UIView {
     
     weak var delegate: SweetRulerDelegate?
+    var isDragging: Bool = false
     
     /// 刻度尺表示的范围
     var figureRange = Range(uncheckedBounds: (16 * 3600, 18 * 3600))
@@ -33,7 +36,7 @@ class SweetRuler: UIView {
     var dialSpan: Int = 360
     /// 文字颜色
     var textColor: UIColor = UIColor.darkText
-    var videoArr = [videoModel]()
+    var videoArr = [THCatVideoModel]()
     
     private var selectFigure: Int = 0
     
@@ -93,18 +96,21 @@ class SweetRuler: UIView {
         addSubview(indicateTimeLabel)
     }
     
-    
     func setSelectFigure(figure: Int) {
         selectFigure = figure
+        indicateTimeLabel.text = getHHMMSSFromSS(totalTime: figure)
         let x = Double(Double(selectFigure - figureRange.lowerBound) / Double(figureRange.upperBound - figureRange.lowerBound) * rulerLength)
         let offset = CGPoint(x: x, y: 0)
         scrollView.setContentOffset(offset, animated: false)
-        calcTargetOffset(scrollView: scrollView)
     }
     
-    func setContentArr(arr: [videoModel]) {
+    func setContentArr(arr: [THCatVideoModel]) {
         videoArr = arr
         rulerView.displayRulerContent(arr: arr)
+    }
+    
+    func drawRuler() {
+        
     }
     
     override func layoutSubviews() {
@@ -114,7 +120,6 @@ class SweetRuler: UIView {
         
         indicateTimeLabel.frame = CGRect(x: bounds.size.width/2 - 100, y: 0, width: 200, height: 15)
         indicate.frame = CGRect(x: bounds.size.width/2 - 5, y: 25 - 7, width: 10, height: bounds.size.height - 25 - 26 + 7)
-        
         let rulerY = Double(Double(frame.size.height) - 95)
         rulerLength = Double(figureRange.upperBound - figureRange.lowerBound) / Double(dialSpan) * dialBlank
         rulerView.frame = CGRect(x: Double(frame.size.width/2), y: rulerY, width: rulerLength, height: 95)
@@ -128,7 +133,6 @@ class SweetRuler: UIView {
         rulerView.textColor = textColor
         
         rulerView.displayRuler()
-        
         rulerView.displayRulerContent(arr: self.videoArr)
         
         scrollView.contentSize = CGSize(width: rulerView.rulerLength + Double(frame.size.width), height: 30.0)
@@ -150,20 +154,27 @@ extension SweetRuler: UIScrollViewDelegate {
     
     // 拖拽结束走的方法
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
         scrollViewDidEndDecelerating(scrollView)
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isDragging = true
+        delegate?.sweetRulerWillBeginDragging()
+    }
+    
+    
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-//        calcTargetOffset(scrollView: scrollView)
         
         var inVideo = false
         let figure = Int(rulerView.calcCurrentFigure(offset: scrollView.contentOffset))
-        videoArr.forEach { (model: videoModel) in
+        
+        videoArr.forEach { (model: THCatVideoModel) in
             
-            let sting = model.startTime.components(separatedBy: " ").last ?? "00:00"
-            let beginTime = sting.components(separatedBy: ".").first!
+//            let startTime = timeString(timeInterval: TimeInterval(model.startTime ))
+//            let sting = startTime.components(separatedBy: " ").last ?? "00:00"
+//            let beginTime = sting.components(separatedBy: ".").first!
+            
+            let beginTime = timeString(timeInterval: TimeInterval(model.startTime), format: "HH:mm:ss")
             let startSecond = getSecondFromHHMMSS(HHMMSS: beginTime)
             
             if startSecond < figure && figure < startSecond + Int(model.duration) {
@@ -173,35 +184,44 @@ extension SweetRuler: UIScrollViewDelegate {
         }
         
         if inVideo == false {
-            
             let arr = videoArr.filter {
-                let sting = $0.startTime.components(separatedBy: " ").last ?? "00:00"
-                let beginTime = sting.components(separatedBy: ".").first!
+                
+//                let startTime = timeString(timeInterval: TimeInterval($0.startTime ))
+//                let sting = startTime.components(separatedBy: " ").last ?? "00:00"
+//                let beginTime = sting.components(separatedBy: ".").first!
+                let beginTime = timeString(timeInterval: TimeInterval($0.startTime), format: "HH:mm:ss")
                 let startSecond = getSecondFromHHMMSS(HHMMSS: beginTime)
                 return figure < startSecond
             }
             if let nextModel = arr.first {
-                let sting = nextModel.startTime.components(separatedBy: " ").last ?? "00:00"
-                let beginTime = sting.components(separatedBy: ".").first!
+//                let startTime = timeString(timeInterval: TimeInterval(nextModel.startTime ))
+//                let sting = startTime.components(separatedBy: " ").last ?? "00:00"
+//                let beginTime = sting.components(separatedBy: ".").first!
+                let beginTime = timeString(timeInterval: TimeInterval(nextModel.startTime), format: "HH:mm:ss")
                 let startSecond = getSecondFromHHMMSS(HHMMSS: beginTime)
                 setSelectFigure(figure: startSecond)
             } else {
-                let sting = videoArr.last?.endTime.components(separatedBy: " ").last ?? "00:00"
-                let endTime = sting.components(separatedBy: ".").first!
+//                let endTime1 = timeString(timeInterval: TimeInterval(videoArr.last?.endTime ?? 0))
+//                let sting = endTime1.components(separatedBy: " ").last ?? "00:00"
+//                let endTime = sting.components(separatedBy: ".").first!
+                let endTime = timeString(timeInterval: TimeInterval(videoArr.last?.endTime ?? 0), format: "HH:mm:ss")
                 let endSecond = getSecondFromHHMMSS(HHMMSS: endTime)
                 setSelectFigure(figure: endSecond)
             }
-            
-        } else {
-            calcTargetOffset(scrollView: scrollView)
         }
+        
+        indicateTimeLabel.text = getHHMMSSFromSS(totalTime: figure)
+        isDragging = false
+        
+        delegate?.sweetRuler(ruler: self, figure: figure)
+        delegate?.sweetRulerWillEndDragging()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        calcTargetOffset(scrollView: scrollView)
+        if isDragging {
+            calcTargetOffset(scrollView: scrollView)
+        }
     }
-    
-    
     
     /// 拖拽结束后, 重新计算应该滑动到的位置, 并用动画滑动到指定位置
     func calcTargetOffset(scrollView: UIScrollView) {
@@ -215,7 +235,6 @@ extension SweetRuler: UIScrollViewDelegate {
         }
         
         indicateTimeLabel.text = getHHMMSSFromSS(totalTime: figure)
-        delegate?.sweetRuler(ruler: self, figure: figure)
     }
     
 }

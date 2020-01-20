@@ -10,7 +10,9 @@ import UIKit
 
 class THRoughCell: UITableViewCell {
     
+    var deleteBlock:(()->Void)?
     var model: THVideoDraftModel?
+    var recordModel: THDynamicModel?
     
     var iconView = videoCoverView()
     
@@ -26,7 +28,7 @@ class THRoughCell: UITableViewCell {
     
     lazy var detailLabel: UILabel = {
         let label = UILabel()
-        label.text = "2019-12-11 11:11"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = MAIN_COLOR
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -36,7 +38,7 @@ class THRoughCell: UITableViewCell {
     
     lazy var deleteBtn: UIButton = {
         let button = UIButton()
-        button.setTitle("精选", for: .normal)
+        button.setImage(UIImage(named: "delete_icon"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.addTarget(self, action: #selector(clickDeleteBtnEvent), for: .touchUpInside)
         return button
@@ -104,31 +106,31 @@ extension THRoughCell {
     }
     
     @objc func clickDeleteBtnEvent() {
-        model?.removeDraft()
-        
+        deleteBlock?()
     }
     
     func updateData(model: THVideoDraftModel) {
         self.model = model
         
         detailLabel.text = model.dateStr
-        
         if model.coverImgPath != "" {
             let imgFilePath = documentPath + "/" + (model.coverImgPath)
-            iconView.setImage(image: UIImage(contentsOfFile: imgFilePath)!)
+            iconView.image = UIImage(contentsOfFile: imgFilePath)!
         }
+    }
+    
+    func updateRecord(model: THDynamicModel) {
+        self.recordModel = model
+        titleLabel.text = "珍藏视频"
+        iconView.setImage(urlStr: model.imageUrl, placeholder: placeholder_square)
     }
 }
 
-class videoCoverView: UIView {
+class videoCoverView: UIImageView {
     
     lazy var playView: UIImageView = {
-        let imgV = UIImageView(image: UIImage(named: ""))
+        let imgV = UIImageView(image: UIImage(named: "Dynamic_play_icon"))
         imgV.contentMode = .center
-        return imgV
-    }()
-    lazy var iconView: UIImageView = {
-        let imgV = UIImageView()
         return imgV
     }()
     
@@ -142,23 +144,11 @@ class videoCoverView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setImage(image: UIImage) {
-        iconView.image = image
-    }
-    
     func configUI() {
-        addSubview(iconView)
         addSubview(playView)
     }
     
     func configFrame() {
-        iconView.snp.makeConstraints { (make) in
-            make.left.equalTo(0)
-            make.right.equalTo(0)
-            make.top.equalTo(0)
-            make.bottom.equalTo(0)
-        }
-        
         playView.snp.makeConstraints { (make) in
             make.left.equalTo(0)
             make.right.equalTo(0)

@@ -8,7 +8,8 @@
 
 import UIKit
 
-class THUserModel: NSObject {
+@objcMembers
+class THUserModel: NSObject, NSCoding {
     var uid: String = ""
     var token: String = ""
     

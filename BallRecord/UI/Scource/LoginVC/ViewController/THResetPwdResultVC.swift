@@ -149,7 +149,7 @@ extension THResetPwdResultVC {
     }
     
     @objc func clickResetBtnEvent() {
-        
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func clickBackBtnEvent() {
@@ -174,6 +174,8 @@ extension THResetPwdResultVC {
             loginVC.hidesBottomBarWhenPushed = true
             ctrs.append(loginVC)
             self.navigationController?.setViewControllers(ctrs, animated: true)
+            
+            THLoginController.instance.deleteUserInfo()
         }
     }
 }

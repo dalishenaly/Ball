@@ -14,7 +14,14 @@ class THPublishDynamicVC: THBaseVC {
     var editVideoPath: String?  //  合成视频所储存的路径
     var draftId: String?    //  草稿id
     
-    var uploader: VODUploadClient?
+    
+    
+    var duration: Int?
+    var vid: String?
+    var aliVideoId: String?
+    var videoPath: String?
+    var coverPath: String?
+    
     
     let textView = QMUITextView()
     lazy var coverView: UIImageView = {
@@ -61,8 +68,6 @@ class THPublishDynamicVC: THBaseVC {
         configUI()
         configFrame()
         configData()
-        
-        configUploader()
     }
 
 }
@@ -81,8 +86,9 @@ extension THPublishDynamicVC {
         imgBottomView.addSubview(timeLabel)
         
         textView.placeholder = "添加你此刻的想法吧（最多100字）"
-        textView.maximumTextLength = 100
+        textView.maximumTextLength = 200
         textView.font = UIFont.systemFont(ofSize: 16)
+        
     }
     
     func configFrame() {
@@ -133,89 +139,16 @@ extension THPublishDynamicVC {
     
     func configData() {
         
-        if let videoPath = self.editVideoPath {
-            let asset = AVAsset(url: URL(fileURLWithPath: videoPath))
-            let duration = Int(CMTimeGetSeconds(asset.duration))
-            timeLabel.text = getMMSSFromSS(totalTime: duration)
-            coverView.image = THVideoEditController.getVideoCoverImage(url: videoPath)
+        THVideoRequestManager.requestPlay(videoId: self.aliVideoId ?? "", successBlock: { (response) in
+            print("=")
+            let model = THVideoInfoModel.yy_model(withJSON: response)
+            self.coverView.setImage(urlStr: model?.cover ?? "", placeholder: placeholder_square)
+
+        }) { (error) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: error.localizedDescription)
         }
-    }
-    
-    func configUploader() {
-        
-        uploader = VODUploadClient()
-        
-        /// 上传完成回调
-        let FinishCallbackFunc: OnUploadFinishedListener = {fileInfo, result in
-            
-        }
-        
-        /// 上传失败回调
-        let FailedCallbackFunc: OnUploadFailedListener = {fileInfo, code, message in
-            
-        }
-        
-        /// 上传进度回调
-        let ProgressCallbackFunc: OnUploadProgressListener = {fileInfo, uploadedSize, totalSize in
-            
-        }
-        
-        /// token过期
-        let TokenExpiredCallbackFunc: OnUploadTokenExpiredListener = {
-            // token过期，设置新的上传凭证，继续上传
-            self.uploader?.resume(withAuth: "")
-        }
-        
-        /// 上传开始重试回调
-        let RetryCallbackFunc: OnUploadRertyListener = {
-            
-        }
-        
-        /// 上传结束重试，继续上传回调
-        let RetryResumeCallbackFunc: OnUploadRertyResumeListener = {
-            print(#function)
-        }
-        
-        /**
-        开始上传回调
-        上传地址和凭证方式上传需要调用setUploadAuthAndAddress:uploadAuth:uploadAddress:方法设置上传地址和凭证
-        @param fileInfo 上传文件信息
-        */
-        let UploadStartedCallbackFunc: OnUploadStartedListener = { fileInfo in
-            // 设置上传地址 和 上传凭证
-            self.uploader?.setUploadAuthAndAddress(fileInfo, uploadAuth: "", uploadAddress: "")
-        }
-        
-        let listener = VODUploadListener()
-        listener.finish = FinishCallbackFunc
-        listener.failure = FailedCallbackFunc
-        listener.progress = ProgressCallbackFunc
-        listener.expire = TokenExpiredCallbackFunc
-        listener.retry = RetryCallbackFunc
-        listener.retryResume = RetryResumeCallbackFunc
-        listener.started = UploadStartedCallbackFunc
-        uploader?.setListener(listener)
-    }
-    
-    func uploadCover() {
-        let filePath = ""
-        let imageInfo = VodInfo()
-        imageInfo.title = ""
-        imageInfo.desc = ""
-        imageInfo.cateId = 19
-        imageInfo.tags = ""
-        uploader?.addFile(filePath, vodInfo: imageInfo)
-    }
-    
-    func uploadVideo() {
-        
-        let filePath = ""
-        let vodInfo = VodInfo()
-        vodInfo.title = ""
-        vodInfo.desc = ""
-        vodInfo.cateId = 19
-        vodInfo.tags = ""
-        uploader?.addFile(filePath, vodInfo: vodInfo)
+        timeLabel.text = getMMSSFromSS(totalTime: self.duration ?? 0)
     }
     
     
@@ -227,15 +160,26 @@ extension THPublishDynamicVC {
     
     @objc func clickButtonEvent(sender: UIButton) {
         
-        //  发布成功删除草稿
-        THVideoDraftModel.removeDraft(draftId: draftId ?? "")
+        if textView.text.count <= 0 {
+            QMUITips.show(withText: "请输入内容")
+            return
+        }
+        QMUITips.showLoading(in: view)
+        let param = ["vid": self.vid ?? "", "submitContent": textView.text ?? ""]
+        THPlaygroundManager.requestPublishVideo(param: param, successBlock: { (result) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: "发布成功")
+        }) { (error) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: error.localizedDescription)
+        }
     }
     
-    func publish() {
-        
-        uploadCover()
-        uploadVideo()
-        
-        uploader?.start()
-    }
+//    func publish() {
+//        
+//        uploadCover()
+//        uploadVideo()
+//        
+//        uploader?.start()
+//    }
 }

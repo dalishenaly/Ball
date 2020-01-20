@@ -11,6 +11,7 @@ import QMUIKit
 
 class THVideoPartView: UIView {
 
+    var deleteItemBlock:(()->Void)?
     
     /// 隐藏删除按钮
     var hiddenDelete: Bool = false
@@ -98,7 +99,7 @@ extension THVideoPartView: UICollectionViewDelegate, UICollectionViewDataSource 
             if THVideoCacheManager.INSTANCE.catVideoArr.count > 1 {
                 THVideoCacheManager.INSTANCE.removeVideoPart(video: model)
                 collectionView.reloadData()
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kVideoPartDeleteNotificationName), object: nil)
+                self.deleteItemBlock?()
             } else {
                 QMUITips.show(withText: "至少保留一个视频片段")
             }

@@ -10,9 +10,11 @@ import UIKit
 
 class THCommentHeaderCell: UITableViewCell {
     
+    var model: THVideoDetailModel?
+    
     lazy var contentLabel: UILabel = {
         let label = UILabel()
-        label.text = "应建立在对股票投资具有充分的客观认识的基础上，通过认真地比较分析以后而进行"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = COLOR_324057
         label.numberOfLines = 0
@@ -35,9 +37,9 @@ class THCommentHeaderCell: UITableViewCell {
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "gao gao"
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = COLOR_64BBFA
+        label.text = ""
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = COLOR_333333
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
@@ -45,22 +47,22 @@ class THCommentHeaderCell: UITableViewCell {
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "12小时前"
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = COLOR_324057
+        label.text = ""
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = COLOR_999999
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
     
-    lazy var replyBtn: UIButton = {
+    lazy var focusBtn: UIButton = {
         let button = UIButton()
-        button.tag = 55
         button.setTitle("关注", for: .normal)
-        button.setTitleColor(UIColor.colorWithString("5E6D82"), for: .normal)
-        button.setTitleColor(UIColor.colorWithString("324057"), for: .selected)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(clickReplyBtnEvent(sender:)), for: .touchUpInside)
+        button.backgroundColor = COLOR_D6E7FD
+        button.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_B3D0FB, borderWidth: 1)
+        button.setTitleColor(COLOR_666666, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(clickFocusBtnEvent(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -76,9 +78,9 @@ class THCommentHeaderCell: UITableViewCell {
     
     lazy var replyCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "(120)"
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = COLOR_324057
+        label.text = ""
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = COLOR_666666
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
@@ -90,7 +92,6 @@ class THCommentHeaderCell: UITableViewCell {
         
         configUI()
         configFrame()
-        configData()
     }
     
     required init?(coder: NSCoder) {
@@ -108,7 +109,7 @@ extension THCommentHeaderCell {
         contentView.addSubview(iconView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(dateLabel)
-        contentView.addSubview(replyBtn)
+        contentView.addSubview(focusBtn)
         contentView.addSubview(allReplyLabel)
         contentView.addSubview(replyCountLabel)
     }
@@ -147,10 +148,10 @@ extension THCommentHeaderCell {
             make.bottom.equalTo(iconView)
         }
         
-        replyBtn.snp.makeConstraints { (make) in
+        focusBtn.snp.makeConstraints { (make) in
             make.right.equalTo(contentView).offset(-16)
             make.centerY.equalTo(iconView)
-            make.width.equalTo(60)
+            make.width.equalTo(80)
             make.height.equalTo(30)
         }
         
@@ -171,15 +172,42 @@ extension THCommentHeaderCell {
         iconView.layer.masksToBounds = true
     }
     
-    func configData() {
+    func updateModel(model: THVideoDetailModel) {
+        self.model = model
         
+        contentLabel.text = model.content
+        iconView.setImage(urlStr: model.publisherIcon ?? "", placeholder: placeholder_round)
+        nameLabel.text = model.publisherName
+        dateLabel.text = (model.publishTime ?? "") + " \(model.playCount)播放"
+        
+        if model.hasConcerned {
+            focusBtn.setTitle("已关注", for: .normal)
+            focusBtn.backgroundColor = COLOR_E7E7E7
+            focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_LINE, borderWidth: 1)
+        } else {
+            focusBtn.setTitle("关注", for: .normal)
+            focusBtn.backgroundColor = COLOR_D6E7FD
+            focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_B3D0FB, borderWidth: 1)
+        }
     }
     
-    @objc func clickLikeBtnEvent(sender: UIButton) {
+    @objc func clickFocusBtnEvent(sender: UIButton) {
+        if model?.hasConcerned ?? false {
+            model?.hasConcerned = false
+            focusBtn.setTitle("关注", for: .normal)
+            focusBtn.backgroundColor = COLOR_D6E7FD
+            focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_B3D0FB, borderWidth: 1)
+        } else {
+            model?.hasConcerned = true
+            focusBtn.setTitle("已关注", for: .normal)
+            focusBtn.backgroundColor = COLOR_E7E7E7
+            focusBtn.setCorner(cornerRadius: 4, masksToBounds: true, borderColor: COLOR_LINE, borderWidth: 1)
+        }
         
-    }
-    
-    @objc func clickReplyBtnEvent(sender: UIButton) {
-        
+        let concern = model?.hasConcerned ?? false ? "1" : "0"
+        let param = ["publisherUid": model?.publisherUid ?? "", "concern" : concern]
+        THFindRequestManager.requestConcerna(param: param, successBlock: { (result) in
+        }) { (error) in
+        }
     }
 }

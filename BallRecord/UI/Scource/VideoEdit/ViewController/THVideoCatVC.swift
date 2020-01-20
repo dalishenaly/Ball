@@ -10,28 +10,31 @@ import UIKit
 import QMUIKit
 
 @objcMembers
-class videoModel: NSObject {
-    var startTime = "2019-12-25 16:20:04.945"   //  58804
-    var endTime = "2019-12-25 18:08:23.843" //65303
-    var duration = 6499.0
-}
-
 class CatVideoModel: NSObject {
     var videoName: String = ""
-    ///  剪切临时Temp路径
-    var tempVideoPath: String = ""
     var coverImage: UIImage?
     var coverImgData: Data?
+    ///  剪切临时Temp路径
+    var tempVideoPath: String = ""
     ///  保存Document后的路径 (相对路径，需拼接沙盒目录，因为二次安装app沙盒目录会变)
     var videoPath: String = ""
 }
 
 class THVideoCatVC: THBaseVC {
     
-    let videoPath = "https://xy2.v.netease.com/r/video/20190110/bea8e70d-ffc0-4433-b250-0393cff10b75.mp4" //"https://1252068037.vod2.myqcloud.com/46d0b624vodcq1252068037/aee3f0db5285890797118433949/XaYvA7egCYUA.mp4"
+    let videoPath = "https://dhxy.v.netease.com/2019/0814/5757db881a2aff4543b7d9c846f3f415qt.mp4"//"https://xy2.v.netease.com/r/video/20190110/bea8e70d-ffc0-4433-b250-0393cff10b75.mp4" //"https://1252068037.vod2.myqcloud.com/46d0b624vodcq1252068037/aee3f0db5285890797118433949/XaYvA7egCYUA.mp4"
     let videoBox = WAVideoBox()//   视频处理类
     
+    var cid: String?
+    var cvid: String?
+    var selectTimeId: String?
+    var currentVideoBeginTime: Int?
+    var currentVideoUrl: String?
+    
     var catVideoArr = [CatVideoModel]()
+    
+    var model: THVideoInterceptModel?
+    var catVideModel: THCatVideoModel?
     
     let videoView = UIView()
     
@@ -44,6 +47,8 @@ class THVideoCatVC: THBaseVC {
         let player = SJVideoPlayer()
         player.showMoreItemToTopControlLayer = false
         player.rotationManager.isDisabledAutorotation = true
+        player.defaultNotReachableControlLayer.delegate = self
+        player.isEnabledFilmEditing = true
         return player
     }()
     
@@ -64,17 +69,54 @@ class THVideoCatVC: THBaseVC {
         configUI()
         configFrame()
         configData()
+        
+        if LocalStoreUtil.INSTANCE.getWifiSwichStatus() || THReachability.INSTANCE.net?.isReachableOnEthernetOrWiFi ?? false {
+            requestData(timeId: nil)
+        } else {
+            if THReachability.INSTANCE.net?.isReachable ?? false {
+                let alert = UIAlertController(title: "您正在使用移动网络", message: "继续观看会耗费流量", preferredStyle: .alert)
+                let sure = UIAlertAction(title: "继续观看", style: .default) { (action) in
+                    self.requestData(timeId: nil)
+                }
+                let cancel = UIAlertAction(title: "取消观看", style: .cancel) { (action) in
+                    self.player.defaultNotReachableControlLayer.promptLabel.isHidden = true
+                    self.player.defaultNotReachableControlLayer.reloadView.button.setTitle("继续观看", for: .normal)
+                    self.player.switcher.switchControlLayer(forIdentitfier: SJControlLayer_NotReachableAndPlaybackStalled)
+                    self.player.controlLayerNeedAppear()
+                }
+                alert.addAction(cancel)
+                alert.addAction(sure)
+                present(alert, animated: true, completion: nil)
+            } else {
+                QMUITips.show(withText: "当前网络不可用")
+            }
+        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let url = URL(string: videoPath) {
-            let asset = SJVideoPlayerURLAsset(url: url)
-            player.urlAsset = asset;
-        }
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        player.vc_viewDidAppear()
+//        if let url = URL(string: videoPath) {
+//            let asset = SJVideoPlayerURLAsset(url: url)
+//            player.urlAsset = asset;
+//        }
         self.videoPartView.updateDataSource()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        player.vc_viewWillDisappear()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        player.vc_viewDidDisappear()
     }
 
 }
@@ -93,7 +135,7 @@ extension THVideoCatVC {
         view.addSubview(catBtn)
         videoView.addSubview(player.view)
         videoPartView.hiddenDelete = true
-        
+        dateSelectView.delegate = self
         addRightItem()
         configPlayer()
     }
@@ -107,12 +149,20 @@ extension THVideoCatVC {
     func configPlayer() {
         player.defaultLoadFailedControlLayer.topContainerView.isHidden = true
         player.defaultEdgeControlLayer.topContainerView.isHidden = true
-//        player.defaultEdgeControlLayer.bottomAdapter.removeItem(forTag: SJEdgeControlLayerBottomItem_FullBtn)
+        player.defaultEdgeControlLayer.bottomAdapter.removeItem(forTag: SJEdgeControlLayerBottomItem_FullBtn)
         player.defaultEdgeControlLayer.bottomAdapter.removeItem(forTag: SJEdgeControlLayerBottomItem_Separator)
         player.defaultEdgeControlLayer.bottomAdapter.exchangeItem(forTag: SJEdgeControlLayerBottomItem_DurationTime, withItemForTag: SJEdgeControlLayerBottomItem_Progress)
         let durationItem = player.defaultEdgeControlLayer.bottomAdapter.item(forTag: SJEdgeControlLayerBottomItem_DurationTime)
         durationItem?.insets = SJEdgeInsetsMake(8, 16)
         player.defaultEdgeControlLayer.bottomAdapter.reload()
+        
+        let shareItem = SJEdgeControlButtonItem(image: UIImage(named: "share_icon"), target: self, action: #selector(clickShareBtnEvent), tag: 77)
+        player.defaultEdgeControlLayer.topAdapter.add(shareItem)
+        player.defaultEdgeControlLayer.topAdapter.reload()
+        player.playbackObserver.currentTimeDidChangeExeBlock = { (player: SJBaseVideoPlayer) in
+            let currentSecond = Int(player.currentTime) + (self.currentVideoBeginTime ?? self.sweetRuler.figureRange.lowerBound)
+            self.sweetRuler.setSelectFigure(figure: currentSecond)
+        }
     }
     
     
@@ -150,37 +200,71 @@ extension THVideoCatVC {
             make.bottom.equalTo(videoPartView.snp_top).offset(-30)
         }
         catBtn.setCorner(cornerRadius: 2)
-        
         sweetRuler.top = 200 + 70
     }
     
-    func configData() {
-        let model2 = videoModel()
-        model2.startTime = "2019-12-25 18:20:04.945"
-        model2.endTime = "2019-12-25 18:33:23.843"
-        model2.duration = 799.0
+    
+    func requestData(timeId: String?) {
+        let param = ["cid": self.cid ?? "", "cvid": self.cvid ?? "", "timeId": timeId ?? ""]
+        THPlaygroundManager.requestPlaygroundVideoIntercept(param: param, successBlock: { (result) in
+            print(result)
+            self.model = THVideoInterceptModel.yy_model(withJSON: result)
+            self.dateSelectView.updateDate(arr: self.model?.itemList ?? [])
+            let timeModel = self.model?.itemList?.last
+            let arr = NSArray.yy_modelArray(with: THCatVideoModel.self, json: self.model?.videoList?[timeModel?.timeId ?? ""]) as? [THCatVideoModel] ?? []
+            self.catVideModel = arr.last
+            
+            self.requestVideoUrl()
+            self.updateRulerData()
+            
+        }) { (error) in
+            print(error)
+        }
+    }
+    
+    func requestVideoUrl() {
+
+        THVideoRequestManager.requestPlay(videoId: self.catVideModel?.videoUrl ?? "", successBlock: { (result) in
+            let model = THVideoInfoModel.yy_model(withJSON: result)
+            if let url = URL(string: model?.url ?? "") {
+                self.currentVideoUrl = model?.url
+                let asset = SJVideoPlayerURLAsset(url: url)
+                self.player.urlAsset = asset;
+            }
+        }) { (error) in
+            QMUITips.show(withText: "视频资源出错")
+        }
+    }
+    
+    
+    func updateRulerData() {
         
-        let arr = [videoModel(), model2]
+        let begin = timeString(timeInterval: TimeInterval(self.catVideModel?.startTime ?? 0), format: "HH")
+        let beginIntValue = (begin as NSString).intValue
+        let end = timeString(timeInterval: TimeInterval(self.catVideModel?.endTime ?? 0), format: "HH")
+        let endIntValue = (end as NSString).intValue + 1
+        let beginTime = timeString(timeInterval: TimeInterval(self.catVideModel?.startTime ?? 0), format: "HH:mm:ss")
         
-        let firstModel = arr.first
-        let lastModel = arr.last
-        
-        let sting1 = firstModel?.startTime.components(separatedBy: " ").last ?? "00:00"
-        let time1 = (sting1.components(separatedBy: ":").first! as NSString).intValue
-        let beginTime = sting1.components(separatedBy: ".").first! as NSString
-        
-        let sting2 = lastModel?.endTime.components(separatedBy: " ").last ?? "24:00"
-        let time2 = (sting2.components(separatedBy: ":").first! as NSString).intValue + 1
-        
-        sweetRuler.figureRange = Range(uncheckedBounds: (Int(time1 * 3600), Int(time2 * 3600)))
+        self.currentVideoBeginTime = getSecondFromHHMMSS(HHMMSS: beginTime as String)
+        sweetRuler.figureRange = Range(uncheckedBounds: (Int(beginIntValue * 3600), Int(endIntValue * 3600)))
         sweetRuler.setSelectFigure(figure: getSecondFromHHMMSS(HHMMSS: beginTime as String))
-        sweetRuler.setContentArr(arr: arr)
+        if self.catVideModel != nil {
+            sweetRuler.setContentArr(arr: [self.catVideModel!])
+        }
+        sweetRuler.layoutSubviews()
+    }
+    
+    func configData() {
+
     }
     
     @objc func clickNextItem() {
         if THVideoCacheManager.INSTANCE.catVideoArr.count > 0 {
             player.pause()
-            navigationPushVC(vc: THVideoEditVC())
+            let vc = THVideoEditVC()
+            vc.cid = self.cid
+            vc.fromDraft = false
+            navigationPushVC(vc: vc)
         } else {
             QMUITips.show(withText: "请先截取一段视频")
         }
@@ -189,7 +273,7 @@ extension THVideoCatVC {
     @objc func clickButtonEvent(sender: UIButton) {
         
         QMUITips.showLoading(in: view)
-        
+         
         if !FileManager.default.fileExists(atPath: DownloadVideoPath) {
             try? FileManager.default.createDirectory(atPath: DownloadVideoPath, withIntermediateDirectories: true, attributes: nil)
         }
@@ -199,24 +283,24 @@ extension THVideoCatVC {
         let videoId = dateFormatter.string(from: Date())
         let catVideoPath = DownloadVideoPath + "/" + "\(videoId).mp4"
         
-        player.export(withBeginTime: player.currentTime, duration: 10, presetName: AVAssetExportPresetMediumQuality, progress: { (player, process) in
+        player.export(withBeginTime: player.currentTime, duration: 10, presetName: AVAssetExportPresetHighestQuality, progress: { (player, process) in
             print("---- %.2f%", process * 100)
         }, completion: { (player, savePath, coverImg) in
             QMUITips.hideAllTips()
             print("视频剪切 success savePath: %@", savePath)
             copyItemAtPath(fromPath: savePath.path, toPath: catVideoPath)
-            
+
             let model = CatVideoModel()
             model.videoName = "\(videoId).mp4"
             model.tempVideoPath = catVideoPath
             model.coverImage = coverImg
             THVideoCacheManager.INSTANCE.catVideoArr.append(model)
-            
+
             self.videoPartView.updateDataSource()
-            
+
         }) { (player, error) in
             QMUITips.hideAllTips()
-            print("视频剪切 error: %@", error)
+            QMUITips.show(withText: "视频截取失败")
         }
         
     }
@@ -236,15 +320,67 @@ extension THVideoCatVC {
             super.goBackItemClicked()
         }
     }
+    
+    @objc func clickShareBtnEvent() {
+        THShareSheetView.showAlert(title: "", shareUrl: "www.baidu.com")
+    }
+}
+
+//  MARK: - SJNotReachableControlLayerDelegate, THDateSelectViewDelegate
+extension THVideoCatVC: SJNotReachableControlLayerDelegate, THDateSelectViewDelegate {
+    func backItemWasTapped(for controlLayer: SJControlLayer) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func reloadItemWasTapped(for controlLayer: SJControlLayer) {
+        self.requestData(timeId: nil)
+    }
+    
+    func dateSelectViewChangeValue(idx: Int) {
+
+        let timeModel = self.model?.itemList?[idx]
+        let arr = NSArray.yy_modelArray(with: THCatVideoModel.self, json: self.model?.videoList?[timeModel?.timeId ?? ""]) as? [THCatVideoModel] ?? []
+        self.catVideModel = arr.last
+        
+        self.requestVideoUrl()
+        self.updateRulerData()
+    }
 }
 
 extension THVideoCatVC: SweetRulerDelegate {
+    func sweetRulerWillBeginDragging() {
+        player.playbackObserver.currentTimeDidChangeExeBlock = nil
+    }
+    
+    func sweetRulerWillEndDragging() {
+        player.playbackObserver.currentTimeDidChangeExeBlock = { (player: SJBaseVideoPlayer) in
+            let currentSecond = Int(player.currentTime) + (self.currentVideoBeginTime ?? self.sweetRuler.figureRange.lowerBound)
+            self.sweetRuler.setSelectFigure(figure: currentSecond)
+        }
+    }
     
     ///刻度尺代理方法
     func sweetRuler(ruler: SweetRuler, figure: Int){
         
         print("\t\tfigure: \(figure)")
+        
+        let currentTime = figure - ruler.figureRange.lowerBound
+        player.seek(toTime: TimeInterval(currentTime), completionHandler: nil)
+        
     }
 
 }
 
+
+/// 时间戳转日期
+///
+/// - Parameter timeInterval: 时间戳
+/// - Returns: 结果
+func timeString(timeInterval: TimeInterval, format: String? = "yyyy-MM-d HH:mm:ss") -> String{
+    
+    let date = Date(timeIntervalSince1970: timeInterval)
+    let formatter = DateFormatter()
+    formatter.dateFormat = format
+    return formatter.string(from: date)
+    
+}

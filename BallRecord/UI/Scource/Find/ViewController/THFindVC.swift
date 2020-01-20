@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import SJVideoPlayer
-import SafariServices
+import QMUIKit
 
 class ShopItem: NSObject {
     var h : CGFloat?
@@ -19,7 +18,17 @@ class ShopItem: NSObject {
 
 class THFindVC: THBaseVC {
     
-    lazy var itemArray = [THDynamicModel]()
+    var itemArray = [THDynamicModel]()
+    
+    var bannerArr = [THHomeBannerModel]()
+    var currentTag = 0 // 选中的列表Tag
+    var recommendPage = 0
+    var recentPage = 0
+    var focusPage = 0
+    var recommendArray = [THDynamicModel]()
+    var recentArray = [THDynamicModel]()
+    var focusArray = [THDynamicModel]()
+    let banner = THBannerView()
     
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -35,13 +44,11 @@ class THFindVC: THBaseVC {
         let layout = THFlowLayout()
         layout.delegate = self
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
         collectionView.register(THHomeCollectionCell.self, forCellWithReuseIdentifier: "THHomeCollectionCell")
         return collectionView
     }()
@@ -49,13 +56,11 @@ class THFindVC: THBaseVC {
         let layout = THFlowLayout()
         layout.delegate = self
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
         collectionView.register(THHomeCollectionCell.self, forCellWithReuseIdentifier: "THHomeCollectionCell")
         return collectionView
     }()
@@ -63,22 +68,13 @@ class THFindVC: THBaseVC {
         let layout = THFlowLayout()
         layout.delegate = self
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
         collectionView.register(THHomeCollectionCell.self, forCellWithReuseIdentifier: "THHomeCollectionCell")
         return collectionView
-    }()
-    
-    lazy var player: SJVideoPlayer = {
-        let player = SJVideoPlayer()
-        player.showMoreItemToTopControlLayer = false
-        player.rotationManager.isDisabledAutorotation = true
-        return player
     }()
 
     let titleView = THFindTitleView()
@@ -88,7 +84,8 @@ class THFindVC: THBaseVC {
 
         configUI()
         configFrame()
-        configData()
+        configData(type: 0, page: 0, completion: nil)
+        configRefrash()
     }
 
 }
@@ -103,7 +100,6 @@ extension THFindVC {
         scrollView.addSubview(collectionView2)
         scrollView.addSubview(collectionView3)
         
-        let banner = THBannerView()
         banner.top = -banner.height
         collectionView.addSubview(banner)
         
@@ -147,61 +143,141 @@ extension THFindVC {
         scrollView.contentSize = CGSize(width: SCREEN_WIDTH * 3, height: scrollView.height)
     }
     
-    func configData() {
+    func configData(type: Int, page: Int, completion: (()->Void)?) {
         
-        getDataSource()
-//        THFindRequestManager.requestFindPageData(param: [:], successBlock: { (response) in
-//            print(response)
-//
-//        }) { (error) in
-//
-//        }
-
+        let param = ["type": type, "page": page]
+        QMUITips.showLoading(in: view)
+        THFindRequestManager.requestFindPageData(param: param, successBlock: { (response) in
+            print(response)
+            completion?()
+            QMUITips.hideAllTips()
+            
+            if page == 0 {
+                if type == 0 {
+                    self.recommendArray.removeAll()
+                } else if type == 1 {
+                    self.recentArray.removeAll()
+                } else {
+                    self.focusArray.removeAll()
+                } 
+            }
+            
+            let model = THFindPageModel.yy_model(withJSON: response)
+            if model?.list?.count ?? 0 == 0 {
+                if type == 0 {
+                    self.collectionView.mj_footer.endRefreshingWithNoMoreData()
+                } else if type == 1 {
+                    self.collectionView2.mj_footer.endRefreshingWithNoMoreData()
+                } else {
+                    self.collectionView3.mj_footer.endRefreshingWithNoMoreData()
+                }
+            } else {
+                THDynamicController.INSTANCE.cacheNotesDataSource(dataSource: model!.list!)
+            }
+            
+            if type == 0 {
+                self.bannerArr = model?.banner ?? []
+                self.banner.updateData(array: self.bannerArr)
+                self.recommendArray += model?.list ?? []
+                self.banner.titleLabel.isHidden = self.recommendArray.count == 0
+                self.collectionView.reloadData()
+            } else if type == 1 {
+                self.recentArray += model?.list ?? []
+                self.collectionView2.reloadData()
+            } else {
+                self.focusArray += model?.list ?? []
+                self.collectionView3.reloadData()
+            }
+            
+            
+        }) { (error) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: error.localizedDescription)
+            completion?()
+        }
     }
     
-    func getDataSource() {
+    func configRefrash() {
         
-        let path = Bundle.main.path(forResource: "shop", ofType: "plist")
-        let arr = NSArray(contentsOfFile: path!)
+        collectionView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
+            self.recommendPage = 0
+            self.configData(type: 0, page: self.recommendPage) {
+                self.collectionView.mj_header.endRefreshing()
+                self.collectionView.mj_footer.resetNoMoreData()
+            }
+        })
+        collectionView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
+            self.recommendPage += 1
+            self.configData(type: 0, page: self.recommendPage) {
+                self.collectionView.mj_footer.endRefreshing()
+            }
+        })
+        collectionView.mj_header.ignoredScrollViewContentInsetTop = collectionView.contentInset.top
         
-        for dic in arr! {
-//            let shop = ShopItem()
-//            let dict = dic as! NSDictionary
-//            shop.h = dict["h"] as? CGFloat
-//            shop.w = dict["w"] as? CGFloat
-//            shop.img = dict["img"] as? String
-//            shop.price = dict["price"] as? String
-//            itemArray.append(shop)
-            
-            let model = THDynamicModel()
-            let dict = dic as! NSDictionary
-            model.title = (dict["price"] as? String)!
-            itemArray.append(model)
-        }
-        collectionView.reloadData()
+        collectionView2.mj_header = MJRefreshNormalHeader(refreshingBlock: {
+            self.recentPage = 0
+            self.configData(type: 1, page: self.recentPage) {
+                self.collectionView2.mj_header.endRefreshing()
+                self.collectionView2.mj_footer.resetNoMoreData()
+            }
+        })
+        
+        collectionView2.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
+            self.recentPage += 1
+            self.configData(type: 1, page: self.recentPage) {
+                self.collectionView2.mj_footer.endRefreshing()
+            }
+        })
+        
+        collectionView3.mj_header = MJRefreshNormalHeader(refreshingBlock: {
+            self.focusPage = 0
+            self.configData(type: 2, page: self.focusPage) {
+                self.collectionView3.mj_header.endRefreshing()
+                self.collectionView3.mj_footer.resetNoMoreData()
+            }
+        })
+        
+        collectionView3.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
+            self.focusPage += 1
+            self.configData(type: 2, page: self.focusPage) {
+                self.collectionView3.mj_footer.endRefreshing()
+            }
+        })
     }
+
 }
 
 extension THFindVC: THFindTitleViewDelegate, UIScrollViewDelegate {
     
     func onClickButtonEvent(idx: Int) {
+        currentTag = idx
         scrollView.setContentOffset(CGPoint(x: SCREEN_WIDTH * CGFloat(idx), y: 0), animated: false)
+        if idx == 0 {
+            collectionView.mj_header.beginRefreshing()
+        } else if idx == 1 {
+            collectionView2.mj_header.beginRefreshing()
+        } else {
+            collectionView3.mj_header.beginRefreshing()
+        }
         
         print("*** scrollView 转换 停止滚动 \(scrollView.contentOffset.x)")
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if decelerate == false {
-            self.scrollViewDidEndDecelerating(self.scrollView)
+        if scrollView == self.scrollView {
+            if decelerate == false {
+                self.scrollViewDidEndDecelerating(self.scrollView)
+            }
         }
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        print("*** scrollView 转换 停止滚动 \(self.scrollView.contentOffset.x)")
-        let idx = self.scrollView.contentOffset.x / SCREEN_WIDTH
-        if let button = titleView.viewWithTag(Int(idx + 55)) as? UIButton {
-            titleView.clickButtonEvent(sender: button)
+        if scrollView == self.scrollView {
+            print("*** scrollView 转换 停止滚动 \(self.scrollView.contentOffset.x)")
+            let idx = self.scrollView.contentOffset.x / SCREEN_WIDTH
+            if let button = titleView.viewWithTag(Int(idx + 55)) as? UIButton {
+                titleView.clickButtonEvent(sender: button)
+            }
         }
     }
 }
@@ -215,31 +291,66 @@ extension THFindVC: THCollectionViewFlowLayoutDelegate {
         let colMagin: CGFloat = 10
         let cellWidth: CGFloat = (width - 10 - 10 - colMagin) / 2
         
-        let item = itemArray[indexPath.item]
+        var model: THDynamicModel?
+        if collectionView == self.collectionView {
+            model = recommendArray[indexPath.item]
+        } else if collectionView == collectionView2 {
+            model = recentArray[indexPath.item]
+        } else {
+            model = focusArray[indexPath.item]
+        }
         
-
-        return item.caculateCellHeight(width: cellWidth, font: UIFont.systemFont(ofSize: 13))
+        return model!.caculateCellHeight(width: cellWidth, font: UIFont.systemFont(ofSize: 13))
     }
 }
 
 extension THFindVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return itemArray.count
+        if collectionView == self.collectionView {
+            return recommendArray.count
+        } else if collectionView == collectionView2 {
+            return recentArray.count
+        } else {
+            return focusArray.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        var model: THDynamicModel?
+        if collectionView == self.collectionView {
+            model = recommendArray[indexPath.item]
+        } else if collectionView == collectionView2 {
+            model = recentArray[indexPath.item]
+        } else {
+            model = focusArray[indexPath.item]
+        }
+        model = THDynamicController.INSTANCE.getdynamicModel(vid: model!.vid)
         let cell:THHomeCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "THHomeCollectionCell", for: indexPath) as! THHomeCollectionCell
         setshadow(cell: cell)
-        let item = itemArray[indexPath.item]
-        cell.titleLabel.text = item.title
+
+        cell.updateModel(model: model!)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = THVideoDetailVC()
-        vc.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(vc, animated: true)
+        
+        THLoginController.instance.pushLoginVC {
+            var model: THDynamicModel?
+            if collectionView == self.collectionView {
+                model = self.recommendArray[indexPath.item]
+            } else if collectionView == self.collectionView2 {
+                model = self.recentArray[indexPath.item]
+            } else {
+                model = self.focusArray[indexPath.item]
+            }
+            let vc = THVideoDetailVC()
+            vc.vid = model?.vid
+            vc.aliVideoId = model?.vUrl
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     
@@ -343,13 +454,24 @@ class THFindTitleView: UIView {
     
     @objc func clickButtonEvent(sender: UIButton) {
         
-        selectBtn?.isSelected = false
-        sender.isSelected = true
-        self.selectBtn = sender
-        UIView.animate(withDuration: 0.2) {
-            self.indicator.centerX = sender.centerX
-            self.delegate?.onClickButtonEvent(idx: sender.tag - 55)
+        if sender.tag == 57 {
+            THLoginController.instance.pushLoginVC {
+                self.selectBtn?.isSelected = false
+                sender.isSelected = true
+                self.selectBtn = sender
+                UIView.animate(withDuration: 0.2) {
+                    self.indicator.centerX = sender.centerX
+                    self.delegate?.onClickButtonEvent(idx: sender.tag - 55)
+                }
+            }
+        } else {
+            selectBtn?.isSelected = false
+            sender.isSelected = true
+            self.selectBtn = sender
+            UIView.animate(withDuration: 0.2) {
+                self.indicator.centerX = sender.centerX
+                self.delegate?.onClickButtonEvent(idx: sender.tag - 55)
+            }
         }
-        
     }
 }

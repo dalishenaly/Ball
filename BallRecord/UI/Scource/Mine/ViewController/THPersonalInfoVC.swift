@@ -10,7 +10,13 @@ import UIKit
 
 class PersonalModel: NSObject {
     var title: String?
-    var content: String?
+    var content: String = ""
+    var key: String?
+    init(title: String?, key: String?) {
+        super.init()
+        self.key = key
+        self.title = title
+    }
     
     init(title: String?) {
         super.init()
@@ -20,7 +26,7 @@ class PersonalModel: NSObject {
     init(title: String?, content: String?) {
         super.init()
         self.title = title
-        self.content = content
+        self.content = content ?? ""
     }
 }
 
@@ -31,11 +37,11 @@ class THPersonalInfoVC: THBaseTableViewVC {
     
     var rightItem: UIBarButtonItem?
     
-    let dataArr = [[PersonalModel(title: "头像"),
-                     PersonalModel(title: "昵称"),
-                     PersonalModel(title: "性别")],
-                    [PersonalModel(title: "所在地"),
-                     PersonalModel(title: "签名")]]
+    let dataArr = [[PersonalModel(title: "头像", key: "avatar"),
+                     PersonalModel(title: "昵称", key: "username"),
+                     PersonalModel(title: "性别", key: "sex")],
+                    [PersonalModel(title: "所在地", key: "address"),
+                     PersonalModel(title: "签名", key: "signature")]]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +55,36 @@ class THPersonalInfoVC: THBaseTableViewVC {
     override func configData() {
         super.configData()
         
-        
+        if let model = THLoginController.instance.userInfo {
+            let dict = model.yy_modelToJSONObject() as! [String: Any]
+            let arr = self.dataArr.flatMap{$0}
+            for item in arr {
+                if let key = item.key, key != "" {
+                    item.content = dict[key] as! String
+                }
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
+    func savePersonalInfo() {
+        var param = [String: String]()
+        let arr = dataArr.flatMap{$0}
+        for item in arr {
+            if let key = item.key, key != "" {
+                param[key] = item.content
+            }
+        }
+        QMUITips.showLoading(in: view)
+        THMineRequestManager.requestEditUserInfo(param: param, successBlock: { (result) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: "保存成功")
+            self.shouldEdit = false
+            self.tableView.reloadData()
+        }) { (error) in
+            QMUITips.hideAllTips()
+            QMUITips.show(withText: error.localizedDescription)
+        }
     }
 }
 
@@ -59,12 +94,11 @@ extension THPersonalInfoVC {
         if item.title == "编辑" {
             item.title = "保存"
             shouldEdit = true
+            tableView.reloadData()
         } else {
             item.title = "编辑"
-            shouldEdit = false
+            savePersonalInfo()
         }
-        
-        tableView.reloadData()
     }
 }
 
@@ -89,6 +123,7 @@ extension THPersonalInfoVC {
                 cell = THPersonalHeaderCell(style: .default, reuseIdentifier: "THPersonalHeaderCell")
             }
             cell?.titleLabel.text = model.title
+            cell?.iconView.setImage(urlStr: model.content, placeholder: placeholder_header)
             return cell!
         }
         
@@ -97,12 +132,15 @@ extension THPersonalInfoVC {
             if cell == nil {
                 cell = THInfoEditCell(style: .default, reuseIdentifier: "THInfoEditCell")
             }
+            
             cell?.titleLabel.text = model.title
+            cell?.textField.text = model.content
             cell?.textField.isEnabled = shouldEdit ?? false
             cell?.textField.maximumTextLength = model.title == "昵称" ? 6 : 18
             if model.title == "签名" {
                 cell?.textField.placeholder = "请输入18个字来介绍自己"
             }
+            
             cell?.valueChangedBlock = { (text: String) in
                 model.content = text
             }
@@ -115,9 +153,7 @@ extension THPersonalInfoVC {
         }
         cell?.titleLabel.text = model.title
         if model.title == "性别" {
-            if let sex = model.content {
-                cell?.detailLabel.text = sex == "1" ? "男" : "女"
-            }
+            cell?.detailLabel.text = model.content == "0" ? "男" : "女"
         } else {
             cell?.detailLabel.text = model.content
         }
@@ -156,7 +192,13 @@ extension THPersonalInfoVC {
                 present(alert, animated: true, completion: nil)
             }
             if model.title == "所在地" {
-                
+                let vc = THCitySelectVC()
+                vc.cityType = .province
+                vc.citySelectBlock = { city in
+                    model.content = city
+                    tableView.reloadData()
+                }
+                navigationPushVC(vc: vc)
             }
         }
     }

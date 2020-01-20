@@ -68,7 +68,7 @@ extension THPlaygroundDetailCell {
             make.left.equalTo(titleLabel.snp_right).offset(10)
             make.right.equalTo(contentView).offset(-30)
             make.top.equalTo(titleLabel)
-            make.height.equalTo(descLabel)
+            make.height.greaterThanOrEqualTo(titleLabel)
             make.bottom.equalTo(contentView).offset(-16)
         }
         

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02D85A4633CD4A4A5D18B670 /* Pods_BallRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0DBC351294CFEF8958F6A5 /* Pods_BallRecord.framework */; };
+		02D85A4633CD4A4A5D18B670 /* Pods_BallRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0DBC351294CFEF8958F6A5 /* Pods_BallRecord.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DE09EACE2381075800E70EB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09EACD2381075800E70EB4 /* AppDelegate.swift */; };
 		DE09EAD52381075800E70EB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE09EAD32381075800E70EB4 /* Main.storyboard */; };
 		DE09EAD72381075900E70EB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE09EAD62381075900E70EB4 /* Assets.xcassets */; };
@@ -24,12 +24,58 @@
 		DE09EB1323810FFF00E70EB4 /* THFindVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09EB1223810FFF00E70EB4 /* THFindVC.swift */; };
 		DE09EB152381101800E70EB4 /* THPlaygroundVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09EB142381101800E70EB4 /* THPlaygroundVC.swift */; };
 		DE09EB172381102A00E70EB4 /* THMineVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09EB162381102A00E70EB4 /* THMineVC.swift */; };
-		DE59FDBC238FC33C009C9687 /* THAccountSafeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDBB238FC33C009C9687 /* THAccountSafeVC.swift */; };
+		DE119C9923BE01D700E22122 /* THBaseWebViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119C9823BE01D700E22122 /* THBaseWebViewVC.swift */; };
+		DE119C9B23BE1B3200E22122 /* ImageViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119C9A23BE1B3200E22122 /* ImageViewExt.swift */; };
+		DE119C9F23BF680100E22122 /* THReplyLZCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119C9E23BF680100E22122 /* THReplyLZCell.swift */; };
+		DE119CA123C1DBF500E22122 /* THUserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CA023C1DBF500E22122 /* THUserInfoModel.swift */; };
+		DE119CA323C1DF3B00E22122 /* DictExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CA223C1DF3B00E22122 /* DictExt.swift */; };
+		DE119CA523C2D23D00E22122 /* Citys.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE119CA423C2D23D00E22122 /* Citys.plist */; };
+		DE119CA723C2D30900E22122 /* THCitySelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CA623C2D30900E22122 /* THCitySelectVC.swift */; };
+		DE119CA923C309BB00E22122 /* THLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CA823C309BB00E22122 /* THLocationManager.swift */; };
+		DE119CAB23C4380E00E22122 /* THPlayRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CAA23C4380E00E22122 /* THPlayRecordVC.swift */; };
+		DE119CAD23C45CA400E22122 /* THCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CAC23C45CA400E22122 /* THCommentController.swift */; };
+		DE119CAF23C4830C00E22122 /* THRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CAE23C4830C00E22122 /* THRecordModel.swift */; };
+		DE119CB123C4863800E22122 /* THMyCollectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CB023C4863800E22122 /* THMyCollectVC.swift */; };
+		DE119CB323C4906D00E22122 /* THRecordPublishVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119CB223C4906D00E22122 /* THRecordPublishVC.swift */; };
+		DE119CE923C4B0F200E22122 /* YYTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CB623C4B0F200E22122 /* YYTextView.m */; };
+		DE119CEA23C4B0F200E22122 /* YYTextMagnifier.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CBA23C4B0F200E22122 /* YYTextMagnifier.m */; };
+		DE119CEB23C4B0F200E22122 /* YYTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CBD23C4B0F200E22122 /* YYTextContainerView.m */; };
+		DE119CEC23C4B0F200E22122 /* YYTextEffectWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CBE23C4B0F200E22122 /* YYTextEffectWindow.m */; };
+		DE119CED23C4B0F200E22122 /* YYTextInput.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CC023C4B0F200E22122 /* YYTextInput.m */; };
+		DE119CEE23C4B0F200E22122 /* YYTextLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CC123C4B0F200E22122 /* YYTextLayout.m */; };
+		DE119CEF23C4B0F200E22122 /* YYTextLine.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CC323C4B0F200E22122 /* YYTextLine.m */; };
+		DE119CF023C4B0F200E22122 /* YYTextSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CC423C4B0F200E22122 /* YYTextSelectionView.m */; };
+		DE119CF123C4B0F200E22122 /* YYTextKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CC723C4B0F200E22122 /* YYTextKeyboardManager.m */; };
+		DE119CF223C4B0F200E22122 /* YYTextDebugOption.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CC923C4B0F200E22122 /* YYTextDebugOption.m */; };
+		DE119CF323C4B0F200E22122 /* YYLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CCA23C4B0F200E22122 /* YYLabel.m */; };
+		DE119CF423C4B0F200E22122 /* YYTextRunDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CCE23C4B0F200E22122 /* YYTextRunDelegate.m */; };
+		DE119CF523C4B0F200E22122 /* YYTextParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CCF23C4B0F200E22122 /* YYTextParser.m */; };
+		DE119CF623C4B0F200E22122 /* YYTextAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CD323C4B0F200E22122 /* YYTextAttribute.m */; };
+		DE119CF723C4B0F200E22122 /* YYTextArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CD523C4B0F200E22122 /* YYTextArchiver.m */; };
+		DE119CF823C4B0F200E22122 /* YYTextRubyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CD623C4B0F200E22122 /* YYTextRubyAnnotation.m */; };
+		DE119CF923C4B0F200E22122 /* YYTextUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CD923C4B0F200E22122 /* YYTextUtilities.m */; };
+		DE119CFA23C4B0F200E22122 /* NSParagraphStyle+YYText.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CDA23C4B0F200E22122 /* NSParagraphStyle+YYText.m */; };
+		DE119CFB23C4B0F200E22122 /* NSAttributedString+YYText.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CDB23C4B0F200E22122 /* NSAttributedString+YYText.m */; };
+		DE119CFC23C4B0F200E22122 /* UIPasteboard+YYText.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CDE23C4B0F200E22122 /* UIPasteboard+YYText.m */; };
+		DE119CFD23C4B0F200E22122 /* YYTextTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CE223C4B0F200E22122 /* YYTextTransaction.m */; };
+		DE119CFE23C4B0F200E22122 /* UIView+YYText.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CE323C4B0F200E22122 /* UIView+YYText.m */; };
+		DE119CFF23C4B0F200E22122 /* YYTextAsyncLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CE623C4B0F200E22122 /* YYTextAsyncLayer.m */; };
+		DE119D0023C4B0F200E22122 /* YYTextWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DE119CE723C4B0F200E22122 /* YYTextWeakProxy.m */; };
+		DE119D0223C5E65800E22122 /* THVideoRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119D0123C5E65800E22122 /* THVideoRequestManager.swift */; };
+		DE119D0423C5E8F300E22122 /* THVideoAuthInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119D0323C5E8F300E22122 /* THVideoAuthInfoModel.swift */; };
+		DE119D0623C6010800E22122 /* THCommentNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE119D0523C6010800E22122 /* THCommentNewsModel.swift */; };
+		DE4A5E2D23CB0FC600BD651B /* THAccountSafeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4A5E2B23CB0FC500BD651B /* THAccountSafeVC.swift */; };
+		DE4A5E2E23CB0FC600BD651B /* THSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4A5E2C23CB0FC600BD651B /* THSettingVC.swift */; };
+		DE4A5E3023CB443300BD651B /* THVideoCatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4A5E2F23CB443300BD651B /* THVideoCatModel.swift */; };
+		DE4A5E3223CEFA5700BD651B /* bgm.json in Resources */ = {isa = PBXBuildFile; fileRef = DE4A5E3123CEFA5700BD651B /* bgm.json */; };
+		DE4C2F5023BB59F2003D18CF /* THFansModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C2F4F23BB59F2003D18CF /* THFansModel.swift */; };
+		DE4C2F5223BB5E23003D18CF /* THDialogNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C2F5123BB5E23003D18CF /* THDialogNewsModel.swift */; };
+		DE4C2F5423BB75B5003D18CF /* THPraiseNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C2F5323BB75B5003D18CF /* THPraiseNewsModel.swift */; };
 		DE59FDBE238FE85A009C9687 /* THRoughCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDBD238FE85A009C9687 /* THRoughCell.swift */; };
 		DE59FDC0238FEEA4009C9687 /* THPersonalInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDBF238FEEA4009C9687 /* THPersonalInfoVC.swift */; };
 		DE59FDC2238FF63D009C9687 /* THIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDC1238FF63D009C9687 /* THIconCell.swift */; };
-		DE59FDC62390EF1E009C9687 /* THCommentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDC52390EF1E009C9687 /* THCommentVC.swift */; };
-		DE59FDC82390EF53009C9687 /* THLikeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDC72390EF53009C9687 /* THLikeVC.swift */; };
+		DE59FDC62390EF1E009C9687 /* THCommentNewsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDC52390EF1E009C9687 /* THCommentNewsVC.swift */; };
+		DE59FDC82390EF53009C9687 /* THPraiseNewsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDC72390EF53009C9687 /* THPraiseNewsVC.swift */; };
 		DE59FDCA2390EFBD009C9687 /* THCommentNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDC92390EFBD009C9687 /* THCommentNewsCell.swift */; };
 		DE59FDCC2390F456009C9687 /* THSystemNewsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDCB2390F456009C9687 /* THSystemNewsVC.swift */; };
 		DE59FDCE2390FCC6009C9687 /* THSystemDialogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDCD2390FCC6009C9687 /* THSystemDialogCell.swift */; };
@@ -101,7 +147,6 @@
 		DE9289AE238E74480044D54D /* THMyDynamicVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9289AD238E74480044D54D /* THMyDynamicVC.swift */; };
 		DE9289B0238E74760044D54D /* THRoughVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9289AF238E74760044D54D /* THRoughVC.swift */; };
 		DE9289B2238E748C0044D54D /* THMyNewsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9289B1238E748C0044D54D /* THMyNewsVC.swift */; };
-		DE9289B4238E79610044D54D /* THSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9289B3238E79610044D54D /* THSettingVC.swift */; };
 		DE9289B6238E7B1A0044D54D /* THBaseTableViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9289B5238E7B1A0044D54D /* THBaseTableViewVC.swift */; };
 		DE9289BA238E80CE0044D54D /* THSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9289B9238E80CE0044D54D /* THSwitchCell.swift */; };
 		DE9289BC238E84990044D54D /* LocalStoreUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9289BB238E84990044D54D /* LocalStoreUtil.swift */; };
@@ -162,7 +207,7 @@
 /* Begin PBXFileReference section */
 		3A5CC1A05F23657EB37BE0F3 /* Pods-BallRecord.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallRecord.debug.xcconfig"; path = "Target Support Files/Pods-BallRecord/Pods-BallRecord.debug.xcconfig"; sourceTree = "<group>"; };
 		9E0DBC351294CFEF8958F6A5 /* Pods_BallRecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BallRecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DE09EACA2381075800E70EB4 /* BallRecord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BallRecord.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE09EACA2381075800E70EB4 /* 球志.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "球志.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE09EACD2381075800E70EB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE09EAD42381075800E70EB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE09EAD62381075900E70EB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -184,12 +229,83 @@
 		DE09EB1223810FFF00E70EB4 /* THFindVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THFindVC.swift; sourceTree = "<group>"; };
 		DE09EB142381101800E70EB4 /* THPlaygroundVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPlaygroundVC.swift; sourceTree = "<group>"; };
 		DE09EB162381102A00E70EB4 /* THMineVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THMineVC.swift; sourceTree = "<group>"; };
-		DE59FDBB238FC33C009C9687 /* THAccountSafeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THAccountSafeVC.swift; sourceTree = "<group>"; };
+		DE119C9823BE01D700E22122 /* THBaseWebViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THBaseWebViewVC.swift; sourceTree = "<group>"; };
+		DE119C9A23BE1B3200E22122 /* ImageViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExt.swift; sourceTree = "<group>"; };
+		DE119C9E23BF680100E22122 /* THReplyLZCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THReplyLZCell.swift; sourceTree = "<group>"; };
+		DE119CA023C1DBF500E22122 /* THUserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THUserInfoModel.swift; sourceTree = "<group>"; };
+		DE119CA223C1DF3B00E22122 /* DictExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictExt.swift; sourceTree = "<group>"; };
+		DE119CA423C2D23D00E22122 /* Citys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Citys.plist; sourceTree = "<group>"; };
+		DE119CA623C2D30900E22122 /* THCitySelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THCitySelectVC.swift; sourceTree = "<group>"; };
+		DE119CA823C309BB00E22122 /* THLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THLocationManager.swift; sourceTree = "<group>"; };
+		DE119CAA23C4380E00E22122 /* THPlayRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPlayRecordVC.swift; sourceTree = "<group>"; };
+		DE119CAC23C45CA400E22122 /* THCommentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THCommentController.swift; sourceTree = "<group>"; };
+		DE119CAE23C4830C00E22122 /* THRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THRecordModel.swift; sourceTree = "<group>"; };
+		DE119CB023C4863800E22122 /* THMyCollectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THMyCollectVC.swift; sourceTree = "<group>"; };
+		DE119CB223C4906D00E22122 /* THRecordPublishVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THRecordPublishVC.swift; sourceTree = "<group>"; };
+		DE119CB523C4B0F200E22122 /* YYText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYText.h; sourceTree = "<group>"; };
+		DE119CB623C4B0F200E22122 /* YYTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextView.m; sourceTree = "<group>"; };
+		DE119CB823C4B0F200E22122 /* YYTextSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextSelectionView.h; sourceTree = "<group>"; };
+		DE119CB923C4B0F200E22122 /* YYTextLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextLine.h; sourceTree = "<group>"; };
+		DE119CBA23C4B0F200E22122 /* YYTextMagnifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextMagnifier.m; sourceTree = "<group>"; };
+		DE119CBB23C4B0F200E22122 /* YYTextLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextLayout.h; sourceTree = "<group>"; };
+		DE119CBC23C4B0F200E22122 /* YYTextKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextKeyboardManager.h; sourceTree = "<group>"; };
+		DE119CBD23C4B0F200E22122 /* YYTextContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextContainerView.m; sourceTree = "<group>"; };
+		DE119CBE23C4B0F200E22122 /* YYTextEffectWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextEffectWindow.m; sourceTree = "<group>"; };
+		DE119CBF23C4B0F200E22122 /* YYTextDebugOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextDebugOption.h; sourceTree = "<group>"; };
+		DE119CC023C4B0F200E22122 /* YYTextInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextInput.m; sourceTree = "<group>"; };
+		DE119CC123C4B0F200E22122 /* YYTextLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextLayout.m; sourceTree = "<group>"; };
+		DE119CC223C4B0F200E22122 /* YYTextMagnifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextMagnifier.h; sourceTree = "<group>"; };
+		DE119CC323C4B0F200E22122 /* YYTextLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextLine.m; sourceTree = "<group>"; };
+		DE119CC423C4B0F200E22122 /* YYTextSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextSelectionView.m; sourceTree = "<group>"; };
+		DE119CC523C4B0F200E22122 /* YYTextEffectWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextEffectWindow.h; sourceTree = "<group>"; };
+		DE119CC623C4B0F200E22122 /* YYTextContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextContainerView.h; sourceTree = "<group>"; };
+		DE119CC723C4B0F200E22122 /* YYTextKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextKeyboardManager.m; sourceTree = "<group>"; };
+		DE119CC823C4B0F200E22122 /* YYTextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextInput.h; sourceTree = "<group>"; };
+		DE119CC923C4B0F200E22122 /* YYTextDebugOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextDebugOption.m; sourceTree = "<group>"; };
+		DE119CCA23C4B0F200E22122 /* YYLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYLabel.m; sourceTree = "<group>"; };
+		DE119CCB23C4B0F200E22122 /* YYTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextView.h; sourceTree = "<group>"; };
+		DE119CCD23C4B0F200E22122 /* YYTextAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextAttribute.h; sourceTree = "<group>"; };
+		DE119CCE23C4B0F200E22122 /* YYTextRunDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextRunDelegate.m; sourceTree = "<group>"; };
+		DE119CCF23C4B0F200E22122 /* YYTextParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextParser.m; sourceTree = "<group>"; };
+		DE119CD023C4B0F200E22122 /* YYTextRubyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextRubyAnnotation.h; sourceTree = "<group>"; };
+		DE119CD123C4B0F200E22122 /* YYTextArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextArchiver.h; sourceTree = "<group>"; };
+		DE119CD223C4B0F200E22122 /* YYTextRunDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextRunDelegate.h; sourceTree = "<group>"; };
+		DE119CD323C4B0F200E22122 /* YYTextAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextAttribute.m; sourceTree = "<group>"; };
+		DE119CD423C4B0F200E22122 /* YYTextParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextParser.h; sourceTree = "<group>"; };
+		DE119CD523C4B0F200E22122 /* YYTextArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextArchiver.m; sourceTree = "<group>"; };
+		DE119CD623C4B0F200E22122 /* YYTextRubyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextRubyAnnotation.m; sourceTree = "<group>"; };
+		DE119CD723C4B0F200E22122 /* YYLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYLabel.h; sourceTree = "<group>"; };
+		DE119CD923C4B0F200E22122 /* YYTextUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextUtilities.m; sourceTree = "<group>"; };
+		DE119CDA23C4B0F200E22122 /* NSParagraphStyle+YYText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSParagraphStyle+YYText.m"; sourceTree = "<group>"; };
+		DE119CDB23C4B0F200E22122 /* NSAttributedString+YYText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+YYText.m"; sourceTree = "<group>"; };
+		DE119CDC23C4B0F200E22122 /* UIView+YYText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YYText.h"; sourceTree = "<group>"; };
+		DE119CDD23C4B0F200E22122 /* YYTextTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextTransaction.h; sourceTree = "<group>"; };
+		DE119CDE23C4B0F200E22122 /* UIPasteboard+YYText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPasteboard+YYText.m"; sourceTree = "<group>"; };
+		DE119CDF23C4B0F200E22122 /* YYTextWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextWeakProxy.h; sourceTree = "<group>"; };
+		DE119CE023C4B0F200E22122 /* YYTextAsyncLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextAsyncLayer.h; sourceTree = "<group>"; };
+		DE119CE123C4B0F200E22122 /* YYTextUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextUtilities.h; sourceTree = "<group>"; };
+		DE119CE223C4B0F200E22122 /* YYTextTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextTransaction.m; sourceTree = "<group>"; };
+		DE119CE323C4B0F200E22122 /* UIView+YYText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YYText.m"; sourceTree = "<group>"; };
+		DE119CE423C4B0F200E22122 /* NSAttributedString+YYText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+YYText.h"; sourceTree = "<group>"; };
+		DE119CE523C4B0F200E22122 /* NSParagraphStyle+YYText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSParagraphStyle+YYText.h"; sourceTree = "<group>"; };
+		DE119CE623C4B0F200E22122 /* YYTextAsyncLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextAsyncLayer.m; sourceTree = "<group>"; };
+		DE119CE723C4B0F200E22122 /* YYTextWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextWeakProxy.m; sourceTree = "<group>"; };
+		DE119CE823C4B0F200E22122 /* UIPasteboard+YYText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPasteboard+YYText.h"; sourceTree = "<group>"; };
+		DE119D0123C5E65800E22122 /* THVideoRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THVideoRequestManager.swift; sourceTree = "<group>"; };
+		DE119D0323C5E8F300E22122 /* THVideoAuthInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THVideoAuthInfoModel.swift; sourceTree = "<group>"; };
+		DE119D0523C6010800E22122 /* THCommentNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THCommentNewsModel.swift; sourceTree = "<group>"; };
+		DE4A5E2B23CB0FC500BD651B /* THAccountSafeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = THAccountSafeVC.swift; sourceTree = "<group>"; };
+		DE4A5E2C23CB0FC600BD651B /* THSettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = THSettingVC.swift; sourceTree = "<group>"; };
+		DE4A5E2F23CB443300BD651B /* THVideoCatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THVideoCatModel.swift; sourceTree = "<group>"; };
+		DE4A5E3123CEFA5700BD651B /* bgm.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bgm.json; sourceTree = "<group>"; };
+		DE4C2F4F23BB59F2003D18CF /* THFansModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THFansModel.swift; sourceTree = "<group>"; };
+		DE4C2F5123BB5E23003D18CF /* THDialogNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THDialogNewsModel.swift; sourceTree = "<group>"; };
+		DE4C2F5323BB75B5003D18CF /* THPraiseNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPraiseNewsModel.swift; sourceTree = "<group>"; };
 		DE59FDBD238FE85A009C9687 /* THRoughCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THRoughCell.swift; sourceTree = "<group>"; };
 		DE59FDBF238FEEA4009C9687 /* THPersonalInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPersonalInfoVC.swift; sourceTree = "<group>"; };
 		DE59FDC1238FF63D009C9687 /* THIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THIconCell.swift; sourceTree = "<group>"; };
-		DE59FDC52390EF1E009C9687 /* THCommentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THCommentVC.swift; sourceTree = "<group>"; };
-		DE59FDC72390EF53009C9687 /* THLikeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THLikeVC.swift; sourceTree = "<group>"; };
+		DE59FDC52390EF1E009C9687 /* THCommentNewsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THCommentNewsVC.swift; sourceTree = "<group>"; };
+		DE59FDC72390EF53009C9687 /* THPraiseNewsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPraiseNewsVC.swift; sourceTree = "<group>"; };
 		DE59FDC92390EFBD009C9687 /* THCommentNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THCommentNewsCell.swift; sourceTree = "<group>"; };
 		DE59FDCB2390F456009C9687 /* THSystemNewsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THSystemNewsVC.swift; sourceTree = "<group>"; };
 		DE59FDCD2390FCC6009C9687 /* THSystemDialogCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THSystemDialogCell.swift; sourceTree = "<group>"; };
@@ -264,7 +380,6 @@
 		DE9289AD238E74480044D54D /* THMyDynamicVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THMyDynamicVC.swift; sourceTree = "<group>"; };
 		DE9289AF238E74760044D54D /* THRoughVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THRoughVC.swift; sourceTree = "<group>"; };
 		DE9289B1238E748C0044D54D /* THMyNewsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THMyNewsVC.swift; sourceTree = "<group>"; };
-		DE9289B3238E79610044D54D /* THSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THSettingVC.swift; sourceTree = "<group>"; };
 		DE9289B5238E7B1A0044D54D /* THBaseTableViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THBaseTableViewVC.swift; sourceTree = "<group>"; };
 		DE9289B9238E80CE0044D54D /* THSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THSwitchCell.swift; sourceTree = "<group>"; };
 		DE9289BB238E84990044D54D /* LocalStoreUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStoreUtil.swift; sourceTree = "<group>"; };
@@ -379,7 +494,7 @@
 		DE09EACB2381075800E70EB4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DE09EACA2381075800E70EB4 /* BallRecord.app */,
+				DE09EACA2381075800E70EB4 /* 球志.app */,
 				DE09EAE02381075900E70EB4 /* BallRecordTests.xctest */,
 				DE09EAEB2381075900E70EB4 /* BallRecordUITests.xctest */,
 			);
@@ -397,10 +512,12 @@
 				DE09EB03238108EF00E70EB4 /* Util */,
 				DE09EAD32381075800E70EB4 /* Main.storyboard */,
 				DECF1902238170ED0077D102 /* BridgingHeader.h */,
+				DE4A5E3123CEFA5700BD651B /* bgm.json */,
 				DE09EAD62381075900E70EB4 /* Assets.xcassets */,
 				DE09EAD82381075900E70EB4 /* LaunchScreen.storyboard */,
 				DE09EADB2381075900E70EB4 /* Info.plist */,
 				DE59FDF8239751E3009C9687 /* shop.plist */,
+				DE119CA423C2D23D00E22122 /* Citys.plist */,
 			);
 			path = BallRecord;
 			sourceTree = "<group>";
@@ -442,6 +559,7 @@
 				DE09EB012381085600E70EB4 /* THBaseNavVC.swift */,
 				DE09EB1023810FE800E70EB4 /* THBaseVC.swift */,
 				DE9289B5238E7B1A0044D54D /* THBaseTableViewVC.swift */,
+				DE119C9823BE01D700E22122 /* THBaseWebViewVC.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -463,9 +581,11 @@
 				DE59FDD92395034B009C9687 /* OC */,
 				DE09EB09238109CC00E70EB4 /* ColorExt.swift */,
 				DE09EB0B238109EF00E70EB4 /* StringExt.swift */,
+				DE119CA223C1DF3B00E22122 /* DictExt.swift */,
 				DE9289AB238E4E950044D54D /* ViewExt.swift */,
 				DE59FDF42396663E009C9687 /* ButtonExt.swift */,
 				DE59FE81239CEF0E009C9687 /* ImageExt.swift */,
+				DE119C9A23BE1B3200E22122 /* ImageViewExt.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -486,8 +606,8 @@
 			children = (
 				DE6514A123B9D5EC001A8AF5 /* Model */,
 				DECF18F923815BDB0077D102 /* Manager */,
-				DECF18FB23815BDB0077D102 /* View */,
 				DECF18FA23815BDB0077D102 /* ViewController */,
+				DECF18FB23815BDB0077D102 /* View */,
 			);
 			path = Playground;
 			sourceTree = "<group>";
@@ -495,10 +615,10 @@
 		DE09EB0F23810FC400E70EB4 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
-				DE59FE95239DF90B009C9687 /* Model */,
+				DECF18F723815BC60077D102 /* ViewController */,
 				DECF18F823815BC60077D102 /* Manager */,
 				DECF18F623815BC60077D102 /* View */,
-				DECF18F723815BC60077D102 /* ViewController */,
+				DE59FE95239DF90B009C9687 /* Model */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -513,11 +633,89 @@
 			path = LoginVC;
 			sourceTree = "<group>";
 		};
-		DE59FDD323937CC2009C9687 /* Common */ = {
+		DE119CB423C4B0F200E22122 /* YYText */ = {
 			isa = PBXGroup;
 			children = (
-				DEE9276023AA325900BBD8A1 /* Ruler */,
-				DE59FDF623966791009C9687 /* THFlowLayout.swift */,
+				DE119CB723C4B0F200E22122 /* Component */,
+				DE119CCC23C4B0F200E22122 /* String */,
+				DE119CD823C4B0F200E22122 /* Utility */,
+				DE119CD723C4B0F200E22122 /* YYLabel.h */,
+				DE119CCA23C4B0F200E22122 /* YYLabel.m */,
+				DE119CB523C4B0F200E22122 /* YYText.h */,
+				DE119CCB23C4B0F200E22122 /* YYTextView.h */,
+				DE119CB623C4B0F200E22122 /* YYTextView.m */,
+			);
+			path = YYText;
+			sourceTree = "<group>";
+		};
+		DE119CB723C4B0F200E22122 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				DE119CB823C4B0F200E22122 /* YYTextSelectionView.h */,
+				DE119CB923C4B0F200E22122 /* YYTextLine.h */,
+				DE119CBA23C4B0F200E22122 /* YYTextMagnifier.m */,
+				DE119CBB23C4B0F200E22122 /* YYTextLayout.h */,
+				DE119CBC23C4B0F200E22122 /* YYTextKeyboardManager.h */,
+				DE119CBD23C4B0F200E22122 /* YYTextContainerView.m */,
+				DE119CBE23C4B0F200E22122 /* YYTextEffectWindow.m */,
+				DE119CBF23C4B0F200E22122 /* YYTextDebugOption.h */,
+				DE119CC023C4B0F200E22122 /* YYTextInput.m */,
+				DE119CC123C4B0F200E22122 /* YYTextLayout.m */,
+				DE119CC223C4B0F200E22122 /* YYTextMagnifier.h */,
+				DE119CC323C4B0F200E22122 /* YYTextLine.m */,
+				DE119CC423C4B0F200E22122 /* YYTextSelectionView.m */,
+				DE119CC523C4B0F200E22122 /* YYTextEffectWindow.h */,
+				DE119CC623C4B0F200E22122 /* YYTextContainerView.h */,
+				DE119CC723C4B0F200E22122 /* YYTextKeyboardManager.m */,
+				DE119CC823C4B0F200E22122 /* YYTextInput.h */,
+				DE119CC923C4B0F200E22122 /* YYTextDebugOption.m */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		DE119CCC23C4B0F200E22122 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				DE119CCD23C4B0F200E22122 /* YYTextAttribute.h */,
+				DE119CCE23C4B0F200E22122 /* YYTextRunDelegate.m */,
+				DE119CCF23C4B0F200E22122 /* YYTextParser.m */,
+				DE119CD023C4B0F200E22122 /* YYTextRubyAnnotation.h */,
+				DE119CD123C4B0F200E22122 /* YYTextArchiver.h */,
+				DE119CD223C4B0F200E22122 /* YYTextRunDelegate.h */,
+				DE119CD323C4B0F200E22122 /* YYTextAttribute.m */,
+				DE119CD423C4B0F200E22122 /* YYTextParser.h */,
+				DE119CD523C4B0F200E22122 /* YYTextArchiver.m */,
+				DE119CD623C4B0F200E22122 /* YYTextRubyAnnotation.m */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
+		DE119CD823C4B0F200E22122 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				DE119CD923C4B0F200E22122 /* YYTextUtilities.m */,
+				DE119CDA23C4B0F200E22122 /* NSParagraphStyle+YYText.m */,
+				DE119CDB23C4B0F200E22122 /* NSAttributedString+YYText.m */,
+				DE119CDC23C4B0F200E22122 /* UIView+YYText.h */,
+				DE119CDD23C4B0F200E22122 /* YYTextTransaction.h */,
+				DE119CDE23C4B0F200E22122 /* UIPasteboard+YYText.m */,
+				DE119CDF23C4B0F200E22122 /* YYTextWeakProxy.h */,
+				DE119CE023C4B0F200E22122 /* YYTextAsyncLayer.h */,
+				DE119CE123C4B0F200E22122 /* YYTextUtilities.h */,
+				DE119CE223C4B0F200E22122 /* YYTextTransaction.m */,
+				DE119CE323C4B0F200E22122 /* UIView+YYText.m */,
+				DE119CE423C4B0F200E22122 /* NSAttributedString+YYText.h */,
+				DE119CE523C4B0F200E22122 /* NSParagraphStyle+YYText.h */,
+				DE119CE623C4B0F200E22122 /* YYTextAsyncLayer.m */,
+				DE119CE723C4B0F200E22122 /* YYTextWeakProxy.m */,
+				DE119CE823C4B0F200E22122 /* UIPasteboard+YYText.h */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		DE119D0723C81F9200E22122 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
 				DE59FDD423937D30009C9687 /* THShareSheetView.swift */,
 				DE59FDD62394AFB6009C9687 /* THShareSheetView.xib */,
 				DE59FE0A239A545D009C9687 /* THBindAlert.swift */,
@@ -528,7 +726,18 @@
 				DEE9275A23AA06E200BBD8A1 /* THSelectMusicAlert.xib */,
 				DEE9275C23AA0DE400BBD8A1 /* THMusicCell.swift */,
 				DEE9275E23AA12E000BBD8A1 /* THMusicTypeCell.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		DE59FDD323937CC2009C9687 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				DE119D0723C81F9200E22122 /* Alert */,
+				DEE9276023AA325900BBD8A1 /* Ruler */,
+				DE59FDF623966791009C9687 /* THFlowLayout.swift */,
 				DEE9276823AC729A00BBD8A1 /* QRGenerator.swift */,
+				DE119CA823C309BB00E22122 /* THLocationManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -546,6 +755,12 @@
 			isa = PBXGroup;
 			children = (
 				DE59FE96239DF91F009C9687 /* THUserModel.swift */,
+				DE119CA023C1DBF500E22122 /* THUserInfoModel.swift */,
+				DE4C2F4F23BB59F2003D18CF /* THFansModel.swift */,
+				DE4C2F5123BB5E23003D18CF /* THDialogNewsModel.swift */,
+				DE4C2F5323BB75B5003D18CF /* THPraiseNewsModel.swift */,
+				DE119D0523C6010800E22122 /* THCommentNewsModel.swift */,
+				DE119CAE23C4830C00E22122 /* THRecordModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -602,6 +817,7 @@
 		DECF18EF23811D700077D102 /* Vonder */ = {
 			isa = PBXGroup;
 			children = (
+				DE119CB423C4B0F200E22122 /* YYText */,
 				DE65148C23AF2184001A8AF5 /* ExtAudioConverter */,
 				DEE9276A23AC77FD00BBD8A1 /* WAVideoBox */,
 			);
@@ -634,6 +850,7 @@
 				DE59FDFA2397628F009C9687 /* THBannerView.swift */,
 				DE59FE0023978AB3009C9687 /* THHomeCollectionCell.swift */,
 				DE59FEB723A1192B009C9687 /* THReplyListView.swift */,
+				DE119C9E23BF680100E22122 /* THReplyLZCell.swift */,
 				DE59FEB923A23359009C9687 /* THInputView.swift */,
 			);
 			path = View;
@@ -697,16 +914,20 @@
 		DECF18F723815BC60077D102 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DE4A5E2B23CB0FC500BD651B /* THAccountSafeVC.swift */,
+				DE4A5E2C23CB0FC600BD651B /* THSettingVC.swift */,
 				DE09EB162381102A00E70EB4 /* THMineVC.swift */,
-				DE9289B3238E79610044D54D /* THSettingVC.swift */,
-				DE59FDBB238FC33C009C9687 /* THAccountSafeVC.swift */,
 				DE59FDBF238FEEA4009C9687 /* THPersonalInfoVC.swift */,
+				DE119CA623C2D30900E22122 /* THCitySelectVC.swift */,
 				DE9289AD238E74480044D54D /* THMyDynamicVC.swift */,
 				DE9289AF238E74760044D54D /* THRoughVC.swift */,
 				DE9289B1238E748C0044D54D /* THMyNewsVC.swift */,
-				DE59FDC52390EF1E009C9687 /* THCommentVC.swift */,
+				DE59FDC52390EF1E009C9687 /* THCommentNewsVC.swift */,
+				DE59FDC72390EF53009C9687 /* THPraiseNewsVC.swift */,
 				DE59FDCB2390F456009C9687 /* THSystemNewsVC.swift */,
-				DE59FDC72390EF53009C9687 /* THLikeVC.swift */,
+				DE119CAA23C4380E00E22122 /* THPlayRecordVC.swift */,
+				DE119CB223C4906D00E22122 /* THRecordPublishVC.swift */,
+				DE119CB023C4863800E22122 /* THMyCollectVC.swift */,
 				DE59FDD1239113B6009C9687 /* THFeedBackVC.swift */,
 				DE9289A7238E4AF40044D54D /* THMyFocusVC.swift */,
 				DE59FE9D239E3308009C9687 /* THAboutVC.swift */,
@@ -766,6 +987,7 @@
 			children = (
 				DECF18FF238163D10077D102 /* THLoginController.swift */,
 				DE59FE98239E2AE4009C9687 /* THDynamicController.swift */,
+				DE119CAC23C45CA400E22122 /* THCommentController.swift */,
 				DEE9276323AA53C500BBD8A1 /* THVideoEditController.swift */,
 			);
 			path = Controller;
@@ -816,6 +1038,8 @@
 			isa = PBXGroup;
 			children = (
 				DEE9276623AB28FE00BBD8A1 /* THVideoDraftModel.swift */,
+				DE119D0323C5E8F300E22122 /* THVideoAuthInfoModel.swift */,
+				DE4A5E2F23CB443300BD651B /* THVideoCatModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -867,6 +1091,7 @@
 			children = (
 				DEE9279623AC9C1F00BBD8A1 /* THVideoCacheManager.swift */,
 				DE6514B023BA0AA7001A8AF5 /* THAliVideoUploader.swift */,
+				DE119D0123C5E65800E22122 /* THVideoRequestManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -891,7 +1116,7 @@
 			);
 			name = BallRecord;
 			productName = BallRecord;
-			productReference = DE09EACA2381075800E70EB4 /* BallRecord.app */;
+			productReference = DE09EACA2381075800E70EB4 /* 球志.app */;
 			productType = "com.apple.product-type.application";
 		};
 		DE09EADF2381075900E70EB4 /* BallRecordTests */ = {
@@ -980,6 +1205,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE59FDF9239751E3009C9687 /* shop.plist in Resources */,
+				DE4A5E3223CEFA5700BD651B /* bgm.json in Resources */,
+				DE119CA523C2D23D00E22122 /* Citys.plist in Resources */,
 				DE09EADA2381075900E70EB4 /* LaunchScreen.storyboard in Resources */,
 				DEE9275B23AA06E200BBD8A1 /* THSelectMusicAlert.xib in Resources */,
 				DE59FDEC23951BC6009C9687 /* THResetPasswordVC.xib in Resources */,
@@ -1081,45 +1308,67 @@
 				DE59FDEB23951BC6009C9687 /* THResetPasswordVC.swift in Sources */,
 				DE59FDFB2397628F009C9687 /* THBannerView.swift in Sources */,
 				DE9289AA238E4B940044D54D /* THFansCell.swift in Sources */,
+				DE119D0623C6010800E22122 /* THCommentNewsModel.swift in Sources */,
 				DE9289A0238D4D900044D54D /* THCommentHeaderCell.swift in Sources */,
 				DE92899C238D3F390044D54D /* THVideoDetailVC.swift in Sources */,
 				DEE9275323A9038600BBD8A1 /* THVideoEditVC.swift in Sources */,
 				DEE9278A23AC77FD00BBD8A1 /* WAAVSEGearboxCommand.m in Sources */,
 				DE59FE052397D28F009C9687 /* THPlaygroundCell.swift in Sources */,
+				DE119CFE23C4B0F200E22122 /* UIView+YYText.m in Sources */,
 				DE59FEAE239F94AC009C9687 /* CodeView.swift in Sources */,
 				DE6514A023B5AC63001A8AF5 /* THDateSelectView.swift in Sources */,
 				DEE9276423AA53C500BBD8A1 /* THVideoEditController.swift in Sources */,
 				DE9289AC238E4E950044D54D /* ViewExt.swift in Sources */,
 				DE59FE09239A426A009C9687 /* THPlaygroundDetailCell.swift in Sources */,
+				DE119CA923C309BB00E22122 /* THLocationManager.swift in Sources */,
 				DEE9278F23AC77FD00BBD8A1 /* WAAVSEExportCommand.m in Sources */,
 				DE59FE92239DED29009C9687 /* THPlaygroundManager.swift in Sources */,
 				DE59FDF323966428009C9687 /* THCityCell.swift in Sources */,
+				DE119CF323C4B0F200E22122 /* YYLabel.m in Sources */,
 				DE59FDF723966791009C9687 /* THFlowLayout.swift in Sources */,
+				DE4A5E3023CB443300BD651B /* THVideoCatModel.swift in Sources */,
 				DE9289BC238E84990044D54D /* LocalStoreUtil.swift in Sources */,
 				DE59FE82239CEF0E009C9687 /* ImageExt.swift in Sources */,
 				DE09EB0A238109CC00E70EB4 /* ColorExt.swift in Sources */,
 				DE59FEBA23A23359009C9687 /* THInputView.swift in Sources */,
+				DE119D0023C4B0F200E22122 /* YYTextWeakProxy.m in Sources */,
+				DE119CF823C4B0F200E22122 /* YYTextRubyAnnotation.m in Sources */,
+				DE119CAB23C4380E00E22122 /* THPlayRecordVC.swift in Sources */,
 				DEE9279023AC77FD00BBD8A1 /* WAAVSEReplaceSoundCommand.m in Sources */,
 				DE92899E238D44360044D54D /* THCommentCell.swift in Sources */,
-				DE59FDC62390EF1E009C9687 /* THCommentVC.swift in Sources */,
+				DE59FDC62390EF1E009C9687 /* THCommentNewsVC.swift in Sources */,
 				DE6514A723B9D7CD001A8AF5 /* THPGDetailModel.swift in Sources */,
 				DEE9279323AC77FD00BBD8A1 /* WAAVSEComposition.m in Sources */,
 				DEE9274C23A8C79700BBD8A1 /* THVideoCatVC.swift in Sources */,
 				DEE9278B23AC77FD00BBD8A1 /* WAAVSEGearboxCommandModel.m in Sources */,
+				DE119CF123C4B0F200E22122 /* YYTextKeyboardManager.m in Sources */,
 				DE59FEA0239E5199009C9687 /* THFindPageModel.swift in Sources */,
+				DE119CF923C4B0F200E22122 /* YYTextUtilities.m in Sources */,
 				DE09EB002381083900E70EB4 /* THMainTabbarVC.swift in Sources */,
+				DE119D0223C5E65800E22122 /* THVideoRequestManager.swift in Sources */,
 				DE59FDCE2390FCC6009C9687 /* THSystemDialogCell.swift in Sources */,
 				DE59FEAD239F94AC009C9687 /* AsunBasicAttributes.swift in Sources */,
+				DE119CFD23C4B0F200E22122 /* YYTextTransaction.m in Sources */,
 				DE09EB172381102A00E70EB4 /* THMineVC.swift in Sources */,
 				DE59FEB823A1192B009C9687 /* THReplyListView.swift in Sources */,
+				DE119CEB23C4B0F200E22122 /* YYTextContainerView.m in Sources */,
+				DE119CFC23C4B0F200E22122 /* UIPasteboard+YYText.m in Sources */,
 				DE59FE90239DE9D7009C9687 /* THLoginRequestManager.swift in Sources */,
 				DE09EACE2381075800E70EB4 /* AppDelegate.swift in Sources */,
 				DE59FDD523937D30009C9687 /* THShareSheetView.swift in Sources */,
+				DE119CF623C4B0F200E22122 /* YYTextAttribute.m in Sources */,
+				DE119CA123C1DBF500E22122 /* THUserInfoModel.swift in Sources */,
 				DEE9279123AC77FD00BBD8A1 /* WAAVSERangeCommand.m in Sources */,
-				DE59FDC82390EF53009C9687 /* THLikeVC.swift in Sources */,
+				DE119CFB23C4B0F200E22122 /* NSAttributedString+YYText.m in Sources */,
+				DE119CA723C2D30900E22122 /* THCitySelectVC.swift in Sources */,
+				DE119C9923BE01D700E22122 /* THBaseWebViewVC.swift in Sources */,
+				DE59FDC82390EF53009C9687 /* THPraiseNewsVC.swift in Sources */,
+				DE119CFF23C4B0F200E22122 /* YYTextAsyncLayer.m in Sources */,
 				DE9289AE238E74480044D54D /* THMyDynamicVC.swift in Sources */,
 				DE59FDD2239113B6009C9687 /* THFeedBackVC.swift in Sources */,
+				DE119CB123C4863800E22122 /* THMyCollectVC.swift in Sources */,
 				DEE9276923AC729A00BBD8A1 /* QRGenerator.swift in Sources */,
+				DE119CB323C4906D00E22122 /* THRecordPublishVC.swift in Sources */,
 				DE59FE94239DF8F8009C9687 /* THMineRequestManager.swift in Sources */,
 				DE09EB0C238109EF00E70EB4 /* StringExt.swift in Sources */,
 				DEE9279423AC77FD00BBD8A1 /* WAAVSEVideoMixCommand.m in Sources */,
@@ -1130,19 +1379,26 @@
 				DEE9276723AB28FE00BBD8A1 /* THVideoDraftModel.swift in Sources */,
 				DEE9274F23A8CA2900BBD8A1 /* THVideoPartView.swift in Sources */,
 				DE09EB152381101800E70EB4 /* THPlaygroundVC.swift in Sources */,
+				DE119CA323C1DF3B00E22122 /* DictExt.swift in Sources */,
+				DE119CF223C4B0F200E22122 /* YYTextDebugOption.m in Sources */,
 				DE59FE9E239E3308009C9687 /* THAboutVC.swift in Sources */,
 				DE59FE07239A029E009C9687 /* THPlaygroundDetailVC.swift in Sources */,
 				DE9289BE238E89C30044D54D /* THCommonCell.swift in Sources */,
+				DE119CF023C4B0F200E22122 /* YYTextSelectionView.m in Sources */,
 				DE59FE0223978AB3009C9687 /* THHomeCollectionCell.swift in Sources */,
 				DEE9275923AA06D800BBD8A1 /* THSelectMusicAlert.swift in Sources */,
 				DE59FDCC2390F456009C9687 /* THSystemNewsVC.swift in Sources */,
+				DE119CE923C4B0F200E22122 /* YYTextView.m in Sources */,
 				DECF18FD23815BFD0077D102 /* THFindRequestManager.swift in Sources */,
 				DE9289B6238E7B1A0044D54D /* THBaseTableViewVC.swift in Sources */,
-				DE59FDBC238FC33C009C9687 /* THAccountSafeVC.swift in Sources */,
+				DE119D0423C5E8F300E22122 /* THVideoAuthInfoModel.swift in Sources */,
+				DE119CF523C4B0F200E22122 /* YYTextParser.m in Sources */,
 				DEE9275D23AA0DE400BBD8A1 /* THMusicCell.swift in Sources */,
 				DEE9279723AC9C1F00BBD8A1 /* THVideoCacheManager.swift in Sources */,
 				DE6514A923B9D914001A8AF5 /* THPGDynamicListModel.swift in Sources */,
+				DE119CED23C4B0F200E22122 /* YYTextInput.m in Sources */,
 				DEE9278D23AC77FD00BBD8A1 /* WAAVSEExtractSoundCommand.m in Sources */,
+				DE119CEC23C4B0F200E22122 /* YYTextEffectWindow.m in Sources */,
 				DE6514A523B9D723001A8AF5 /* THPGListModel.swift in Sources */,
 				DEE9279223AC77FD00BBD8A1 /* WAAVSEDubbedCommand.m in Sources */,
 				DE59FDDF239509A9009C9687 /* THLoginVC.swift in Sources */,
@@ -1150,25 +1406,34 @@
 				DE09EB022381085600E70EB4 /* THBaseNavVC.swift in Sources */,
 				DECF18EE238117AE0077D102 /* THBaseNetworkManager.swift in Sources */,
 				DE59FEA4239E5433009C9687 /* THReplyListModel.swift in Sources */,
+				DE4C2F5223BB5E23003D18CF /* THDialogNewsModel.swift in Sources */,
 				DE59FDDC2395035C009C9687 /* UIView+Additions.m in Sources */,
+				DE119CAF23C4830C00E22122 /* THRecordModel.swift in Sources */,
+				DE119C9F23BF680100E22122 /* THReplyLZCell.swift in Sources */,
 				DE59FEB3239FC470009C9687 /* THRegisterVC.swift in Sources */,
 				DE59FDE723951BB1009C9687 /* THInputCodeVC.swift in Sources */,
 				DE59FDBE238FE85A009C9687 /* THRoughCell.swift in Sources */,
 				DE65149723B22760001A8AF5 /* NotificationName.swift in Sources */,
 				DE65149323AF2184001A8AF5 /* ExtAudioConverter.m in Sources */,
 				DE59FDC2238FF63D009C9687 /* THIconCell.swift in Sources */,
-				DE9289B4238E79610044D54D /* THSettingVC.swift in Sources */,
+				DE4A5E2E23CB0FC600BD651B /* THSettingVC.swift in Sources */,
 				DEE9275123A8E3EC00BBD8A1 /* THVideoPartCell.swift in Sources */,
+				DE4C2F5423BB75B5003D18CF /* THPraiseNewsModel.swift in Sources */,
 				DE6514B123BA0AA7001A8AF5 /* THAliVideoUploader.swift in Sources */,
+				DE119CEE23C4B0F200E22122 /* YYTextLayout.m in Sources */,
 				DE59FEB0239F987A009C9687 /* THResetPwdResultVC.swift in Sources */,
 				DE9289A6238E1F110044D54D /* THMineCell.swift in Sources */,
+				DE119C9B23BE1B3200E22122 /* ImageViewExt.swift in Sources */,
 				DE09EB1323810FFF00E70EB4 /* THFindVC.swift in Sources */,
+				DE4C2F5023BB59F2003D18CF /* THFansModel.swift in Sources */,
 				DEE9276223AA329C00BBD8A1 /* THIndicateView.swift in Sources */,
 				DE59FDE323951B9B009C9687 /* THInputPhoneVC.swift in Sources */,
 				DEE9272B23A33B3200BBD8A1 /* THPublishDynamicVC.swift in Sources */,
 				DEE9272D23A7AFE700BBD8A1 /* THPlaygroundVideoCell.swift in Sources */,
 				DEE9275F23AA12E000BBD8A1 /* THMusicTypeCell.swift in Sources */,
 				DE9289B0238E74760044D54D /* THRoughVC.swift in Sources */,
+				DE119CF423C4B0F200E22122 /* YYTextRunDelegate.m in Sources */,
+				DE119CF723C4B0F200E22122 /* YYTextArchiver.m in Sources */,
 				DE59FE0B239A545D009C9687 /* THBindAlert.swift in Sources */,
 				DE6514AF23BA031E001A8AF5 /* THPersonalHeaderCell.swift in Sources */,
 				DEE9278723AC77FD00BBD8A1 /* WAVideoBox.m in Sources */,
@@ -1181,13 +1446,18 @@
 				DE59FEA2239E5301009C9687 /* THVideoDetailModel.swift in Sources */,
 				DE59FDD02390FCD1009C9687 /* THMineDialogCell.swift in Sources */,
 				DE59FE99239E2AE4009C9687 /* THDynamicController.swift in Sources */,
+				DE119CAD23C45CA400E22122 /* THCommentController.swift in Sources */,
 				DE9289BA238E80CE0044D54D /* THSwitchCell.swift in Sources */,
+				DE119CFA23C4B0F200E22122 /* NSParagraphStyle+YYText.m in Sources */,
 				DE65149E23B5A985001A8AF5 /* SweetRuler.swift in Sources */,
+				DE119CEF23C4B0F200E22122 /* YYTextLine.m in Sources */,
 				DE6514A323B9D601001A8AF5 /* THCityListModel.swift in Sources */,
 				DE9289A8238E4AF40044D54D /* THMyFocusVC.swift in Sources */,
 				DE09EB1123810FE800E70EB4 /* THBaseVC.swift in Sources */,
+				DE4A5E2D23CB0FC600BD651B /* THAccountSafeVC.swift in Sources */,
 				DE6514AD23B9EA89001A8AF5 /* THInfoEditCell.swift in Sources */,
 				DE59FDC0238FEEA4009C9687 /* THPersonalInfoVC.swift in Sources */,
+				DE119CEA23C4B0F200E22122 /* YYTextMagnifier.m in Sources */,
 				DE59FDCA2390EFBD009C9687 /* THCommentNewsCell.swift in Sources */,
 				DE6514AB23B9E56B001A8AF5 /* THBGMListModel.swift in Sources */,
 				DE92899A238D16470044D54D /* THVideoCell.swift in Sources */,
@@ -1364,8 +1634,9 @@
 			baseConfigurationReference = 3A5CC1A05F23657EB37BE0F3 /* Pods-BallRecord.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HZHJKZ6BK5;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = SU739B9KZ3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BallRecord/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1377,8 +1648,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BallRecord/Vonder/ExtAudioConverter/Lame",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pep.spokenenglish;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cool.qiuzhi;
+				PRODUCT_NAME = "球志";
+				PROVISIONING_PROFILE_SPECIFIER = qiuzhi_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT}/BridgingHeader.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1390,8 +1663,9 @@
 			baseConfigurationReference = F776B969425A6A538F96DC78 /* Pods-BallRecord.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HZHJKZ6BK5;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = SU739B9KZ3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BallRecord/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1403,8 +1677,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BallRecord/Vonder/ExtAudioConverter/Lame",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pep.spokenenglish;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cool.qiuzhi;
+				PRODUCT_NAME = "球志";
+				PROVISIONING_PROFILE_SPECIFIER = qiuzhi_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT}/BridgingHeader.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

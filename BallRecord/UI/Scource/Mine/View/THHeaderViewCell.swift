@@ -34,11 +34,16 @@ class THHeaderViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        nameLabel.isUserInteractionEnabled = true
         nameLabel.textColor = COLOR_333333
         phoneLabel.textColor = COLOR_999999
         iconTopCos.constant = STATUS_BAR_HEIGHT + 40
         configBtnTopCos.constant = STATUS_BAR_HEIGHT + 20
+        iconView.image = placeholder_header
+        iconView.setCorner(cornerRadius: 35)
         addGesture()
+        
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -51,26 +56,40 @@ class THHeaderViewCell: UITableViewCell {
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(clickMyDynamic))
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(clickMyRough))
         let tap3 = UITapGestureRecognizer(target: self, action: #selector(clickMyNews))
-        
+        let tap4 = UITapGestureRecognizer(target: self, action: #selector(clickLogin))
         myDynamicView.addGestureRecognizer(tap1)
         myRoughView.addGestureRecognizer(tap2)
         myNewsView.addGestureRecognizer(tap3)
+        nameLabel.addGestureRecognizer(tap4)
     }
     
     @objc func clickMyDynamic() {
-        delegate?.onClickMyDynamic()
+        THLoginController.instance.pushLoginVC {
+            self.delegate?.onClickMyDynamic()
+        }
     }
     @objc func clickMyRough() {
-        delegate?.onClickMyRough()
+        THLoginController.instance.pushLoginVC {
+            self.delegate?.onClickMyRough()
+        }
     }
     @objc func clickMyNews() {
-        delegate?.onClickMyNews()
+        THLoginController.instance.pushLoginVC {
+            self.delegate?.onClickMyNews()
+        }
+    }
+    @objc func clickLogin() {
+        THLoginController.instance.pushLoginVC(hasLogin: nil)
     }
     
     @IBAction func clickMoreEvent(_ sender: Any) {
-        delegate?.onClickMoreEvent()
+        THLoginController.instance.pushLoginVC {
+            self.delegate?.onClickMoreEvent()
+        }
     }
     @IBAction func clickConfigEvent(_ sender: Any) {
-        delegate?.onClickConfigEvent()
+        THLoginController.instance.pushLoginVC {
+            self.delegate?.onClickConfigEvent()
+        }
     }
 }

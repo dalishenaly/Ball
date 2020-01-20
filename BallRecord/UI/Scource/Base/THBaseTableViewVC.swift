@@ -17,8 +17,9 @@ class THBaseTableViewVC: THBaseVC {
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 //        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.backgroundColor = UIColor.colorWithString("#F9FAFC")
-        tableView.tableFooterView = UIView()
+//        let view = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 0.5))
+//        view.backgroundColor = COLOR_LINE
+        tableView.tableFooterView = UIView(frame: CGRect.zero)//view
         tableView.tableHeaderView = UIView(frame: CGRect.zero)
         tableView.delegate = self
         tableView.dataSource = self
@@ -31,7 +32,7 @@ class THBaseTableViewVC: THBaseVC {
         configUI()
         configFrame()
         configData()
-    }
+    } 
 
 }
 
@@ -43,6 +44,7 @@ extension THBaseTableViewVC {
     @objc func configFrame() {
         tableView.snp.makeConstraints { (make) in
             make.edges.equalTo(0)
+//            make.bottom.equalTo(bottomLayoutGuide.snp.bottom)
         }
     }
     

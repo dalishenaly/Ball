@@ -22,7 +22,7 @@ class THMineVC: THBaseVC {
         tableView.estimatedRowHeight = SCREEN_HEIGHT
         tableView.rowHeight = UITableView.automaticDimension;
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundColor = UIColor.colorWithString("#F9FAFC")
+        tableView.backgroundColor = .white
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 0.1))
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 0.1))
@@ -44,13 +44,16 @@ class THMineVC: THBaseVC {
         super.viewDidLoad()
         configUI()
         configFrame()
-        configData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.navigationBar.isHidden = true
+        if THLoginController.instance.hasLogin {
+            self.configData()
+        } else {
+            tableView.reloadData()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -90,6 +93,15 @@ extension THMineVC {
     
     func configData() {
         
+        THMineRequestManager.requestPersonalInfo(param: nil, successBlock: { (result) in
+            
+            THLoginController.instance.userInfo = THUserInfoModel.yy_model(withJSON: result)
+            
+            self.tableView.reloadData()
+        }) { (error) in
+            
+        }
+
     }
 }
 
@@ -115,8 +127,24 @@ extension THMineVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let model = THLoginController.instance.userInfo
         let cell: THHeaderViewCell? = tableView.dequeueReusableCell(withIdentifier: "THHeaderViewCell") as? THHeaderViewCell
         cell?.delegate = self
+        if model != nil {
+            cell?.iconView.setImage(urlStr: model?.avatar ?? "", placeholder: placeholder_header)
+            
+            var userPhone = ""
+            if let phone = model?.phone {
+                userPhone = ""
+                for (idx, char) in phone.enumerated(){
+                    userPhone += 2 < idx && idx < 7 ? "*" : String(char)
+                }
+            }
+            cell?.nameLabel.text = model?.username
+            cell?.phoneLabel.text = userPhone
+        } else {
+            cell?.nameLabel.text = "登录/注册"
+        }
         return cell
     }
 
@@ -129,9 +157,45 @@ extension THMineVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let cellModel = cellModelArr[indexPath.row]
-        if let vc = stringToVC(vcName: cellModel.clsName) {
+        
+        if cellModel.title == "打球记录" {
+            THLoginController.instance.pushLoginVC {
+                let vc = THPlayRecordVC()
+                self.navigationPushVC(vc: vc)
+            }
+        } else if cellModel.title == "我的收藏" {
+            THLoginController.instance.pushLoginVC {
+                let vc = THMyCollectVC()
+                self.navigationPushVC(vc: vc)
+            }
+        } else if cellModel.title == "我的关注" {
+            THLoginController.instance.pushLoginVC {
+                let vc = THMyFocusVC()
+                vc.isFans = false
+                self.navigationPushVC(vc: vc)
+            }
+        } else if cellModel.title == "我的粉丝" {
+            THLoginController.instance.pushLoginVC {
+                let vc = THMyFocusVC()
+                vc.isFans = true
+                self.navigationPushVC(vc: vc)
+            }
+        } else if cellModel.title == "意见反馈" {
+            THLoginController.instance.pushLoginVC {
+                let vc = THFeedBackVC()
+                self.navigationPushVC(vc: vc)
+            }
+        } else if cellModel.title == "用户协议" {
+            let url = BASEURL + "/secret/userPolicy.html"
+            let vc = THBaseWebViewVC(urlString: url)
+            navigationPushVC(vc: vc)
+        } else if cellModel.title == "隐私政策" {
+            let url = BASEURL + "/secret/privacyPolicy.html"
+            let vc = THBaseWebViewVC(urlString: url)
+            navigationPushVC(vc: vc)
+        } else if cellModel.title == "关于我们" {
+            let vc = THAboutVC()
             navigationPushVC(vc: vc)
         }
     }
@@ -140,13 +204,11 @@ extension THMineVC: UITableViewDelegate, UITableViewDataSource {
 extension THMineVC: THHeaderViewCellDelegate {
     
     func onClickConfigEvent() {
-//        THShareSheetView.showAlert()
         let vc = THSettingVC()
         navigationPushVC(vc: vc)
     }
     
     func onClickMoreEvent() {
-//        let vc1 = THRegisterVC()
         let vc = THPersonalInfoVC()
         navigationPushVC(vc: vc)
     }

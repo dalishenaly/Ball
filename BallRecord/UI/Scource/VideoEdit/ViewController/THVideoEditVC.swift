@@ -10,13 +10,21 @@ import UIKit
 import QMUIKit
 
 class THVideoEditVC: THBaseVC {
-
+    
+    var fromDraft: Bool?
+    
+    var hasOperation: Bool = true
+    
+    var cid: String?
     let videoBox = WAVideoBox()
+    let uploader = THAliVideoUploader()
+    
     var draftModel: THVideoDraftModel?
+    var bgmArr: [THBGMTypeModel]?
     
     var tempVideoPath: String?
     
-    var voiceVolume: CGFloat = 1  //  默认0.5
+    var voiceVolume: CGFloat = 1  //  默认1
     var bgmVolume: CGFloat = 0    //  默认0
     var selectedBgmPath: String?
     
@@ -25,12 +33,14 @@ class THVideoEditVC: THBaseVC {
     
     //  背景音乐播放器
     var BGMPlayer: AVAudioPlayer?
+
     
     //  视频播放器
     lazy var player: SJVideoPlayer = {
         let player = SJVideoPlayer()
         player.showMoreItemToTopControlLayer = false
         player.rotationManager.isDisabledAutorotation = true
+        player.defaultLoadFailedControlLayer.delegate = self
         return player
     }()
     
@@ -74,22 +84,16 @@ class THVideoEditVC: THBaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        uploader.delegate = self
         configUI()
         configFrame()
         configData()
-    }
-    
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        requestBGMData()
         
-        addNotification()
         //  将视频片段进行合成
         THVideoCacheManager.INSTANCE.getVideoPathFromAllVideoPart { (videoPath: String, error: Error?) in
             print("videoPath: %@", videoPath)
-            self.videoBox.clean()
-            self.videoBox.appendVideo(byPath: videoPath)
-
+            
             self.tempVideoPath = videoPath
             let asset = SJVideoPlayerURLAsset(url: URL(fileURLWithPath: self.tempVideoPath ?? ""))
             self.player.urlAsset = asset;
@@ -97,11 +101,26 @@ class THVideoEditVC: THBaseVC {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        player.vc_viewDidAppear()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        removeNotification()
+        player.vc_viewWillDisappear()
         
-        self.BGMPlayer?.pause()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        player.vc_viewDidDisappear()
     }
 
 }
@@ -121,6 +140,18 @@ extension THVideoEditVC {
         
         addRightItem()
         configPlayer()
+        
+        self.videoEditView.videoPartView.deleteItemBlock = {
+            //  将视频片段进行合成
+            THVideoCacheManager.INSTANCE.getVideoPathFromAllVideoPart { (videoPath: String, error: Error?) in
+                print("videoPath: %@", videoPath)
+                self.hasOperation = true
+                self.tempVideoPath = videoPath
+                let asset = SJVideoPlayerURLAsset(url: URL(fileURLWithPath: self.tempVideoPath ?? ""))
+                self.player.urlAsset = asset;
+                self.player.playerVolume = Float(self.voiceVolume)
+            }
+        }
     }
     
     func configPlayer() {
@@ -134,10 +165,10 @@ extension THVideoEditVC {
         player.defaultEdgeControlLayer.bottomAdapter.reload()
         
         player.playbackObserver.playbackStatusDidChangeExeBlock = { (player: SJBaseVideoPlayer) in
-            if player.timeControlStatus == .paused {
-                self.BGMPlayer?.pause()
-            } else if player.timeControlStatus == .playing {
+            if player.timeControlStatus == .playing {
                 self.BGMPlayer?.play()
+            } else {
+                self.BGMPlayer?.stop()
             }
         }
         player.playbackObserver.currentTimeDidChangeExeBlock = { (player: SJBaseVideoPlayer) in
@@ -171,12 +202,8 @@ extension THVideoEditVC {
         
         videoEditView.frame = CGRect(x: 0, y: line.frame.maxY, width: SCREEN_WIDTH, height: view.height - line.frame.maxY)
         bgmEditView.frame = CGRect(x: 0, y: line.frame.maxY, width: SCREEN_WIDTH, height: view.height - line.frame.maxY)
-        
         bgmEditView.isHidden = true
-        
-        player.view.snp.makeConstraints { (make) in
-            make.edges.equalTo(0)
-        }
+        player.view.frame = videoView.bounds
     }
     
     func configData() {
@@ -190,6 +217,7 @@ extension THVideoEditVC {
             if model.bgmPath != "" {
                 //  预先设置bgm音乐
                 BGMPlayer = try? AVAudioPlayer(contentsOf: URL(fileURLWithPath: documentPath + "/" + model.bgmPath))
+                BGMPlayer?.delegate = self
                 BGMPlayer?.volume = Float(model.bgmVolume)
                 BGMPlayer?.prepareToPlay()
             }
@@ -199,51 +227,33 @@ extension THVideoEditVC {
             bgmEditView.bgmSlider.value = Float(model.bgmVolume)
             bgmEditView.updateUIData()
             
+            self.cid = model.cid
             self.voiceVolume = model.voiceVolume
             self.bgmVolume = model.bgmVolume
         }
         
     }
     
-    func addNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(videoPartDelete), name: NSNotification.Name(kVideoPartDeleteNotificationName), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appEnterBackGround), name: NSNotification.Name(kAppEnterBackGroundNotificationName), object: nil)
-    }
-    
-    func removeNotification() {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func appEnterBackGround() {
-        self.BGMPlayer?.pause()
-    }
-    
-    @objc func videoPartDelete() {
+    func requestBGMData() {
         
-        //  将视频片段进行合成
-        THVideoCacheManager.INSTANCE.getVideoPathFromAllVideoPart { (videoPath: String, error: Error?) in
-            print("videoPath: %@", videoPath)
-            self.videoBox.clean()
-            self.videoBox.appendVideo(byPath: videoPath)
-
-            self.tempVideoPath = videoPath
-            let asset = SJVideoPlayerURLAsset(url: URL(fileURLWithPath: self.tempVideoPath ?? ""))
-            self.player.urlAsset = asset;
-            self.player.playerVolume = Float(self.voiceVolume)
+        THPlaygroundManager.requestBGMListData(param: nil, successBlock: { (result) in
+            self.bgmArr = NSArray.yy_modelArray(with: THBGMTypeModel.self, json: result) as? [THBGMTypeModel] ?? []
+            print("-----")
+        }) { (error) in
+            print("-----")
         }
-        
     }
+    
     
     func updateDraftModel() {
         if draftModel == nil {
             draftModel = THVideoDraftModel()
         }
+        draftModel!.cid = cid ?? ""
         draftModel!.voiceVolume = voiceVolume
         draftModel!.bgmVolume = bgmVolume
         draftModel!.videoPartArr = THVideoCacheManager.INSTANCE.catVideoArr
-        let bgmModel = musicModel(titleName: "")
-        bgmModel.musicTempPath = self.selectedBgmPath ?? ""
-        self.draftModel?.editBgm = bgmModel
+        draftModel!.tempBgmPath = self.selectedBgmPath ?? ""
     }
     
     @objc func clickSaveItem() {
@@ -251,26 +261,34 @@ extension THVideoEditVC {
         updateDraftModel()
         self.draftModel!.saveToLocal()
         QMUITips.show(withText: "您的视频已保存到草稿箱")
+        self.hasOperation = false
     }
     
     @objc func clickNextItem() {
         //  合成视频
         QMUITips.showLoading(in: view)
+        
+        self.videoBox.clean()
+        self.videoBox.appendVideo(byPath: self.tempVideoPath)
         videoBox.dubbedSound(bySoundPath: self.selectedBgmPath, volume: self.voiceVolume, mixVolume: bgmVolume, insertTime: 0)
+        
         videoBox.asyncFinishEdit(byFilePath: self.tempVideoPath, progress: { (process) in
 
         }) { (error) in
             QMUITips.hideAllTips()
             
-            self.updateDraftModel()
-            self.draftModel!.saveToLocal()
-                               
             self.showAlert(title: "您的视频已做好快珍藏到打球记录吧！", btnTitle: "珍藏到打球记录") {
-                self.showAlert(title: "视频已经珍藏到打球记录发布到球志动态吧！", btnTitle: "发布到球志动态吧") {
-                    let vc = THPublishDynamicVC()
-                    vc.draftId = self.draftModel?.draftId
-                    vc.editVideoPath = self.tempVideoPath
-                    self.navigationPushVC(vc: vc)
+                QMUITips.showLoading(in: self.view)
+                /// 获取阿里云上传凭证，票据，videoId
+                let fileName = "\(milliStamp).mp4"
+                THVideoRequestManager.requestUploadAuth(title: "精彩瞬间", fileName: fileName, successBlock: { (result) in
+                    let model = THVideoAuthInfoModel.yy_model(withJSON: result)
+                    /// 视频上传到阿里云
+                    self.uploader.uploadFile(filePath: self.tempVideoPath ?? "", uploadAuth: model?.UploadAuth ?? "", uploadAddress: model?.UploadAddress ?? "", videoId: model?.VideoId ?? "")
+                    
+                }) { (error) in
+                    QMUITips.hideAllTips()
+                    QMUITips.show(withText: error.localizedDescription)
                 }
             }
         }
@@ -301,6 +319,17 @@ extension THVideoEditVC {
     }
     
     override func goBackItemClicked() {
+        
+        if fromDraft ?? false {
+            THVideoCacheManager.INSTANCE.clearVideoPart()
+            super.goBackItemClicked()
+            return
+        }
+        if !hasOperation {
+            super.goBackItemClicked()
+            return
+        }
+        
         let alert = UIAlertController(title: nil, message: "退出后,剪辑的视频将不可恢复", preferredStyle: .alert)
         let save = UIAlertAction(title: "保存", style: .default) { (action) in
             self.updateDraftModel()
@@ -318,12 +347,82 @@ extension THVideoEditVC {
     }
 }
 
-extension THVideoEditVC: THMusicViewDelegate {
+extension THVideoEditVC: THAliVideoUploaderDelegate {
+    
+    func uploadFinishCallbackFunc(fileInfo: UploadFileInfo?, result: VodUploadResult?, videoId: String?) {
+        /// 珍藏到打球记录
+        let param = ["placeId": self.cid ?? "", "videoUrl": videoId ?? ""]
+        THPlaygroundManager.requestCollectVideo(param: param, successBlock: { (collectResult) in
+            QMUITips.hideAllTips()
+            
+            let collectModel = UploadVideoModel.yy_model(withJSON: collectResult)
+            self.showAlert(title: "视频已经珍藏到打球记录发布到球志动态吧！", btnTitle: "发布到球志动态吧") {
+                let vc = THPublishDynamicVC()
+                vc.vid = collectModel?.vid
+                vc.aliVideoId = videoId
+                vc.duration = THVideoCacheManager.INSTANCE.catVideoArr.count * 10
+                self.navigationPushVC(vc: vc)
+            }
+        }) { (error) in
+            QMUITips.hideAllTips()
+        }
         
+    }
+    
+    func uploadFailedCallbackFunc(fileInfo: UploadFileInfo?, code: String?, message: String?, videoId: String?) {
+        QMUITips.hideAllTips()
+        QMUITips.show(withText: message)
+    }
+    
+    func uploadProgressCallbackFunc(fileInfo: UploadFileInfo?, uploadedSize: Int, totalSize: Int, videoId: String?) {
+        
+    }
+    
+    func uploadTokenExpiredCallbackFunc(completion: ((String)->Void)?, videoId: String?) {
+        THVideoRequestManager.requestVideoPlayAuth(videoId: videoId ?? "", successBlock: { (result) in
+            completion?("")
+        }) { (error) in
+            completion?("")
+        }
+    }
+}
+
+extension THVideoEditVC: SJNotReachableControlLayerDelegate {
+    func backItemWasTapped(for controlLayer: SJControlLayer) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func reloadItemWasTapped(for controlLayer: SJControlLayer) {
+        //  将视频片段进行合成
+        THVideoCacheManager.INSTANCE.getVideoPathFromAllVideoPart { (videoPath: String, error: Error?) in
+            print("videoPath: %@", videoPath)
+            
+            self.tempVideoPath = videoPath
+            let asset = SJVideoPlayerURLAsset(url: URL(fileURLWithPath: self.tempVideoPath ?? ""))
+            self.player.urlAsset = asset;
+            self.player.playerVolume = Float(self.voiceVolume)
+        }
+    }
+}
+
+extension THVideoEditVC: THMusicViewDelegate, AVAudioPlayerDelegate{
+    func choiceBgmEvent() {
+        
+        if self.bgmArr?.count ?? 0 <= 0 {
+            QMUITips.show(withText: "暂无背景音乐可用")
+            return
+        }
+        let alert = THSelectMusicAlert.show(arr: self.bgmArr!)
+        alert.sureBlock = { (musicPath: String) in
+            self.sureBgmEvent(bgmPath: musicPath)
+        }
+    }
+    
     func sureBgmEvent(bgmPath: String) {
         if bgmPath != "" {
-            
+            self.hasOperation = true
             self.BGMPlayer = try? AVAudioPlayer(contentsOf: URL(fileURLWithPath: bgmPath))
+            self.BGMPlayer?.delegate = self
             self.BGMPlayer?.volume = 0.5
             self.BGMPlayer?.prepareToPlay()
             //  播放音频，同时调用视频播放，实现同步播放
@@ -335,54 +434,18 @@ extension THVideoEditVC: THMusicViewDelegate {
             self.bgmEditView.bgmSlider.value = Float(0.5)
             self.bgmEditView.updateUIData()
             self.bgmVolume = 0.5
-            
-            let bgmModel = musicModel(titleName: "")
-            bgmModel.musicTempPath = bgmPath
             self.selectedBgmPath = bgmPath
-            
-//            let url = URL(fileURLWithPath: musicPath)
-//
-//            let mp4Path = url.deletingPathExtension().appendingPathExtension("mp4") //  更改后缀名
-//            let catAudioPath = CatBgmPath + "/" + mp4Path.lastPathComponent
-//
-//            let duration = Int(self.player.duration)
-//            let audioAsset = AVAsset(url: url)
-//            let audioRange = CMTimeRange(start: CMTime.zero, duration: CMTime(seconds: Double(duration), preferredTimescale: 1))
-//
-//            THVideoEditController.cutAudioWithAsset(asset: audioAsset, audioRange: audioRange, catAudioPath: catAudioPath) { (savePath, error) in
-//                DispatchQueue.main.async {
-//                    if (error == nil) {
-//                        self.BGMPlayer = try? AVAudioPlayer(contentsOf: URL(fileURLWithPath: savePath))
-//                        self.BGMPlayer?.volume = 0.5
-//                        self.BGMPlayer?.prepareToPlay()
-//                        //  播放音频，同时调用视频播放，实现同步播放
-//                        self.player.seek(toTime: 0) { (isSuccess) in
-//                            self.BGMPlayer?.play()
-//                        }
-//
-//                        //  更新音乐界面信息
-//                        self.bgmEditView.musicSlider.value = Float(0.5)
-//                        self.bgmEditView.updateUIData()
-//                        self.musicVolume = 0.5
-//
-//                        let bgmModel = musicModel(titleName: "")
-//                        bgmModel.musicTempPath = musicPath
-//                        self.selectedBgmPath = musicPath
-//
-//                    }else{
-//                        print("%@",error)
-//                    }
-//                }
-//            }
         }
     }
     
     func voiceValueChange(value: Float) {
+        self.hasOperation = true
         voiceVolume = CGFloat(value)
         player.playerVolume = value
     }
     
     func bgmValueChange(value: Float) {
+        self.hasOperation = true
         bgmVolume = CGFloat(value)
         self.BGMPlayer?.volume = value
     }
@@ -415,6 +478,7 @@ class THVideoView: UIView {
     func voiceValueChange(value: Float)
     func bgmValueChange(value: Float)
     func sureBgmEvent(bgmPath: String)
+    func choiceBgmEvent()
 }
 
 class THMusicView: UIView {
@@ -572,11 +636,7 @@ class THMusicView: UIView {
     
     @objc func clickButtonEvent(sender: UIButton) {
         
-        let alert = THSelectMusicAlert.show()
-        alert.sureBlock = { (musicPath: String) in
-            self.delegate?.sureBgmEvent(bgmPath: musicPath)
-        }
-        
+        delegate?.choiceBgmEvent()
     }
     
     @objc func sliderValueChangeEvent(sender: UISlider) {

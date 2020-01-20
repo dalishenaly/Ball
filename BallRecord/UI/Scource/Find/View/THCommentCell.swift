@@ -10,9 +10,12 @@ import UIKit
 
 class THCommentCell: UITableViewCell {
     
+    var model: THCommentModel?
+    var vidOrCid: String?
+    var isVideo: Bool?
+    
     lazy var iconView: UIImageView = {
         let imgV = UIImageView()
-        imgV.backgroundColor = UIColor.randomColor()
         return imgV
     }()
     
@@ -20,7 +23,7 @@ class THCommentCell: UITableViewCell {
         let label = UILabel()
         label.text = "gao gao"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = COLOR_64BBFA
+        label.textColor = COLOR_0076FF
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
@@ -38,7 +41,7 @@ class THCommentCell: UITableViewCell {
     lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.text = "12小时前"
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = COLOR_324057
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -46,23 +49,19 @@ class THCommentCell: UITableViewCell {
     }()
     lazy var replyBtn: UIButton = {
         let button = UIButton()
-        button.tag = 55
-        button.setTitle("精选", for: .normal)
-        button.setTitleColor(UIColor.colorWithString("5E6D82"), for: .normal)
-        button.setTitleColor(UIColor.colorWithString("324057"), for: .selected)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.setTitle("    10回复    ", for: .normal)
+        button.backgroundColor = COLOR_F4F4F4
+        button.setTitleColor(COLOR_666666, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         button.addTarget(self, action: #selector(clickReplyBtnEvent(sender:)), for: .touchUpInside)
         return button
     }()
     lazy var likeBtn: UIButton = {
         let button = UIButton()
-        button.tag = 55
-//        button.setTitle("精选", for: .normal)
         button.setImage(UIImage(named: "like_normal"), for: .normal)
         button.setImage(UIImage(named: "like_selected"), for: .selected)
         button.setTitleColor(UIColor.colorWithString("5E6D82"), for: .normal)
-        button.setTitleColor(UIColor.colorWithString("324057"), for: .selected)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(clickLikeBtnEvent(sender:)), for: .touchUpInside)
         return button
     }()
@@ -73,7 +72,6 @@ class THCommentCell: UITableViewCell {
         
         configUI()
         configFrame()
-        configData()
     }
     
     required init?(coder: NSCoder) {
@@ -91,7 +89,7 @@ extension THCommentCell {
         contentView.addSubview(contentLabel)
         contentView.addSubview(dateLabel)
         contentView.addSubview(likeBtn)
-//        contentView.addSubview(replyBtn)
+        contentView.addSubview(replyBtn)
     }
     
     func configFrame() {
@@ -122,11 +120,12 @@ extension THCommentCell {
             make.bottom.equalTo(contentView).offset(-8)
         }
         
-//        replyBtn.snp.makeConstraints { (make) in
-//            make.left.equalTo(dateLabel.snp_right).offset(8)
-//            make.centerY.equalTo(dateLabel)
-//            make.height.width.equalTo(replyBtn)
-//        }
+        replyBtn.snp.makeConstraints { (make) in
+            make.left.equalTo(dateLabel.snp_right).offset(8)
+            make.centerY.equalTo(dateLabel)
+            make.width.equalTo(replyBtn)
+            make.height.equalTo(20)
+        }
         
         likeBtn.snp.makeConstraints { (make) in
             make.right.equalTo(contentView).offset(-16)
@@ -136,19 +135,52 @@ extension THCommentCell {
         
         iconView.layer.cornerRadius = 20
         iconView.layer.masksToBounds = true
+        
+        replyBtn.setCorner(cornerRadius: 10)
     }
     
-    func configData() {
+    func updateModel(model: THCommentModel) {
+        self.model = model
+        iconView.setImage(urlStr: model.commentIcon ?? "", placeholder: placeholder_round)
+        nameLabel.text = model.commentName
+        contentLabel.text = model.commentText
+        dateLabel.text = model.commentTime
+        likeBtn.isSelected = model.hasPraise
+        let count = model.praiseCount
+        let countStr = (count > 0) ? "\(count)" : ""
+        likeBtn.setTitle(countStr, for: .normal)
+        likeBtn.setTitle(countStr, for: .selected)
         
+        let replyCount = model.replyCount
+        let replyCountStr = (replyCount > 0) ? "\(replyCount)" : ""
+        replyBtn.setTitle("    " + replyCountStr + "回复" + "    ", for: .normal)
     }
     
     @objc func clickLikeBtnEvent(sender: UIButton) {
-        sender.isSelected = true
-        sender.setTitle("1", for: .normal)
-        sender.setTitle("1", for: .selected)
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            model?.praiseCount = (model?.praiseCount ?? 0) + 1
+        } else {
+            model?.praiseCount = (model?.praiseCount ?? 0) - 1
+        }
+        model?.updateModelPraiseState(hasPraise: sender.isSelected)
+        let count = model?.praiseCount ?? 0
+        let countStr = (count > 0) ? "\(count)" : ""
+        likeBtn.setTitle(countStr, for: .normal)
+        likeBtn.setTitle(countStr, for: .selected)
+        
+        //  TODO: 评论点赞接口
+        let praise = sender.isSelected ? "1" : "0"
+        let param = ["vid": self.vidOrCid ?? "", "praise": praise, "commentId": model?.commentId ?? ""]
+        if self.isVideo ?? false {
+            THFindRequestManager.requestVideoPraise(param: param, successBlock: { (result) in }) { (error) in }
+        } else {
+            THPlaygroundManager.requestPlaygroundPraise(param: param, successBlock: { (result) in }) { (error) in }
+        }
+        
     }
     
     @objc func clickReplyBtnEvent(sender: UIButton) {
-        
+        THReplyListView.show(model: self.model ?? THCommentModel(), vidOrCid: self.vidOrCid ?? "", isVideo: self.isVideo ?? false)
     }
 }

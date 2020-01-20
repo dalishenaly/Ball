@@ -14,7 +14,7 @@ class LocalStoreUtil: NSObject {
     let userDefault: UserDefaults = UserDefaults.standard
 
 
-    let WIFI_SWITCH_STATUS_KEY: String = "wifiSwithStatusKey"
+    let WIFI_SWITCH_STATUS_KEY: String = "WIFI_SWITCH_STATUS_KEY"
     
     
     func saveWifiSwichStatus(value: Bool) {

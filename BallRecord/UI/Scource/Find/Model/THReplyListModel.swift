@@ -7,7 +7,7 @@
 //  回复listmodel
 
 import UIKit
-
+@objcMembers
 class THReplyListModel: NSObject {
     var replyList: [THReplyModel]?
     
