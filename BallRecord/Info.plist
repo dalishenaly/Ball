@@ -75,9 +75,7 @@
 	<key>MOBAppSecret</key>
 	<string>22a0bd476bd55591c0adfa9efd9deee6</string>
 	<key>MOBAppkey</key>
-	<string>2dd6a6f25129c
-2dd6a6f25129c
-2dd6a6f25129c</string>
+	<string>2dd6a6f25129c</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

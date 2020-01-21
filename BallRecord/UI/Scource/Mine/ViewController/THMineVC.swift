@@ -132,7 +132,6 @@ extension THMineVC: UITableViewDelegate, UITableViewDataSource {
         cell?.delegate = self
         if model != nil {
             cell?.iconView.setImage(urlStr: model?.avatar ?? "", placeholder: placeholder_header)
-            
             var userPhone = ""
             if let phone = model?.phone {
                 userPhone = ""
@@ -140,7 +139,7 @@ extension THMineVC: UITableViewDelegate, UITableViewDataSource {
                     userPhone += 2 < idx && idx < 7 ? "*" : String(char)
                 }
             }
-            cell?.nameLabel.text = model?.username
+            cell?.nameLabel.text = model?.username == "" ? model?.nickname : model?.username
             cell?.phoneLabel.text = userPhone
         } else {
             cell?.nameLabel.text = "登录/注册"

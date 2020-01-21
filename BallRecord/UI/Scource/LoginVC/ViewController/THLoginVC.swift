@@ -107,12 +107,12 @@ class THLoginVC: THBaseVC {
             } else {
                 platform = "weibo"
             }
-            let param = ["type": platform, "openid": user?.uid, "nickname": user?.nickname, "imagePath": user?.icon]
+            let param = ["type": platform, "openid": user?.uid ?? "", "nickname": user?.nickname ?? "", "imagePath": user?.icon ?? ""]
             THLoginRequestManager.requestThirdLogin(param: param, successBlock: { (result) in
                 QMUITips.hideAllTips()
                 
-                
-                
+                let model = THUserModel.yy_model(withJSON: result)
+                THLoginController.instance.saveTokenInfo(userInfo: model ?? THUserModel())
                 self.navigationController?.popViewController(animated: true)
             }) { (error) in
                 QMUITips.hideAllTips()

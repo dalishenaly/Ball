@@ -914,9 +914,9 @@
 		DECF18F723815BC60077D102 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DE09EB162381102A00E70EB4 /* THMineVC.swift */,
 				DE4A5E2B23CB0FC500BD651B /* THAccountSafeVC.swift */,
 				DE4A5E2C23CB0FC600BD651B /* THSettingVC.swift */,
-				DE09EB162381102A00E70EB4 /* THMineVC.swift */,
 				DE59FDBF238FEEA4009C9687 /* THPersonalInfoVC.swift */,
 				DE119CA623C2D30900E22122 /* THCitySelectVC.swift */,
 				DE9289AD238E74480044D54D /* THMyDynamicVC.swift */,
