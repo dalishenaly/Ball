@@ -187,11 +187,13 @@ extension THMineVC: UITableViewDelegate, UITableViewDataSource {
             }
         } else if cellModel.title == "用户协议" {
             let url = BASEURL + "/secret/userPolicy.html"
+            vc.title = "用户协议"
             let vc = THBaseWebViewVC(urlString: url)
             navigationPushVC(vc: vc)
         } else if cellModel.title == "隐私政策" {
             let url = BASEURL + "/secret/privacyPolicy.html"
             let vc = THBaseWebViewVC(urlString: url)
+            vc.title = "隐私政策"
             navigationPushVC(vc: vc)
         } else if cellModel.title == "关于我们" {
             let vc = THAboutVC()
