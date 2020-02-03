@@ -87,8 +87,8 @@ extension AppDelegate {
 let SPEQQAPPKey = "1110222860"
 let SPEQQAPPSecret = "v7v6ogAwDnwmuGIb"
 
-let SPEWechatKey = "wx568ef5bd0ed2b572"
-let SPEWechatSecret = "c774adc77c378a43b6fe2c1e0bb5b69d"
+let SPEWechatKey = "wx21b92785c963b82f"
+let SPEWechatSecret = "21dd594f79d3343595ff1989d9d680c6"
 
 let sinaAPPKey = "2209030890"
 let sinaAPPSecret = "86bd05eb3bfd1821ecccb4e2c9a304c1"

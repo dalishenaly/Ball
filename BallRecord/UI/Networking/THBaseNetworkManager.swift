@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import YYModel
 
-let BASEURL = "http://qiuzhi.cool"//"http://ball.moonsky.cn"
+let BASEURL = "http://ball.moonsky.cn"//"http://qiuzhi.cool"//"http://ball.moonsky.cn"
 
 typealias successHandler = (_ response: Any)->()
 typealias errorHandler = (_ error: Error)->()
