@@ -51,7 +51,6 @@ class THVideoDetailVC: THBaseVC {
     
     lazy var playerContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.randomColor()
         view.isUserInteractionEnabled = true
         return view
     }()

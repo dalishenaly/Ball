@@ -110,6 +110,7 @@ class THPlaygroundDetailVC: THBaseVC {
         scrollView.delegate = self
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.backgroundColor = .white
         return scrollView
     }()
     
@@ -119,12 +120,12 @@ class THPlaygroundDetailVC: THBaseVC {
         tableView.rowHeight = UITableView.automaticDimension;
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
-        tableView.backgroundColor = UIColor.colorWithString("#F9FAFC")
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 0.01))
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 0.01))
         tableView.delegate = self
         tableView.dataSource = self
         tableView.bounces = false
+        tableView.backgroundColor = .white
         return tableView
     }()
     lazy var dynamicView : UICollectionView = {
@@ -156,6 +157,7 @@ class THPlaygroundDetailVC: THBaseVC {
         tableView.tableHeaderView = UIView(frame: CGRect.zero)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .white
         return tableView
     }()
     
@@ -291,8 +293,8 @@ extension THPlaygroundDetailVC {
         }
         
         writeCommentBtn.snp.makeConstraints { (make) in
-            make.left.equalTo(56)
-            make.right.equalTo(-56)
+            make.left.equalTo(26)
+            make.right.equalTo(-26)
             make.height.equalTo(40)
             make.bottom.equalTo(-10)
         }
@@ -313,6 +315,8 @@ extension THPlaygroundDetailVC {
             make.top.equalTo(toolbarView)
             make.bottom.equalTo(toolbarView)
         }
+        
+        writeCommentBtn.setCorner(cornerRadius: 20)
         
     }
     
@@ -554,7 +558,7 @@ extension THPlaygroundDetailVC: UITableViewDelegate, UITableViewDataSource {
                     let model = self.model?.halfList?[idx]
                     if model?.videoCount == 0 {
                         QMUITips.show(withText: "暂无视频，请稍后再来")
-//                        return
+                        return
                     }
                     let vc = THVideoCatVC()
                     vc.cid = self.cid

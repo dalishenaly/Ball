@@ -88,6 +88,8 @@ class THDateSelectView: UIView {
     
     func updateDate(arr: [THTimeModel]) {
         if arr.count == 0 {
+            self.leftBtn.isEnabled = false
+            self.rightBtn.isEnabled = false
             return
         }
         if arr.count == 1 {

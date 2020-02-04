@@ -145,6 +145,7 @@ class videoCoverView: UIImageView {
     }
     
     func configUI() {
+        contentMode = .scaleAspectFill
         addSubview(playView)
     }
     

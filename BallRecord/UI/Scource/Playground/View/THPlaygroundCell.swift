@@ -37,7 +37,7 @@ class THPlaygroundCell: UITableViewCell {
     }()
     lazy var likeCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "1111人点赞"
+        label.text = "1111人关注"
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = COLOR_8D97AE
         return label
@@ -126,7 +126,7 @@ extension THPlaygroundCell {
         iconView.setImage(urlStr: model.imageUrl, placeholder: placeholder_square)
         titleLabel.text = model.name
         detailLabel.text = model.location
-        likeCountLabel.text = "\(model.collectionCount)人点赞"
+        likeCountLabel.text = "\(model.collectionCount)人关注"
         if model.distince == 0 {
             distanceLabel.isHidden = true
         } else {

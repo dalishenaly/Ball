@@ -186,7 +186,7 @@ extension THVideoCatVC {
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(videoPartView.height)
-            make.bottom.equalTo(self.view)
+            make.bottom.equalTo(bottomLayoutGuide.snp.bottom)
         }
         
         player.view.snp.makeConstraints { (make) in
@@ -194,12 +194,12 @@ extension THVideoCatVC {
         }
         
         catBtn.snp.makeConstraints { (make) in
-            make.centerX.equalTo(view)
-            make.width.equalTo(230)
+            make.left.equalTo(26)
+            make.right.equalTo(-26)
             make.height.equalTo(40)
             make.bottom.equalTo(videoPartView.snp_top).offset(-30)
         }
-        catBtn.setCorner(cornerRadius: 2)
+        catBtn.setCorner(cornerRadius: 20)
         sweetRuler.top = 200 + 70
     }
     
@@ -223,8 +223,10 @@ extension THVideoCatVC {
     }
     
     func requestVideoUrl() {
-
-        THVideoRequestManager.requestPlay(videoId: self.catVideModel?.videoUrl ?? "", successBlock: { (result) in
+        
+        guard let videoUrl = self.catVideModel?.videoUrl else { return }
+        
+        THVideoRequestManager.requestPlay(videoId: videoUrl, successBlock: { (result) in
             let model = THVideoInfoModel.yy_model(withJSON: result)
             if let url = URL(string: model?.url ?? "") {
                 self.currentVideoUrl = model?.url
@@ -271,7 +273,10 @@ extension THVideoCatVC {
     }
     
     @objc func clickButtonEvent(sender: UIButton) {
-        
+        guard self.catVideModel != nil else {
+            QMUITips.show(withText: "没有视频资源")
+            return
+        }
         QMUITips.showLoading(in: view)
          
         if !FileManager.default.fileExists(atPath: DownloadVideoPath) {
@@ -337,13 +342,17 @@ extension THVideoCatVC: SJNotReachableControlLayerDelegate, THDateSelectViewDele
     }
     
     func dateSelectViewChangeValue(idx: Int) {
-
-        let timeModel = self.model?.itemList?[idx]
-        let arr = NSArray.yy_modelArray(with: THCatVideoModel.self, json: self.model?.videoList?[timeModel?.timeId ?? ""]) as? [THCatVideoModel] ?? []
-        self.catVideModel = arr.last
-        
-        self.requestVideoUrl()
-        self.updateRulerData()
+        if self.model?.itemList?.count ?? 0 > idx {
+            let timeModel = self.model?.itemList?[idx]
+            let arr = NSArray.yy_modelArray(with: THCatVideoModel.self, json: self.model?.videoList?[timeModel?.timeId ?? ""]) as? [THCatVideoModel] ?? []
+            
+            if let model = arr.last {
+                self.catVideModel = model
+            }
+            self.requestVideoUrl()
+            self.updateRulerData()
+            
+        }
     }
 }
 
