@@ -229,6 +229,8 @@ extension THSelectMusicAlert: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.cellForRow(at: indexPath) as? THMusicCell
             cell?.updateSeletStatus(selected: true)
             selectedMusicCell = cell
+        } else {
+            QMUITips.show(withText: "请先下载音乐")
         }
     }
     

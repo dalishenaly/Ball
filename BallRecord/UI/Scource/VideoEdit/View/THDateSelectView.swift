@@ -32,6 +32,7 @@ class THDateSelectView: UIView {
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = COLOR_333333
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label

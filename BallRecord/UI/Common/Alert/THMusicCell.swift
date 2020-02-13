@@ -106,7 +106,7 @@ class THMusicCell: UITableViewCell {
 
     @objc func clickButtonEvent(sender: UIButton) {
 
-        QMUITips.showLoading(in: UIApplication.shared.keyWindow!)
+        QMUITips.showLoading("音乐下载中", in: UIApplication.shared.keyWindow!)
         THVideoEditController.downloadMusic(url: self.model?.audioUrl ?? "") { (savePath: String) in
             QMUITips.hideAllTips()
             self.model?.hasDownload = true

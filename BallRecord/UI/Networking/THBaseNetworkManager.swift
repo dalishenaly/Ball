@@ -155,34 +155,28 @@ extension THBaseNetworkManager {
     
     //上传图片到服务器
     func uploadImage(imageData: Data, fileName: String, successBlock: successHandler? = nil, errorBlock: errorHandler? = nil) {
-        
+        let headers = ["content-type":"multipart/form-data"]
+        let urlString = BASEURL + self.subUrl
         Alamofire.upload(multipartFormData: { (multipartFormData: MultipartFormData) in
             //采用post表单上传
             // 参数解释：
             //withName:和后台服务器的name要一致 fileName:自己随便写，但是图片格式要写对 mimeType：规定的，要上传其他格式可以自行百度查一下
-            multipartFormData.append(imageData, withName: "file", fileName: fileName, mimeType: "image/jpeg")
+            multipartFormData.append(imageData, withName: "img", fileName: fileName, mimeType: "image/png")
             //如果需要上传多个文件,就多添加几个
             //multipartFormData.append(imageData, withName: "file", fileName: "123456.jpg", mimeType: "image/jpeg")
             //......
             
-        }, to: "") { (encodingResult: SessionManager.MultipartFormDataEncodingResult) in
+        }, to: urlString, headers: headers) { (encodingResult: SessionManager.MultipartFormDataEncodingResult) in
             
             switch encodingResult {
                 
             case .success(let upload, _, _):
-                upload.responseJSON { (response: DataResponse<Any>) in
-                    //解包
-                    guard let result = response.result.value else { return }
-                    print("\(result)")
-                    //须导入 swiftyJSON 第三方框架，否则报错
-//                    let success = JSON(result)["success"].int ?? -1
-//                    if success == 1 {
-//                        print("上传成功")
-//                    }else{
-//                        print("上传失败")
-//                    }
-                }
                 
+                upload.responseJSON { (response: DataResponse<Any>) in
+                    print(response)
+                    guard let data = ResponseModel.mj_object(withKeyValues: response.value) else { return }
+                    successBlock?(data.data)
+                }
                 //获取上传进度
                 upload.uploadProgress(queue: DispatchQueue.global(qos: .utility)) { progress in
                     print("图片上传进度: \(progress.fractionCompleted)")
@@ -202,11 +196,12 @@ extension THBaseNetworkManager {
     //上传视频到服务器
     func uploadVideo(videoPath: URL, fileName: String, successBlock: successHandler? = nil, errorBlock: errorHandler? = nil) {
         
+        let urlString = BASEURL + self.subUrl
         Alamofire.upload(multipartFormData: { (multipartFormData: MultipartFormData) in
             //采用post表单上传
             multipartFormData.append(videoPath, withName: "file", fileName: fileName, mimeType: "video/mp4")
             
-        }, to: "") { (encodingResult: SessionManager.MultipartFormDataEncodingResult) in
+        }, to: urlString) { (encodingResult: SessionManager.MultipartFormDataEncodingResult) in
             
             switch encodingResult {
                 

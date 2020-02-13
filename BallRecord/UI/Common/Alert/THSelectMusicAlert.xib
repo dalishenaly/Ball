@@ -10,12 +10,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="THSelectMusicAlert" customModule="BallRecord" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="THSelectMusicAlert" customModule="球志" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jh6-uv-MhX">
-                    <rect key="frame" x="0.0" y="412" width="414" height="450"/>
+                    <rect key="frame" x="0.0" y="446" width="414" height="450"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swn-KW-ZDf">
                             <rect key="frame" x="359" y="0.0" width="50" height="50"/>
@@ -80,7 +80,7 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Jh6-uv-MhX" secondAttribute="bottom" id="SgT-9b-F9E"/>
+                <constraint firstAttribute="bottom" secondItem="Jh6-uv-MhX" secondAttribute="bottom" id="SgT-9b-F9E"/>
                 <constraint firstItem="Jh6-uv-MhX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="gZc-mO-Ab7"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Jh6-uv-MhX" secondAttribute="trailing" id="sgn-fD-Cr0"/>
             </constraints>

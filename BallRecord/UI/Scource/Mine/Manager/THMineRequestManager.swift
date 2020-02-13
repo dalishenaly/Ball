@@ -100,4 +100,5 @@ class THMineRequestManager: NSObject {
         THBaseNetworkManager.shared(subUrl: "/api/user/myBasketballRecord")
             .getRequest(params: param, successBlock: successBlock, errorBlock: errorBlock)
     }
+    
 }

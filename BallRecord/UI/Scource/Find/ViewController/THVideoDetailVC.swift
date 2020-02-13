@@ -397,7 +397,7 @@ extension THVideoDetailVC: UITableViewDelegate, UITableViewDataSource {
         if cell == nil {
             cell = THCommentCell(style: .default, reuseIdentifier: "THCommentCell")
         }
-        cell?.replyBtn.isHidden = true
+//        cell?.replyBtn.isHidden = true
         cell?.updateModel(model: model)
         cell?.vidOrCid = self.vid
         cell?.isVideo = true

@@ -287,16 +287,30 @@ extension THReplyListView: THInputViewDelegate {
             return
         }
         QMUITips.showLoading(in: AppDelegate.WINDOW!)
-        let param = ["content": inputPublishView.textView.text!, "placeId": self.vidOrCid ?? "", "replyId": model?.commentId ?? ""]
-        THPlaygroundManager.requestPlaygroundWriteComment(param: param, successBlock: { (result) in
-            QMUITips.hideAllTips()
-            self.inputPublishView.textView.resignFirstResponder()
-            self.inputPublishView.textView.text = ""
-            self.tableView.mj_header.beginRefreshing()
-            QMUITips.show(withText: "提交成功")
-        }) { (error) in
-            QMUITips.hideAllTips()
+        if self.isVideo ?? false {
+            let param = ["replyText": inputPublishView.textView.text!, "vid": self.vidOrCid ?? "", "commentId": model?.commentId ?? ""]
+            THFindRequestManager.requestCommentOrReply(param: param, successBlock: { (result) in
+                QMUITips.hideAllTips()
+                self.inputPublishView.textView.resignFirstResponder()
+                self.inputPublishView.textView.text = ""
+                self.tableView.mj_header.beginRefreshing()
+                QMUITips.show(withText: "提交成功")
+            }) { (error) in
+                QMUITips.hideAllTips()
+            }
+        } else {
+            let param = ["content": inputPublishView.textView.text!, "placeId": self.vidOrCid ?? "", "replyId": model?.commentId ?? ""]
+            THPlaygroundManager.requestPlaygroundWriteComment(param: param, successBlock: { (result) in
+                QMUITips.hideAllTips()
+                self.inputPublishView.textView.resignFirstResponder()
+                self.inputPublishView.textView.text = ""
+                self.tableView.mj_header.beginRefreshing()
+                QMUITips.show(withText: "提交成功")
+            }) { (error) in
+                QMUITips.hideAllTips()
+            }
         }
+        
     }
 }
 

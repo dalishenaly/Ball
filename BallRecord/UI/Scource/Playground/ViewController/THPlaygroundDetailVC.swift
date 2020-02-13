@@ -556,7 +556,7 @@ extension THPlaygroundDetailVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 cell?.clickItemBlock = { (idx: Int) in
                     let model = self.model?.halfList?[idx]
-                    if model?.videoCount == 0 {
+                    if model?.recentCount == 0 {
                         QMUITips.show(withText: "暂无视频，请稍后再来")
                         return
                     }

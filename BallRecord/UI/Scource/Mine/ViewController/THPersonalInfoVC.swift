@@ -100,6 +100,35 @@ extension THPersonalInfoVC {
             savePersonalInfo()
         }
     }
+    
+    override func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        let type: String = info[UIImagePickerController.InfoKey.mediaType] as! String
+        //当选择的类型是图片
+        if type == "public.image" {
+            //获得照片
+            let image: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+            let timeInterval:TimeInterval = NSDate().timeIntervalSince1970
+            let name = "qzImage" + "\(timeInterval).jpg"
+            THBaseNetworkManager.shared(subUrl: "/api/upload").uploadImage(imageData: image.pngData()!, fileName: name, successBlock: { (result) in
+                
+                let dict = result as? [String: String]
+                let url = dict?["url"] ?? ""
+                
+                let arr = self.dataArr[0]
+                let model = arr[0]
+                model.content = url
+                self.tableView.reloadData()
+                
+                print("=====")
+            }) { (error) in
+                
+                print("=====")
+            }
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension THPersonalInfoVC {
@@ -124,6 +153,10 @@ extension THPersonalInfoVC {
             }
             cell?.titleLabel.text = model.title
             cell?.iconView.setImage(urlStr: model.content, placeholder: placeholder_header)
+            cell?.clickIconBlock = {
+                self.openMenu()
+            }
+            cell?.iconView.isUserInteractionEnabled = shouldEdit ?? false
             return cell!
         }
         

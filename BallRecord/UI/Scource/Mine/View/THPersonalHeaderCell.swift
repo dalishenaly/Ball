@@ -10,6 +10,7 @@ import UIKit
 
 class THPersonalHeaderCell: UITableViewCell {
 
+    var clickIconBlock: (()->Void)?
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -22,6 +23,7 @@ class THPersonalHeaderCell: UITableViewCell {
     
     lazy var iconView: UIImageView = {
         let imgV = UIImageView()
+        imgV.isUserInteractionEnabled = true
         return imgV
     }()
     
@@ -30,6 +32,10 @@ class THPersonalHeaderCell: UITableViewCell {
         
         configUI()
         configFrame()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(clickIconEvent))
+        iconView.addGestureRecognizer(tap)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -60,5 +66,11 @@ extension THPersonalHeaderCell {
             make.right.equalTo(-16)
             make.bottom.equalTo(-10)
         }
+        
+        iconView.setCorner(cornerRadius: 25)
+    }
+    
+    @objc func clickIconEvent() {
+        clickIconBlock?()
     }
 }

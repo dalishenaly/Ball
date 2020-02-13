@@ -29,6 +29,7 @@ class THPGVideoModel: NSObject {
     var title: String? //    string    视频标题
     var playCount: String? //    string    视频播放次数
     var videoCount: Int = 0
+    var recentCount: Int = 0
 }
 
 @objcMembers

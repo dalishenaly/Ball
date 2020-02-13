@@ -77,6 +77,80 @@ extension THBaseVC: UIGestureRecognizerDelegate {
     @objc func goBackItemClicked() -> Void {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    
+}
+
+extension THBaseVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func openMenu() {
+                
+        let status = PHPhotoLibrary.authorizationStatus()
+        if status == .restricted || status == .denied {
+            let alert = UIAlertController(title: "提示", message: "请在设备的'设置'中开启相册访问权限", preferredStyle: .alert)
+            let camera = UIAlertAction(title: "确定", style: .default) { (action) in
+                UIApplication.shared.openURL(NSURL(string: UIApplication.openSettingsURLString)! as URL)
+            }
+            let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            alert.addAction(camera)
+            alert.addAction(cancel)
+            present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let camera = UIAlertAction(title: "相机", style: .default) { (action) in
+                self.openCameraOrLibrary(sourceType: .camera)
+            }
+            let album = UIAlertAction(title: "相册", style: .default) { (action) in
+                self.openCameraOrLibrary(sourceType: .photoLibrary)
+            }
+            let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            alert.addAction(camera)
+            alert.addAction(album)
+            alert.addAction(cancel)
+            present(alert, animated: true, completion: nil)
+//            self.openCameraOrLibrary(sourceType: .photoLibrary)
+        }
+    }
+    
+    /// 打开相机相册
+    /// - Parameter sourceType: UIImagePickerController.SourceType
+    func openCameraOrLibrary(sourceType: UIImagePickerController.SourceType) -> Void {
+                
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = sourceType
+        //代理
+        imagePicker.delegate = self
+        //是否可编辑
+        imagePicker.allowsEditing=false
+        imagePicker.modalPresentationStyle = .fullScreen
+        //打开相机
+        present(imagePicker, animated: true,  completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        let type: String = info[UIImagePickerController.InfoKey.mediaType] as! String
+        //当选择的类型是图片
+        if type == "public.image" {
+            //获得照片
+            var image: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+            let timeInterval:TimeInterval = NSDate().timeIntervalSince1970
+            let name = "qzImage" + "\(timeInterval).jpg"
+            THBaseNetworkManager.shared(subUrl: "/api/upload").uploadImage(imageData: image.pngData()!, fileName: name, successBlock: { (result) in
+                
+                print("=====")
+            }) { (error) in
+                
+                print("=====")
+            }
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: AnyObject) {
+        print("save image error")
+    }
 }
 
 extension THBaseVC {

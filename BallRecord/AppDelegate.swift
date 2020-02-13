@@ -75,20 +75,20 @@ extension AppDelegate {
     func configMobShare() {
         ShareSDK.registPlatforms { (platformsRegister: SSDKRegister?) in
             //QQ
-            platformsRegister?.setupQQ(withAppId: SPEQQAPPKey, appkey: SPEQQAPPSecret)
+            platformsRegister?.setupQQ(withAppId: qqAPPKey, appkey: qqAPPSecret)
             //微信
-            platformsRegister?.setupWeChat(withAppId: SPEWechatKey, appSecret: SPEWechatSecret)
+            platformsRegister?.setupWeChat(withAppId: wechatAPPKey, appSecret: wechatAPPSecret)
             //新浪
             platformsRegister?.setupSinaWeibo(withAppkey: sinaAPPKey, appSecret: sinaAPPSecret, redirectUrl: "http://www.sharesdk.cn")
         }
     }
 }
 
-let SPEQQAPPKey = "1110222860"
-let SPEQQAPPSecret = "v7v6ogAwDnwmuGIb"
+let qqAPPKey = "1110222860"
+let qqAPPSecret = "v7v6ogAwDnwmuGIb"
 
-let SPEWechatKey = "wx21b92785c963b82f"
-let SPEWechatSecret = "21dd594f79d3343595ff1989d9d680c6"
+let wechatAPPKey = "wx21b92785c963b82f"
+let wechatAPPSecret = "21dd594f79d3343595ff1989d9d680c6"
 
 let sinaAPPKey = "2209030890"
 let sinaAPPSecret = "86bd05eb3bfd1821ecccb4e2c9a304c1"

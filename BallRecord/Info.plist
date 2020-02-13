@@ -81,8 +81,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>“球志”想访问您的相机，为了实现拍照的功能</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>需要获取您的位置信息，为您提供相应城市的球场信息</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>“球志”想访问您的照片，为了实现保存或上传图片的功能</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>“球志”想访问您的照片，为了实现保存或上传图片的功能</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
