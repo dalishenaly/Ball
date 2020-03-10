@@ -210,6 +210,7 @@ extension THVideoCatVC {
             print(result)
             self.model = THVideoInterceptModel.yy_model(withJSON: result)
             self.dateSelectView.updateDate(arr: self.model?.itemList ?? [])
+            self.dateSelectView.timeLabel.text = self.model?.correntTime
             let timeModel = self.model?.itemList?.last
             let arr = NSArray.yy_modelArray(with: THCatVideoModel.self, json: self.model?.videoList?[timeModel?.timeId ?? ""]) as? [THCatVideoModel] ?? []
             self.catVideModel = arr.last
@@ -225,6 +226,11 @@ extension THVideoCatVC {
     func requestVideoUrl() {
         
         guard let videoUrl = self.catVideModel?.videoUrl else { return }
+        if videoUrl.contains("http") || videoUrl.contains(".mp4") {
+            let asset = SJVideoPlayerURLAsset(url: URL(string: videoUrl)!)
+            self.player.urlAsset = asset
+            return
+        }
         
         THVideoRequestManager.requestPlay(videoId: videoUrl, successBlock: { (result) in
             let model = THVideoInfoModel.yy_model(withJSON: result)
@@ -372,8 +378,8 @@ extension THVideoCatVC: SweetRulerDelegate {
     func sweetRuler(ruler: SweetRuler, figure: Int){
         
         print("\t\tfigure: \(figure)")
-        
-        let currentTime = figure - ruler.figureRange.lowerBound
+        player.playbackObserver.currentTimeDidChangeExeBlock = nil
+        let currentTime = figure
         player.seek(toTime: TimeInterval(currentTime), completionHandler: nil)
         
     }

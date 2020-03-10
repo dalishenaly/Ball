@@ -28,7 +28,7 @@ class THDateSelectView: UIView {
     }()
     lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "2019年12月12日 周几"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = COLOR_333333
         label.textAlignment = .center

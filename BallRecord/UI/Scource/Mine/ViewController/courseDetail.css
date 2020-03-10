@@ -1,0 +1,21 @@
+p,span {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 32px;
+    color: #475669;
+    text-align: justify;
+    text-align-last: left;
+    word-break: break-all;
+    white-space: no-wrap;
+}
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+b, strong {
+    font-weight: bolder;
+}
+i, em {
+    font-style: italic;
+}

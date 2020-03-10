@@ -167,7 +167,7 @@ extension SweetRuler: UIScrollViewDelegate {
         
         var inVideo = false
         let figure = Int(rulerView.calcCurrentFigure(offset: scrollView.contentOffset))
-        
+        var seekFigure = figure
         videoArr.forEach { (model: THCatVideoModel) in
             
 //            let startTime = timeString(timeInterval: TimeInterval(model.startTime ))
@@ -179,6 +179,7 @@ extension SweetRuler: UIScrollViewDelegate {
             
             if startSecond < figure && figure < startSecond + Int(model.duration) {
                 inVideo = true
+                seekFigure = figure - startSecond
                 return
             }
         }
@@ -213,7 +214,7 @@ extension SweetRuler: UIScrollViewDelegate {
         indicateTimeLabel.text = getHHMMSSFromSS(totalTime: figure)
         isDragging = false
         
-        delegate?.sweetRuler(ruler: self, figure: figure)
+        delegate?.sweetRuler(ruler: self, figure: seekFigure)
         delegate?.sweetRulerWillEndDragging()
     }
     

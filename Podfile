@@ -35,6 +35,11 @@ target 'BallRecord' do
   # 阿里云上传服务
   pod 'VODUpload'
 #  pod 'AliPlayerSDK_iOS'
+  pod 'AliyunVideoSDKBasic', '3.14.0'
+  pod 'QuCore-ThirdParty', '3.14.0'
+  pod 'AlivcConan', '1.0.2'
+#  pod 'VODUpload'
+  pod 'AliyunOSSiOS'
   
   # MobShare
   pod 'mob_sharesdk','4.3.2'

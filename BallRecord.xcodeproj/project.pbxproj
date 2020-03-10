@@ -71,6 +71,7 @@
 		DE4C2F5023BB59F2003D18CF /* THFansModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C2F4F23BB59F2003D18CF /* THFansModel.swift */; };
 		DE4C2F5223BB5E23003D18CF /* THDialogNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C2F5123BB5E23003D18CF /* THDialogNewsModel.swift */; };
 		DE4C2F5423BB75B5003D18CF /* THPraiseNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4C2F5323BB75B5003D18CF /* THPraiseNewsModel.swift */; };
+		DE506DA92415F1CC00330C51 /* THMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DE506DA82415F1CC00330C51 /* THMediaManager.m */; };
 		DE59FDBE238FE85A009C9687 /* THRoughCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDBD238FE85A009C9687 /* THRoughCell.swift */; };
 		DE59FDC0238FEEA4009C9687 /* THPersonalInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDBF238FEEA4009C9687 /* THPersonalInfoVC.swift */; };
 		DE59FDC2238FF63D009C9687 /* THIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59FDC1238FF63D009C9687 /* THIconCell.swift */; };
@@ -134,6 +135,8 @@
 		DE6514AD23B9EA89001A8AF5 /* THInfoEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6514AC23B9EA89001A8AF5 /* THInfoEditCell.swift */; };
 		DE6514AF23BA031E001A8AF5 /* THPersonalHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6514AE23BA031E001A8AF5 /* THPersonalHeaderCell.swift */; };
 		DE6514B123BA0AA7001A8AF5 /* THAliVideoUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6514B023BA0AA7001A8AF5 /* THAliVideoUploader.swift */; };
+		DE89DFBE23FA740F00A13645 /* courseDetail.css in Resources */ = {isa = PBXBuildFile; fileRef = DE89DFBD23FA740F00A13645 /* courseDetail.css */; };
+		DE89DFC123FA774B00A13645 /* NatDOM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE89DFC023FA774B00A13645 /* NatDOM.swift */; };
 		DE92899A238D16470044D54D /* THVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE928999238D16470044D54D /* THVideoCell.swift */; };
 		DE92899C238D3F390044D54D /* THVideoDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE92899B238D3F390044D54D /* THVideoDetailVC.swift */; };
 		DE92899E238D44360044D54D /* THCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE92899D238D44360044D54D /* THCommentCell.swift */; };
@@ -301,6 +304,8 @@
 		DE4C2F4F23BB59F2003D18CF /* THFansModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THFansModel.swift; sourceTree = "<group>"; };
 		DE4C2F5123BB5E23003D18CF /* THDialogNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THDialogNewsModel.swift; sourceTree = "<group>"; };
 		DE4C2F5323BB75B5003D18CF /* THPraiseNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPraiseNewsModel.swift; sourceTree = "<group>"; };
+		DE506DA72415F1CC00330C51 /* THMediaManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THMediaManager.h; sourceTree = "<group>"; };
+		DE506DA82415F1CC00330C51 /* THMediaManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = THMediaManager.m; sourceTree = "<group>"; };
 		DE59FDBD238FE85A009C9687 /* THRoughCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THRoughCell.swift; sourceTree = "<group>"; };
 		DE59FDBF238FEEA4009C9687 /* THPersonalInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPersonalInfoVC.swift; sourceTree = "<group>"; };
 		DE59FDC1238FF63D009C9687 /* THIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THIconCell.swift; sourceTree = "<group>"; };
@@ -367,6 +372,8 @@
 		DE6514AC23B9EA89001A8AF5 /* THInfoEditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THInfoEditCell.swift; sourceTree = "<group>"; };
 		DE6514AE23BA031E001A8AF5 /* THPersonalHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPersonalHeaderCell.swift; sourceTree = "<group>"; };
 		DE6514B023BA0AA7001A8AF5 /* THAliVideoUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THAliVideoUploader.swift; sourceTree = "<group>"; };
+		DE89DFBD23FA740F00A13645 /* courseDetail.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = courseDetail.css; sourceTree = "<group>"; };
+		DE89DFC023FA774B00A13645 /* NatDOM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NatDOM.swift; sourceTree = "<group>"; };
 		DE928999238D16470044D54D /* THVideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THVideoCell.swift; sourceTree = "<group>"; };
 		DE92899B238D3F390044D54D /* THVideoDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THVideoDetailVC.swift; sourceTree = "<group>"; };
 		DE92899D238D44360044D54D /* THCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THCommentCell.swift; sourceTree = "<group>"; };
@@ -747,6 +754,8 @@
 			children = (
 				DE59FDDB2395035C009C9687 /* UIView+Additions.h */,
 				DE59FDDA2395035B009C9687 /* UIView+Additions.m */,
+				DE506DA72415F1CC00330C51 /* THMediaManager.h */,
+				DE506DA82415F1CC00330C51 /* THMediaManager.m */,
 			);
 			path = OC;
 			sourceTree = "<group>";
@@ -804,6 +813,14 @@
 				DE6514AA23B9E56B001A8AF5 /* THBGMListModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		DE89DFBF23FA774B00A13645 /* dom */ = {
+			isa = PBXGroup;
+			children = (
+				DE89DFC023FA774B00A13645 /* NatDOM.swift */,
+			);
+			path = dom;
 			sourceTree = "<group>";
 		};
 		DECF18EC2381174D0077D102 /* Networking */ = {
@@ -931,6 +948,8 @@
 				DE59FDD1239113B6009C9687 /* THFeedBackVC.swift */,
 				DE9289A7238E4AF40044D54D /* THMyFocusVC.swift */,
 				DE59FE9D239E3308009C9687 /* THAboutVC.swift */,
+				DE89DFBF23FA774B00A13645 /* dom */,
+				DE89DFBD23FA740F00A13645 /* courseDetail.css */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1213,6 +1232,7 @@
 				DE9289A4238E15940044D54D /* THHeaderViewCell.xib in Resources */,
 				DE59FDE823951BB1009C9687 /* THInputCodeVC.xib in Resources */,
 				DE09EAD72381075900E70EB4 /* Assets.xcassets in Resources */,
+				DE89DFBE23FA740F00A13645 /* courseDetail.css in Resources */,
 				DEE9275723A9CC0300BBD8A1 /* THBottomAlert.xib in Resources */,
 				DE59FE0D239A546D009C9687 /* THBindAlert.xib in Resources */,
 				DE59FEB4239FC470009C9687 /* THRegisterVC.xib in Resources */,
@@ -1348,6 +1368,7 @@
 				DE119D0223C5E65800E22122 /* THVideoRequestManager.swift in Sources */,
 				DE59FDCE2390FCC6009C9687 /* THSystemDialogCell.swift in Sources */,
 				DE59FEAD239F94AC009C9687 /* AsunBasicAttributes.swift in Sources */,
+				DE89DFC123FA774B00A13645 /* NatDOM.swift in Sources */,
 				DE119CFD23C4B0F200E22122 /* YYTextTransaction.m in Sources */,
 				DE09EB172381102A00E70EB4 /* THMineVC.swift in Sources */,
 				DE59FEB823A1192B009C9687 /* THReplyListView.swift in Sources */,
@@ -1394,6 +1415,7 @@
 				DE119D0423C5E8F300E22122 /* THVideoAuthInfoModel.swift in Sources */,
 				DE119CF523C4B0F200E22122 /* YYTextParser.m in Sources */,
 				DEE9275D23AA0DE400BBD8A1 /* THMusicCell.swift in Sources */,
+				DE506DA92415F1CC00330C51 /* THMediaManager.m in Sources */,
 				DEE9279723AC9C1F00BBD8A1 /* THVideoCacheManager.swift in Sources */,
 				DE6514A923B9D914001A8AF5 /* THPGDynamicListModel.swift in Sources */,
 				DE119CED23C4B0F200E22122 /* YYTextInput.m in Sources */,

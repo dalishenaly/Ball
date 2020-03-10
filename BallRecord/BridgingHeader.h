@@ -12,6 +12,7 @@
 #import "WXApi.h"
 #import "SJVideoPlayer.h"
 #import "UIView+Additions.h"
+#import "THMediaManager.h"
 #import "WAVideoBox.h"
 #import "ExtAudioConverter.h"
 #import "MJExtension.h"
