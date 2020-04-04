@@ -36,6 +36,7 @@
 #import "SJDraggingObservation.h"
 #import "SJScrollingTextMarqueeView.h"
 #import "SJFullscreenCustomStatusBar.h"
+#import "SJFastForwardView.h"
 
 #pragma mark - Top
 SJEdgeControlButtonItemTag const SJEdgeControlLayerTopItem_Back = 10000;
@@ -100,7 +101,8 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
     _restarted = YES;
     sj_view_makeAppear(self.controlView, YES);
     [self _showOrHiddenLoadingView];
-    _videoPlayer.URLAsset != nil ? [_videoPlayer controlLayerNeedAppear] : [_videoPlayer controlLayerNeedDisappear];
+    [self _updateAppearStateForContainerViews];
+    [self _reloadAdaptersIfNeeded];
 }
 
 ///
@@ -138,7 +140,7 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
 }
 
 - (void)_playItemWasTapped {
-    self.videoPlayer.timeControlStatus == SJPlaybackTimeControlStatusPaused ? [self.videoPlayer play] : [self.videoPlayer pause];
+    _videoPlayer.isPaused ? [self.videoPlayer play] : [self.videoPlayer pause];
 }
 
 - (void)_fullItemWasTapped {
@@ -244,6 +246,10 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
 - (void)videoPlayerPlaybackStatusDidChange:(__kindof SJBaseVideoPlayer *)videoPlayer {
     [self _reloadAdaptersIfNeeded];
     [self _showOrHiddenLoadingView];
+    
+    if ( videoPlayer.isPlaybackFinished ) {
+        [self _updateContentForBottomCurrentTimeItemIfNeeded];
+    }
 }
 
 - (void)videoPlayer:(__kindof SJBaseVideoPlayer *)videoPlayer currentTimeDidChange:(NSTimeInterval)currentTime {
@@ -361,6 +367,27 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
             break;
         case SJPanGestureRecognizerStateEnded:
             [self _endDragging];
+            break;
+    }
+}
+
+- (void)videoPlayer:(__kindof SJBaseVideoPlayer *)videoPlayer longPressGestureStateDidChange:(SJLongPressGestureRecognizerState)state {
+    switch ( state ) {
+        case SJLongPressGestureRecognizerStateChanged: break;
+        case SJLongPressGestureRecognizerStateBegan: {
+            if ( self.fastForwardView.superview != self ) {
+                [self insertSubview:self.fastForwardView atIndex:0];
+                [self.fastForwardView mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.center.equalTo(self.topAdapter);
+                }];
+            }
+            self.fastForwardView.rate = videoPlayer.rateWhenLongPressGestureTriggered;
+            [self.fastForwardView show];
+        }
+            break;
+        case SJLongPressGestureRecognizerStateEnded: {
+            [self.fastForwardView hidden];
+        }
             break;
     }
 }
@@ -496,12 +523,6 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
     }
 }
 
-- (void)setShowNetworkSpeedToLoadingView:(BOOL)showNetworkSpeedToLoadingView {
-    _showNetworkSpeedToLoadingView = showNetworkSpeedToLoadingView;
-    if ( !showNetworkSpeedToLoadingView )
-        self.loadingView.networkSpeedStr = nil;
-}
-
 - (void)setDraggingProgressPopView:(nullable __kindof UIView<SJDraggingProgressPopView> *)draggingProgressPopView {
     _draggingProgressPopView = draggingProgressPopView;
     [self _updateForDraggingProgressPopView];
@@ -513,13 +534,23 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
 }
 
 - (void)setCustomStatusBar:(UIView<SJFullscreenCustomStatusBar> *)customStatusBar NS_AVAILABLE_IOS(11.0) {
-    _customStatusBar = customStatusBar;
-    [self _reloadCustomStatusBarIfNeeded];
+    if ( customStatusBar != _customStatusBar ) {
+        [_customStatusBar removeFromSuperview];
+        _customStatusBar = customStatusBar;
+        [self _reloadCustomStatusBarIfNeeded];
+    }
 }
 
 - (void)setShouldShowCustomStatusBar:(BOOL (^)(SJEdgeControlLayer * _Nonnull))shouldShowCustomStatusBar NS_AVAILABLE_IOS(11.0) {
     _shouldShowCustomStatusBar = shouldShowCustomStatusBar;
     [self _updateAppearStateForCustomStatusBar];
+}
+
+- (void)setFastForwardView:(UIView<SJFastForwardView> *)fastForwardView {
+    if ( _fastForwardView != fastForwardView ) {
+        [_fastForwardView removeFromSuperview];
+        _fastForwardView = fastForwardView;
+    }
 }
 
 #pragma mark - setup view
@@ -608,6 +639,14 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
         [self setTitleView:[SJScrollingTextMarqueeView.alloc initWithFrame:CGRectZero]];
     }
     return _titleView;
+}
+
+@synthesize fastForwardView = _fastForwardView;
+- (UIView<SJFastForwardView> *)fastForwardView {
+    if ( _fastForwardView == nil ) {
+        _fastForwardView = [SJFastForwardView.alloc initWithFrame:CGRectZero];
+    }
+    return _fastForwardView;
 }
 
 @synthesize customStatusBar = _customStatusBar;
@@ -938,7 +977,7 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
             else {
                 if ( titleItem.customView != self.titleView )
                     titleItem.customView = self.titleView;
-                SJVideoPlayerURLAsset *asset = _videoPlayer.URLAsset.originAsset ?: _videoPlayer.URLAsset;
+                SJVideoPlayerURLAsset *asset = _videoPlayer.URLAsset.original ?: _videoPlayer.URLAsset;
                 NSAttributedString *_Nullable attributedTitle = asset.attributedTitle;
                 self.titleView.attributedText = attributedTitle;
                 titleItem.hidden = (attributedTitle.length == 0);
@@ -984,8 +1023,7 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
     {
         SJEdgeControlButtonItem *playItem = [self.bottomAdapter itemForTag:SJEdgeControlLayerBottomItem_Play];
         if ( playItem != nil && playItem.hidden == NO ) {
-            BOOL isPaused = _videoPlayer.timeControlStatus == SJPlaybackTimeControlStatusPaused;
-            playItem.image = isPaused ? sources.playBtnImage : sources.pauseBtnImage;
+            playItem.image = _videoPlayer.isPaused ? sources.playBtnImage : sources.pauseBtnImage;
         }
     }
     
@@ -1048,7 +1086,7 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
     
     SJEdgeControlButtonItem *replayItem = [self.centerAdapter itemForTag:SJEdgeControlLayerCenterItem_Replay];
     if ( replayItem != nil ) {
-        replayItem.hidden = !_videoPlayer.isPlayedToEndTime;
+        replayItem.hidden = !_videoPlayer.isPlaybackFinished;
         if ( replayItem.hidden == NO && replayItem.title == nil ) {
             SJVideoPlayerSettings *sources = SJVideoPlayerSettings.commonSettings;
             UILabel *textLabel = replayItem.customView;
@@ -1152,7 +1190,7 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
     if ( !_videoPlayer || !self.loadingView.isAnimating )
         return;
     
-    if ( _showNetworkSpeedToLoadingView && !_videoPlayer.assetURL.isFileURL ) {
+    if ( self.loadingView.showNetworkSpeed && !_videoPlayer.assetURL.isFileURL ) {
         self.loadingView.networkSpeedStr = [NSAttributedString sj_UIKitText:^(id<SJUIKitTextMakerProtocol>  _Nonnull make) {
             SJVideoPlayerSettings *settings = [SJVideoPlayerSettings commonSettings];
             make.font(settings.loadingNetworkSpeedTextFont);
@@ -1195,8 +1233,9 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
 }
 
 - (nullable NSAttributedString *)_textForTimeString:(NSString *)timeStr {
+    SJVideoPlayerSettings *source = SJVideoPlayerSettings.commonSettings;
     return [NSAttributedString sj_UIKitText:^(id<SJUIKitTextMakerProtocol>  _Nonnull make) {
-        make.append(timeStr).font([UIFont systemFontOfSize:11]).textColor([UIColor whiteColor]).alignment(NSTextAlignmentCenter);
+        make.append(timeStr).font(source.timeFont).textColor([UIColor whiteColor]).alignment(NSTextAlignmentCenter);
     }];
 }
 
@@ -1245,7 +1284,10 @@ SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay = 40000;
         return;
     }
     
-    if ( _videoPlayer.assetStatus == SJAssetStatusPreparing ) {
+    if ( _videoPlayer.isPaused ) {
+        [self.loadingView stop];
+    }
+    else if ( _videoPlayer.assetStatus == SJAssetStatusPreparing ) {
         [self.loadingView start];
     }
     else if ( _videoPlayer.assetStatus == SJAssetStatusFailed ) {

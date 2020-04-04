@@ -1,6 +1,6 @@
 /*****
  * Tencent is pleased to support the open source community by making QMUI_iOS available.
- * Copyright (C) 2016-2019 THL A29 Limited, a Tencent company. All rights reserved.
+ * Copyright (C) 2016-2020 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
@@ -24,11 +24,19 @@
 #import <math.h>
 #import <sys/utsname.h>
 
+NSString *const kQMUIResourcesBundleName = @"QMUIResources";
+
 @implementation QMUIHelper (Bundle)
 
 + (UIImage *)imageWithName:(NSString *)name {
-    NSBundle *bundle = [NSBundle bundleForClass:self.class];
-    return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
+    static NSBundle *resourceBundle = nil;
+    if (!resourceBundle) {
+        NSBundle *mainBundle = [NSBundle bundleForClass:self];
+        NSString *resourcePath = [mainBundle pathForResource:kQMUIResourcesBundleName ofType:@"bundle"];
+        resourceBundle = [NSBundle bundleWithPath:resourcePath] ?: mainBundle;
+    }
+    UIImage *image = [UIImage imageNamed:name inBundle:resourceBundle compatibleWithTraitCollection:nil];
+    return image;
 }
 
 @end
@@ -39,7 +47,7 @@
 + (NSNumber *)preferredContentSizeLevel {
     NSNumber *index = nil;
     if ([UIApplication instancesRespondToSelector:@selector(preferredContentSizeCategory)]) {
-        NSString *contentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
+        NSString *contentSizeCategory = UIApplication.sharedApplication.preferredContentSizeCategory;
         if ([contentSizeCategory isEqualToString:UIContentSizeCategoryExtraSmall]) {
             index = [NSNumber numberWithInt:0];
         } else if ([contentSizeCategory isEqualToString:UIContentSizeCategorySmall]) {
@@ -578,7 +586,7 @@ static CGFloat preferredLayoutWidth = -1;
                                         @([self screenSizeFor58Inch].width),
                                         @([self screenSizeFor40Inch].width)];
         preferredLayoutWidth = SCREEN_WIDTH;
-        UIWindow *window = [UIApplication sharedApplication].delegate.window ?: [[UIWindow alloc] init];// iOS 9 及以上的系统，新 init 出来的 window 自动被设置为当前 App 的宽度
+        UIWindow *window = UIApplication.sharedApplication.delegate.window ?: [[UIWindow alloc] init];// iOS 9 及以上的系统，新 init 出来的 window 自动被设置为当前 App 的宽度
         CGFloat windowWidth = CGRectGetWidth(window.bounds);
         for (NSInteger i = 0; i < widths.count; i++) {
             if (windowWidth <= widths[i].qmui_CGFloatValue) {
@@ -599,7 +607,7 @@ static CGFloat preferredLayoutWidth = -1;
         return UIEdgeInsetsMake(0, 0, 20, 0);
     }
     
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
     
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
@@ -668,13 +676,13 @@ static NSInteger isHighPerformanceDevice = -1;
 @implementation QMUIHelper (UIApplication)
 
 + (void)dimmedApplicationWindow {
-    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    UIWindow *window = UIApplication.sharedApplication.delegate.window;
     window.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
     [window tintColorDidChange];
 }
 
 + (void)resetDimmedApplicationWindow {
-    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    UIWindow *window = UIApplication.sharedApplication.delegate.window;
     window.tintAdjustmentMode = UIViewTintAdjustmentModeNormal;
     [window tintColorDidChange];
 }

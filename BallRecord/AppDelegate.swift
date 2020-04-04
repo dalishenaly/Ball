@@ -77,7 +77,7 @@ extension AppDelegate {
             //QQ
             platformsRegister?.setupQQ(withAppId: SPEQQAPPKey, appkey: SPEQQAPPSecret)
             //微信
-            platformsRegister?.setupWeChat(withAppId: SPEWechatKey, appSecret: SPEWechatSecret)
+            platformsRegister?.setupWeChat(withAppId: SPEWechatKey, appSecret: SPEWechatSecret, universalLink: "https://ivzcl.share2dlink.com/")
             //新浪
             platformsRegister?.setupSinaWeibo(withAppkey: sinaAPPKey, appSecret: sinaAPPSecret, redirectUrl: "http://www.sharesdk.cn")
         }

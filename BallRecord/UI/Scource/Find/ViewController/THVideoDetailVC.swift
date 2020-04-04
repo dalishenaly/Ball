@@ -251,15 +251,15 @@ extension THVideoDetailVC {
     func headerRefreshing() {
         page = 0
         requestComment {
-            self.tableView.mj_header.endRefreshing()
-            self.tableView.mj_footer.resetNoMoreData()
+            self.tableView.mj_header?.endRefreshing()
+            self.tableView.mj_footer?.resetNoMoreData()
         }
     }
     
     func footerRefreshing() {
         page += 1
         requestComment {
-            self.tableView.mj_footer.endRefreshing()
+            self.tableView.mj_footer?.endRefreshing()
         }
     }
     
@@ -272,7 +272,7 @@ extension THVideoDetailVC {
                 self.commentArr.removeAll()
             }
             if modelArr.count <= 0 {
-                self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                self.tableView.mj_footer?.endRefreshingWithNoMoreData()
             }
             self.commentArr += modelArr
             self.tableView.reloadData()
@@ -295,7 +295,7 @@ extension THVideoDetailVC {
             QMUITips.show(withText: "评论成功")
             self.textView.resignFirstResponder()
             self.textView.text = ""
-            self.tableView.mj_header.beginRefreshing()
+            self.tableView.mj_header?.beginRefreshing()
         }) { (error) in
             QMUITips.hideAllTips()
         }

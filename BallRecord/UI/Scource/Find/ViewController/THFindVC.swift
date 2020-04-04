@@ -165,11 +165,11 @@ extension THFindVC {
             let model = THFindPageModel.yy_model(withJSON: response)
             if model?.list?.count ?? 0 == 0 {
                 if type == 0 {
-                    self.collectionView.mj_footer.endRefreshingWithNoMoreData()
+                    self.collectionView.mj_footer?.endRefreshingWithNoMoreData()
                 } else if type == 1 {
-                    self.collectionView2.mj_footer.endRefreshingWithNoMoreData()
+                    self.collectionView2.mj_footer?.endRefreshingWithNoMoreData()
                 } else {
-                    self.collectionView3.mj_footer.endRefreshingWithNoMoreData()
+                    self.collectionView3.mj_footer?.endRefreshingWithNoMoreData()
                 }
             } else {
                 THDynamicController.INSTANCE.cacheNotesDataSource(dataSource: model!.list!)
@@ -202,45 +202,45 @@ extension THFindVC {
         collectionView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
             self.recommendPage = 0
             self.configData(type: 0, page: self.recommendPage) {
-                self.collectionView.mj_header.endRefreshing()
-                self.collectionView.mj_footer.resetNoMoreData()
+                self.collectionView.mj_header?.endRefreshing()
+                self.collectionView.mj_footer?.resetNoMoreData()
             }
         })
         collectionView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.recommendPage += 1
             self.configData(type: 0, page: self.recommendPage) {
-                self.collectionView.mj_footer.endRefreshing()
+                self.collectionView.mj_footer?.endRefreshing()
             }
         })
-        collectionView.mj_header.ignoredScrollViewContentInsetTop = collectionView.contentInset.top
+        collectionView.mj_header?.ignoredScrollViewContentInsetTop = collectionView.contentInset.top
         
         collectionView2.mj_header = MJRefreshNormalHeader(refreshingBlock: {
             self.recentPage = 0
             self.configData(type: 1, page: self.recentPage) {
-                self.collectionView2.mj_header.endRefreshing()
-                self.collectionView2.mj_footer.resetNoMoreData()
+                self.collectionView2.mj_header?.endRefreshing()
+                self.collectionView2.mj_footer?.resetNoMoreData()
             }
         })
         
         collectionView2.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.recentPage += 1
             self.configData(type: 1, page: self.recentPage) {
-                self.collectionView2.mj_footer.endRefreshing()
+                self.collectionView2.mj_footer?.endRefreshing()
             }
         })
         
         collectionView3.mj_header = MJRefreshNormalHeader(refreshingBlock: {
             self.focusPage = 0
             self.configData(type: 2, page: self.focusPage) {
-                self.collectionView3.mj_header.endRefreshing()
-                self.collectionView3.mj_footer.resetNoMoreData()
+                self.collectionView3.mj_header?.endRefreshing()
+                self.collectionView3.mj_footer?.resetNoMoreData()
             }
         })
         
         collectionView3.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.focusPage += 1
             self.configData(type: 2, page: self.focusPage) {
-                self.collectionView3.mj_footer.endRefreshing()
+                self.collectionView3.mj_footer?.endRefreshing()
             }
         })
     }
@@ -253,11 +253,11 @@ extension THFindVC: THFindTitleViewDelegate, UIScrollViewDelegate {
         currentTag = idx
         scrollView.setContentOffset(CGPoint(x: SCREEN_WIDTH * CGFloat(idx), y: 0), animated: false)
         if idx == 0 {
-            collectionView.mj_header.beginRefreshing()
+            collectionView.mj_header?.beginRefreshing()
         } else if idx == 1 {
-            collectionView2.mj_header.beginRefreshing()
+            collectionView2.mj_header?.beginRefreshing()
         } else {
-            collectionView3.mj_header.beginRefreshing()
+            collectionView3.mj_header?.beginRefreshing()
         }
         
         print("*** scrollView 转换 停止滚动 \(scrollView.contentOffset.x)")

@@ -331,29 +331,29 @@ extension THPlaygroundDetailVC {
         dynamicView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
             self.dynPage = 0
             self.requestDynamicData {
-                self.dynamicView.mj_header.endRefreshing()
-                self.dynamicView.mj_footer.resetNoMoreData()
+                self.dynamicView.mj_header?.endRefreshing()
+                self.dynamicView.mj_footer?.resetNoMoreData()
             }
         })
         dynamicView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.dynPage += 1
             self.requestDynamicData {
-                self.dynamicView.mj_footer.endRefreshing()
+                self.dynamicView.mj_footer?.endRefreshing()
             }
         })
-        dynamicView.mj_footer.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
+        dynamicView.mj_footer?.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
         
         commentTView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
             self.cmtPage = 0
             self.requestCommentData {
-                self.commentTView.mj_header.endRefreshing()
-                self.commentTView.mj_footer.resetNoMoreData()
+                self.commentTView.mj_header?.endRefreshing()
+                self.commentTView.mj_footer?.resetNoMoreData()
             }
         })
         commentTView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.cmtPage += 1
             self.requestCommentData {
-                self.commentTView.mj_footer.endRefreshing()
+                self.commentTView.mj_footer?.endRefreshing()
             }
         })
     }
@@ -399,7 +399,7 @@ extension THPlaygroundDetailVC {
                 self.dynamicArr.removeAll()
             }
             if modelArr.count <= 0 {
-                self.dynamicView.mj_footer.endRefreshingWithNoMoreData()
+                self.dynamicView.mj_footer?.endRefreshingWithNoMoreData()
             }
             
             self.dynamicArr += modelArr
@@ -421,7 +421,7 @@ extension THPlaygroundDetailVC {
                 self.commentArr.removeAll()
             }
             if modelArr.count <= 0 {
-                self.commentTView.mj_footer.endRefreshingWithNoMoreData()
+                self.commentTView.mj_footer?.endRefreshingWithNoMoreData()
             }
             
             self.commentArr += modelArr
@@ -468,7 +468,7 @@ extension THPlaygroundDetailVC {
                 QMUITips.hideAllTips()
                 self.textView.resignFirstResponder()
                 self.textView.text = ""
-                self.commentTView.mj_header.beginRefreshing()
+                self.commentTView.mj_header?.beginRefreshing()
                 QMUITips.show(withText: "提交成功待审核")
             }) { (error) in
                 QMUITips.hideAllTips()

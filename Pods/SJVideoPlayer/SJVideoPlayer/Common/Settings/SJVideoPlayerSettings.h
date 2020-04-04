@@ -38,6 +38,14 @@ UIKIT_EXTERN NSNotificationName const SJVideoPlayerSettingsUpdatedNotification;
 @interface SJVideoPlayerSettings (SJEdgeControlLayer)
 @property (nonatomic, strong, nullable) UIImage *placeholder;
 
+// fast forward view(长按快进时显示的视图)
+@property (nonatomic, strong, nullable) UIColor  *fastForwardTriangleColor;
+@property (nonatomic, strong, nullable) UIColor  *fastForwardRateTextColor;
+@property (nonatomic, strong, nullable) UIFont   *fastForwardRateTextFont;
+@property (nonatomic, strong, nullable) UIColor  *fastForwardFFTextColor;
+@property (nonatomic, strong, nullable) UIFont   *fastForwardFFTextFont;
+@property (nonatomic, strong, nullable) NSString *fastForwardFFText;
+
 // loading view
 @property (nonatomic, strong, nullable) UIColor *loadingNetworkSpeedTextColor;
 @property (nonatomic, strong, nullable) UIFont  *loadingNetworkSpeedTextFont;
@@ -72,6 +80,7 @@ UIKIT_EXTERN NSNotificationName const SJVideoPlayerSettingsUpdatedNotification;
 // bottom adapter items
 @property (nonatomic, strong, nullable) UIImage *pauseBtnImage;
 @property (nonatomic, strong, nullable) UIImage *playBtnImage;
+@property (nonatomic, strong, nullable) UIFont *timeFont;
 @property (nonatomic, strong, nullable) NSString *liveText;                       // 实时直播
 @property (nonatomic, strong, nullable) UIImage *shrinkscreenImage;               // 缩回小屏的图片
 @property (nonatomic, strong, nullable) UIImage *fullBtnImage;                    // 全屏的图片

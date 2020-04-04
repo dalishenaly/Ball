@@ -17,6 +17,14 @@ NSNotificationName const SJVideoPlayerSettingsUpdatedNotification = @"SJVideoPla
 //@interface SJVideoPlayerSettings (SJEdgeControlLayer)
 @property (nonatomic, strong, nullable) UIImage *placeholder;
 
+// fast forward view(长按快进时显示的视图)
+@property (nonatomic, strong, nullable) UIColor  *fastForwardTriangleColor;
+@property (nonatomic, strong, nullable) UIColor  *fastForwardRateTextColor;
+@property (nonatomic, strong, nullable) UIFont   *fastForwardRateTextFont;
+@property (nonatomic, strong, nullable) UIColor  *fastForwardFFTextColor;
+@property (nonatomic, strong, nullable) UIFont   *fastForwardFFTextFont;
+@property (nonatomic, strong, nullable) NSString *fastForwardFFText;
+
 // loading view
 @property (nonatomic, strong, nullable) UIColor *loadingNetworkSpeedTextColor;
 @property (nonatomic, strong, nullable) UIFont  *loadingNetworkSpeedTextFont;
@@ -51,6 +59,7 @@ NSNotificationName const SJVideoPlayerSettingsUpdatedNotification = @"SJVideoPla
 // bottom adapter items
 @property (nonatomic, strong, nullable) UIImage *pauseBtnImage;
 @property (nonatomic, strong, nullable) UIImage *playBtnImage;
+@property (nonatomic, strong, nullable) UIFont *timeFont;
 @property (nonatomic, strong, nullable) UIImage *shrinkscreenImage;               // 缩回小屏的图片
 @property (nonatomic, strong, nullable) UIImage *fullBtnImage;                    // 全屏的图片
 @property (nonatomic, strong, nullable) UIColor *progress_trackColor;             // 轨道颜色
@@ -222,6 +231,13 @@ NSNotificationName const SJVideoPlayerSettingsUpdatedNotification = @"SJVideoPla
 }
 
 - (void)_resetSJEdgeControlLayer {
+    _fastForwardTriangleColor = UIColor.whiteColor;
+    _fastForwardRateTextColor = UIColor.whiteColor;
+    _fastForwardRateTextFont = [UIFont boldSystemFontOfSize:12];
+    _fastForwardFFTextColor = UIColor.whiteColor;
+    _fastForwardFFTextFont = [UIFont boldSystemFontOfSize:12];
+    _fastForwardFFText = [SJVideoPlayerResourceLoader localizedStringForKey:SJVideoPlayer_FastForwardFFText];;
+    
     _loadingNetworkSpeedTextColor = UIColor.whiteColor;
     _loadingNetworkSpeedTextFont = [UIFont systemFontOfSize:11];
     _loadingLineColor = UIColor.whiteColor;
@@ -249,6 +265,7 @@ NSNotificationName const SJVideoPlayerSettingsUpdatedNotification = @"SJVideoPla
 
     _pauseBtnImage = [SJVideoPlayerResourceLoader imageNamed:@"sj_video_player_pause"];
     _playBtnImage = [SJVideoPlayerResourceLoader imageNamed:@"sj_video_player_play"];
+    _timeFont = [UIFont systemFontOfSize:11];
     _shrinkscreenImage = [SJVideoPlayerResourceLoader imageNamed:@"sj_video_player_shrinkscreen"];
     _fullBtnImage = [SJVideoPlayerResourceLoader imageNamed:@"sj_video_player_fullscreen"];
     _liveText = [SJVideoPlayerResourceLoader localizedStringForKey:SJVideoPlayer_LiveText];
