@@ -79,14 +79,14 @@ extension THHomeCollectionCell {
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalTo(9)
             make.right.equalTo(-9)
-            make.top.equalTo(coverView.snp_bottom).offset(10)
+            make.top.equalTo(coverView.snp_bottom).offset(5)
             make.height.equalTo(titleLabel)
         }
         
         iconView.snp.makeConstraints { (make) in
             make.left.equalTo(9)
             make.width.height.equalTo(25)
-            make.top.equalTo(titleLabel.snp_bottom).offset(10)
+            make.top.equalTo(titleLabel.snp_bottom).offset(5)
             make.bottom.equalTo(-12)
         }
         

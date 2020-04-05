@@ -259,8 +259,6 @@ extension THFindVC: THFindTitleViewDelegate, UIScrollViewDelegate {
         } else {
             collectionView3.mj_header?.beginRefreshing()
         }
-        
-        print("*** scrollView 转换 停止滚动 \(scrollView.contentOffset.x)")
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -273,7 +271,6 @@ extension THFindVC: THFindTitleViewDelegate, UIScrollViewDelegate {
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == self.scrollView {
-            print("*** scrollView 转换 停止滚动 \(self.scrollView.contentOffset.x)")
             let idx = self.scrollView.contentOffset.x / SCREEN_WIDTH
             if let button = titleView.viewWithTag(Int(idx + 55)) as? UIButton {
                 titleView.clickButtonEvent(sender: button)

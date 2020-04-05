@@ -223,7 +223,16 @@ extension THVideoCatVC {
     }
     
     func requestVideoUrl() {
-
+        if let urlString = self.catVideModel?.videoUrl{
+            if urlString.hasPrefix("https://") {
+                if let url = URL(string: urlString) {
+                    self.currentVideoUrl = urlString
+                    let asset = SJVideoPlayerURLAsset(url: url)
+                    self.player.urlAsset = asset;
+                    return
+                }
+            }
+        }
         THVideoRequestManager.requestPlay(videoId: self.catVideModel?.videoUrl ?? "", successBlock: { (result) in
             let model = THVideoInfoModel.yy_model(withJSON: result)
             if let url = URL(string: model?.url ?? "") {
@@ -361,9 +370,6 @@ extension THVideoCatVC: SweetRulerDelegate {
     
     ///刻度尺代理方法
     func sweetRuler(ruler: SweetRuler, figure: Int){
-        
-        print("\t\tfigure: \(figure)")
-        
         let currentTime = figure - ruler.figureRange.lowerBound
         player.seek(toTime: TimeInterval(currentTime), completionHandler: nil)
         
