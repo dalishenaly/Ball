@@ -373,14 +373,7 @@ extension THVideoCatVC: SweetRulerDelegate {
     
     ///刻度尺代理方法
     func sweetRuler(ruler: SweetRuler, figure: Int){
-<<<<<<< HEAD
-        
-        print("\t\tfigure: \(figure)")
-        player.playbackObserver.currentTimeDidChangeExeBlock = nil
-        let currentTime = figure
-=======
         let currentTime = figure - ruler.figureRange.lowerBound
->>>>>>> master
         player.seek(toTime: TimeInterval(currentTime), completionHandler: nil)
         
     }
