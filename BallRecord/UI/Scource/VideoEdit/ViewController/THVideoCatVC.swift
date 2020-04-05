@@ -224,7 +224,6 @@ extension THVideoCatVC {
     }
     
     func requestVideoUrl() {
-<<<<<<< HEAD
         
         guard let videoUrl = self.catVideModel?.videoUrl else { return }
         if videoUrl.contains("http") || videoUrl.contains(".mp4") {
@@ -232,21 +231,7 @@ extension THVideoCatVC {
             self.player.urlAsset = asset
             return
         }
-        
-        THVideoRequestManager.requestPlay(videoId: videoUrl, successBlock: { (result) in
-=======
-        if let urlString = self.catVideModel?.videoUrl{
-            if urlString.hasPrefix("https://") {
-                if let url = URL(string: urlString) {
-                    self.currentVideoUrl = urlString
-                    let asset = SJVideoPlayerURLAsset(url: url)
-                    self.player.urlAsset = asset;
-                    return
-                }
-            }
-        }
         THVideoRequestManager.requestPlay(videoId: self.catVideModel?.videoUrl ?? "", successBlock: { (result) in
->>>>>>> master
             let model = THVideoInfoModel.yy_model(withJSON: result)
             if let url = URL(string: model?.url ?? "") {
                 self.currentVideoUrl = model?.url
@@ -257,8 +242,6 @@ extension THVideoCatVC {
             QMUITips.show(withText: "视频资源出错")
         }
     }
-    
-    
     func updateRulerData() {
         
         let begin = timeString(timeInterval: TimeInterval(self.catVideModel?.startTime ?? 0), format: "HH")
