@@ -129,7 +129,6 @@ extension THBaseNetworkManager {
                 param[key] = value
             }
         }
-        
         Alamofire.request(urlString,
                           method: .post,
                           parameters: param,

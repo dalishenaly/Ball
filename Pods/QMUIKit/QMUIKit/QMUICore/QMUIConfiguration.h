@@ -1,6 +1,6 @@
 /*****
  * Tencent is pleased to support the open source community by making QMUI_iOS available.
- * Copyright (C) 2016-2019 THL A29 Limited, a Tencent company. All rights reserved.
+ * Copyright (C) 2016-2020 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
@@ -92,12 +92,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - UITextField & UITextView
 
+@property(nonatomic, strong, nullable) UIColor  *textFieldTextColor;
 @property(nonatomic, strong, nullable) UIColor  *textFieldTintColor;
 @property(nonatomic, assign) UIEdgeInsets       textFieldTextInsets;
 @property(nonatomic, assign) UIKeyboardAppearance keyboardAppearance;
 
 #pragma mark - UISwitch
 @property(nonatomic, strong, nullable) UIColor  *switchOnTintColor;
+@property(nonatomic, strong, nullable) UIColor  *switchOffTintColor;
 @property(nonatomic, strong, nullable) UIColor  *switchTintColor;
 @property(nonatomic, strong, nullable) UIColor  *switchThumbTintColor;
 @property(nonatomic, strong, nullable) UIImage  *switchOnImage;
@@ -254,6 +256,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) BOOL               navigationBarHiddenInitially;
 @property(nonatomic, assign) BOOL               shouldFixTabBarTransitionBugInIPhoneX;
 @property(nonatomic, assign) BOOL               shouldFixTabBarButtonBugForAll;
+@property(nonatomic, assign) BOOL               shouldFixTabBarSafeAreaInsetsBugForNotchedScreen;
 @property(nonatomic, assign) BOOL               shouldPrintQMUIWarnLogToConsole;
 @property(nonatomic, assign) BOOL               sendAnalyticsToQMUITeam;
 @property(nonatomic, assign) BOOL               dynamicPreferredValueForIPad;
@@ -267,4 +270,9 @@ NS_ASSUME_NONNULL_END
 + (instancetype _Nullable )sharedInstance;
 - (void)applyInitialTemplate;
 
+@end
+
+@interface UITabBarItem (QMUIConfiguration)
+
+- (void)qmui_updateTintColorForiOS12AndEarlier:(nullable UIColor *)tintColor;
 @end

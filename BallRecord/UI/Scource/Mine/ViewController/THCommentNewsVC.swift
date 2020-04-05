@@ -95,7 +95,7 @@ class THCommentNewsVC: THBaseTableViewVC {
         tableView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.footerRefreshing()
         })
-        tableView.mj_footer.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
+        tableView.mj_footer?.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
     }
     
     
@@ -106,15 +106,15 @@ class THCommentNewsVC: THBaseTableViewVC {
     func headerRefreshing() {
         page = 0
         requestData {
-            self.tableView.mj_header.endRefreshing()
-            self.tableView.mj_footer.resetNoMoreData()
+            self.tableView.mj_header?.endRefreshing()
+            self.tableView.mj_footer?.resetNoMoreData()
         }
     }
     
     func footerRefreshing() {
         page += 1
         requestData {
-            self.tableView.mj_footer.endRefreshing()
+            self.tableView.mj_footer?.endRefreshing()
         }
     }
     
@@ -127,7 +127,7 @@ class THCommentNewsVC: THBaseTableViewVC {
                 self.dataArr.removeAll()
             }
             if modelArr.count <= 0 {
-                self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                self.tableView.mj_footer?.endRefreshingWithNoMoreData()
             }
             self.dataArr += modelArr
             
@@ -150,7 +150,7 @@ class THCommentNewsVC: THBaseTableViewVC {
             QMUITips.show(withText: "评论成功")
             self.textView.resignFirstResponder()
             self.textView.text = ""
-            self.tableView.mj_header.beginRefreshing()
+            self.tableView.mj_header?.beginRefreshing()
         }) { (error) in
             QMUITips.hideAllTips()
         }

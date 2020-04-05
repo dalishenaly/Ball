@@ -1,6 +1,7 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-#source 'https://cdn.cocoapods.org/'
+source 'https://cdn.cocoapods.org/'
+#source 'https://github.com/CocoaPods/Specs.git'
 
 target 'BallRecord' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -42,7 +43,7 @@ target 'BallRecord' do
   pod 'AliyunOSSiOS'
   
   # MobShare
-  pod 'mob_sharesdk','4.3.2'
+  pod 'mob_sharesdk'
   pod 'mob_sharesdk/ShareSDKPlatforms/QQ'
   pod 'mob_sharesdk/ShareSDKPlatforms/SinaWeibo'
   pod 'mob_sharesdk/ShareSDKPlatforms/WeChat'   #（微信sdk不带支付的命令）

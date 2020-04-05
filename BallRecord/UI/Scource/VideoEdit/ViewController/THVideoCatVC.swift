@@ -224,6 +224,7 @@ extension THVideoCatVC {
     }
     
     func requestVideoUrl() {
+<<<<<<< HEAD
         
         guard let videoUrl = self.catVideModel?.videoUrl else { return }
         if videoUrl.contains("http") || videoUrl.contains(".mp4") {
@@ -233,6 +234,19 @@ extension THVideoCatVC {
         }
         
         THVideoRequestManager.requestPlay(videoId: videoUrl, successBlock: { (result) in
+=======
+        if let urlString = self.catVideModel?.videoUrl{
+            if urlString.hasPrefix("https://") {
+                if let url = URL(string: urlString) {
+                    self.currentVideoUrl = urlString
+                    let asset = SJVideoPlayerURLAsset(url: url)
+                    self.player.urlAsset = asset;
+                    return
+                }
+            }
+        }
+        THVideoRequestManager.requestPlay(videoId: self.catVideModel?.videoUrl ?? "", successBlock: { (result) in
+>>>>>>> master
             let model = THVideoInfoModel.yy_model(withJSON: result)
             if let url = URL(string: model?.url ?? "") {
                 self.currentVideoUrl = model?.url
@@ -376,10 +390,14 @@ extension THVideoCatVC: SweetRulerDelegate {
     
     ///刻度尺代理方法
     func sweetRuler(ruler: SweetRuler, figure: Int){
+<<<<<<< HEAD
         
         print("\t\tfigure: \(figure)")
         player.playbackObserver.currentTimeDidChangeExeBlock = nil
         let currentTime = figure
+=======
+        let currentTime = figure - ruler.figureRange.lowerBound
+>>>>>>> master
         player.seek(toTime: TimeInterval(currentTime), completionHandler: nil)
         
     }

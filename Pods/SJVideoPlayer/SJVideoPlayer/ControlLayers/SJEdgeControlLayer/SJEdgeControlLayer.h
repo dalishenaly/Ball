@@ -13,6 +13,7 @@
 #import "SJLoadingViewDefinies.h"
 #import "SJScrollingTextMarqueeViewDefines.h"
 #import "SJFullscreenCustomStatusBarDefines.h"
+#import "SJFastForwardViewDefines.h"
 
 @protocol SJEdgeControlLayerDelegate;
 
@@ -70,6 +71,11 @@ extern SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay;    
 @property (nonatomic, strong, null_resettable) __kindof UIView<SJScrollingTextMarqueeView> *titleView;
 
 ///
+/// 长按手势触发加速播放时显示的视图
+///
+@property (nonatomic, strong, null_resettable) UIView<SJFastForwardView> *fastForwardView;
+
+///
 /// 是否竖屏时隐藏标题
 ///
 @property (nonatomic, getter=isHiddenTitleItemWhenOrientationIsPortrait) BOOL hiddenTitleItemWhenOrientationIsPortrait;
@@ -98,11 +104,6 @@ extern SJEdgeControlButtonItemTag const SJEdgeControlLayerCenterItem_Replay;    
 /// 底部进度条高度. default value is 1.0
 ///
 @property (nonatomic) CGFloat bottomProgressIndicatorHeight;
-
-///
-/// 是否在loadingView上显示网速. default value is YES
-///
-@property (nonatomic) BOOL showNetworkSpeedToLoadingView;
 
 ///
 /// 自定义状态栏, 当 shouldShowCustomStatusBar 返回YES, 将会显示该状态栏

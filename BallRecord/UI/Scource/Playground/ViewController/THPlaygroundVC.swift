@@ -78,15 +78,15 @@ class THPlaygroundVC: THBaseVC {
     func headerRefreshing() {
         page = 0
         requestPlaygroundData {
-            self.tableView.mj_header.endRefreshing()
-            self.tableView.mj_footer.resetNoMoreData()
+            self.tableView.mj_header?.endRefreshing()
+            self.tableView.mj_footer?.resetNoMoreData()
         }
     }
     
     func footerRefreshing() {
         page += 1
         requestPlaygroundData {
-            self.tableView.mj_footer.endRefreshing()
+            self.tableView.mj_footer?.endRefreshing()
         }
     }
     
@@ -125,7 +125,7 @@ class THPlaygroundVC: THBaseVC {
                 self.playgroundModelArr.removeAll()
             }
             if modelArr.count <= 0 {
-                self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                self.tableView.mj_footer?.endRefreshingWithNoMoreData()
             }
             
             self.playgroundModelArr += modelArr
@@ -164,12 +164,12 @@ extension THPlaygroundVC: THPlaygroundTitleViewDelegate, THCityMenuViewDelegate 
         } else if index == 1 {
             titleView.distanceBtn.isSelected = false
             self.type = "1"
-            tableView.mj_header.beginRefreshing()
+            tableView.mj_header?.beginRefreshing()
 //            requestPlaygroundData(nil)
         } else {
             titleView.hotBtn.isSelected = false
             self.type = "2"
-            tableView.mj_header.beginRefreshing()
+            tableView.mj_header?.beginRefreshing()
 //            requestPlaygroundData(nil)
         }
     }

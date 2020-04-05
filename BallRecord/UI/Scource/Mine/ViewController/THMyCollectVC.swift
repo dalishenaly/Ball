@@ -41,27 +41,27 @@ class THMyCollectVC: THBaseVC {
         collectionView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
             self.headerRefreshing()
         })
-        collectionView.mj_header.beginRefreshing()
+        collectionView.mj_header?.beginRefreshing()
         
         collectionView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.footerRefreshing()
         })
-        collectionView.mj_footer.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
+        collectionView.mj_footer?.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
     }
     
     
     func headerRefreshing() {
         page = 0
         requestData {
-            self.collectionView.mj_header.endRefreshing()
-            self.collectionView.mj_footer.resetNoMoreData()
+            self.collectionView.mj_header?.endRefreshing()
+            self.collectionView.mj_footer?.resetNoMoreData()
         }
     }
     
     func footerRefreshing() {
         page += 1
         requestData {
-            self.collectionView.mj_footer.endRefreshing()
+            self.collectionView.mj_footer?.endRefreshing()
         }
     }
     
@@ -76,7 +76,7 @@ class THMyCollectVC: THBaseVC {
                 self.dataArray.removeAll()
             }
             if modelArr.count <= 0 {
-                self.collectionView.mj_footer.endRefreshingWithNoMoreData()
+                self.collectionView.mj_footer?.endRefreshingWithNoMoreData()
             }
             self.dataArray += modelArr
             self.collectionView.reloadData()

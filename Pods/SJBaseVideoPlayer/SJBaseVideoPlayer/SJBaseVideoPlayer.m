@@ -22,7 +22,6 @@
 #import "SJFlipTransitionManager.h"
 #import "SJPlayerView.h"
 #import "SJFloatSmallViewController.h"
-#import "SJEdgeFastForwardViewController.h"
 #import "SJVideoDefinitionSwitchingInfo+Private.h"
 #import "SJPopPromptController.h"
 #import "SJPrompt.h"
@@ -47,6 +46,12 @@ typedef struct _SJPlayerControlInfo {
         NSTimeInterval offsetTime; ///< pan手势触发过程中的偏移量(secs)
     } pan;
     
+    struct {
+        SJPlayerGestureTypeMask disabledGestures;
+        CGFloat rateWhenLongPressGestureTriggered;
+        BOOL allowHorizontalTriggeringOfPanGesturesInCells;
+    } gestureControl;
+
     struct {
         BOOL needToHiddenWhenPlayerIsReadyForDisplay;
         NSTimeInterval delayHidden;
@@ -80,12 +85,6 @@ typedef struct _SJPlayerControlInfo {
         BOOL autoDisappearFloatSmallView;
     } floatSmallViewControl;
     
-    
-    struct {
-        BOOL allowHorizontalTriggeringOfPanGesturesInCells;
-        SJPlayerGestureTypeMask disabledGestures;
-    } gestureControl;
-    
 } _SJPlayerControlInfo;
 
 @interface SJBaseVideoPlayer ()<SJVideoPlayerPresentViewDelegate, SJPlayerViewDelegate>
@@ -117,9 +116,6 @@ typedef struct _SJPlayerControlInfo {
     id<SJDeviceVolumeAndBrightnessManager> _deviceVolumeAndBrightnessManager;
     id<SJDeviceVolumeAndBrightnessManagerObserver> _deviceVolumeAndBrightnessManagerObserver;
 
-    /// gestures
-    id<SJEdgeFastForwardViewController> _fastForwardViewController;
-    
     /// playback controller
     NSError *_Nullable _error;
     id<SJVideoPlayerPlaybackController> _playbackController;
@@ -159,7 +155,7 @@ typedef struct _SJPlayerControlInfo {
 }
 
 + (NSString *)version {
-    return @"v3.1.8";
+    return @"v3.2.5";
 }
 
 - (void)setVideoGravity:(SJVideoGravity)videoGravity {
@@ -191,6 +187,7 @@ typedef struct _SJPlayerControlInfo {
     _controlInfo->plabackControl.autoplayWhenSetNewAsset = YES;
     _controlInfo->plabackControl.resumePlaybackWhenPlayerHasFinishedSeeking = YES;
     _controlInfo->floatSmallViewControl.autoDisappearFloatSmallView = YES;
+    _controlInfo->gestureControl.rateWhenLongPressGestureTriggered = 2.0;
     self.autoManageViewToFitOnScreenOrRotation = YES;
     
     [self _setupViews];
@@ -213,8 +210,7 @@ typedef struct _SJPlayerControlInfo {
 #ifdef DEBUG
     NSLog(@"%d \t %s", (int)__LINE__, __func__);
 #endif
-    if ( _URLAsset != nil && self.assetDeallocExeBlock )
-        self.assetDeallocExeBlock(self);
+    [NSNotificationCenter.defaultCenter postNotificationName:SJVideoPlayerPlaybackControllerWillDeallocateNotification object:_playbackController];
     [_presentView removeFromSuperview];
     [_view removeFromSuperview];
     free(_controlInfo);
@@ -285,28 +281,7 @@ typedef struct _SJPlayerControlInfo {
         return;
     }
     
-    if ( _fastForwardViewController.isEnabled ) {
-        CGRect bounds = self.presentView.bounds;
-        CGFloat width = self.fastForwardViewController.triggerAreaWidth;
-        CGRect left = CGRectMake(0, 0, width, bounds.size.height);
-        CGFloat spanSecs = self.fastForwardViewController.spanSecs;
-        if ( CGRectContainsPoint(left, location) ) {
-            // 快退10秒
-            [self seekToTime:self.currentTime - spanSecs completionHandler:nil];
-            [self.fastForwardViewController showFastForwardView:SJFastForwardTriggeredPosition_Left];
-            return;
-        }
-        
-        CGRect right = CGRectMake(bounds.size.width - width, 0, width, bounds.size.height);
-        if ( CGRectContainsPoint(right, location) ) {
-            // 快进10秒
-            [self seekToTime:self.currentTime + spanSecs completionHandler:nil];
-            [self.fastForwardViewController showFastForwardView:SJFastForwardTriggeredPosition_Right];
-            return;
-        }
-    }
-    
-    self.timeControlStatus == SJPlaybackTimeControlStatusPaused ? [self play] : [self pause];
+    self.isPaused ? [self play] : [self pause];
 }
 
 - (void)_handlePan:(SJPanGestureTriggeredPosition)position direction:(SJPanGestureMovingDirection)direction state:(SJPanGestureRecognizerState)state translate:(CGPoint)translate {
@@ -415,6 +390,22 @@ typedef struct _SJPlayerControlInfo {
     self.playbackController.videoGravity = scale > 1 ?AVLayerVideoGravityResizeAspectFill:AVLayerVideoGravityResizeAspect;
 }
 
+- (void)_handleLongPress:(SJLongPressGestureRecognizerState)state {
+    switch ( state ) {
+        case SJLongPressGestureRecognizerStateBegan:
+        case SJLongPressGestureRecognizerStateChanged:
+            self.rate = self.rateWhenLongPressGestureTriggered;
+            break;
+        case SJLongPressGestureRecognizerStateEnded:
+            self.rate = 1.0;
+            break;
+    }
+    
+    if ( [self.controlLayerDelegate respondsToSelector:@selector(videoPlayer:longPressGestureStateDidChange:)] ) {
+        [self.controlLayerDelegate videoPlayer:self longPressGestureStateDidChange:state];
+    }
+}
+
 #pragma mark -
 
 - (void)setControlLayerDataSource:(nullable id<SJVideoPlayerControlLayerDataSource>)controlLayerDataSource {
@@ -467,7 +458,7 @@ typedef struct _SJPlayerControlInfo {
     _registrar.didBecomeActive = ^(SJVideoPlayerRegistrar * _Nonnull registrar) {
         __strong typeof(_self) self = _self;
         if ( !self ) return;
-        BOOL canPlay = self.timeControlStatus == SJPlaybackTimeControlStatusPaused &&
+        BOOL canPlay = self.isPaused &&
                        self.controlInfo->plabackControl.resumePlaybackWhenAppDidEnterForeground &&
                       !self.vc_isDisappeared;
         if ( self.isPlayOnScrollView ) {
@@ -488,6 +479,7 @@ typedef struct _SJPlayerControlInfo {
         if ( [self.controlLayerDelegate respondsToSelector:@selector(receivedApplicationWillEnterForegroundNotification:)] ) {
             [self.controlLayerDelegate receivedApplicationWillEnterForegroundNotification:self];
         }
+        [self _postNotification:SJVideoPlayerApplicationWillEnterForegroundNotification];
     };
     
     _registrar.didEnterBackground = ^(SJVideoPlayerRegistrar * _Nonnull registrar) {
@@ -496,6 +488,13 @@ typedef struct _SJPlayerControlInfo {
         if ( [self.controlLayerDelegate respondsToSelector:@selector(receivedApplicationDidEnterBackgroundNotification:)] ) {
             [self.controlLayerDelegate receivedApplicationDidEnterBackgroundNotification:self];
         }
+        [self _postNotification:SJVideoPlayerApplicationDidEnterBackgroundNotification];
+    };
+    
+    _registrar.willTerminate = ^(SJVideoPlayerRegistrar * _Nonnull registrar) {
+        __strong typeof(_self) self = _self;
+        if ( !self ) return;
+        [self _postNotification:SJVideoPlayerApplicationWillTerminateNotification];
     };
     return _registrar;
 }
@@ -530,7 +529,7 @@ typedef struct _SJPlayerControlInfo {
 }
 
 - (void)_showOrHiddenPlaceholderImageViewIfNeeded {
-    if ( _URLAsset.originMedia != nil ) { ///< URLAsset is subasset
+    if ( _URLAsset.original != nil ) { ///< URLAsset is subasset
         [_presentView hiddenPlaceholderAnimated:NO delay:0];
         return;
     }
@@ -613,6 +612,11 @@ typedef struct _SJPlayerControlInfo {
             }
         }
         
+        if ( type == SJPlayerGestureType_LongPress ) {
+            if ( self.assetStatus != SJAssetStatusReadyToPlay || self.isPaused )
+                return NO;
+        }
+        
         if ( [self.controlLayerDelegate respondsToSelector:@selector(videoPlayer:gestureRecognizerShouldTrigger:location:)] ) {
             if ( ![self.controlLayerDelegate videoPlayer:self gestureRecognizerShouldTrigger:type location:location] )
                 return NO;
@@ -647,8 +651,13 @@ typedef struct _SJPlayerControlInfo {
         if ( !self ) return ;
         [self _handlePinch:scale];
     };
+    
+    gestureControl.longPressHandler = ^(id<SJPlayerGestureControl>  _Nonnull control, SJLongPressGestureRecognizerState state) {
+        __strong typeof(_self) self = _self;
+        if ( !self ) return;
+        [self _handleLongPress:state];
+    };
 }
-
 
 - (void)_updateCurrentPlayingIndexPathIfNeeded:(SJPlayModel *)playModel {
     if ( !playModel )
@@ -718,7 +727,10 @@ typedef struct _SJPlayerControlInfo {
 #pragma mark - 控制
 @implementation SJBaseVideoPlayer (PlayControl)
 - (void)setPlaybackController:(nullable id<SJVideoPlayerPlaybackController>)playbackController {
-    [_playbackController.playerView removeFromSuperview];
+    if ( _playbackController != nil ) {
+        [_playbackController.playerView removeFromSuperview];
+        [NSNotificationCenter.defaultCenter postNotificationName:SJVideoPlayerPlaybackControllerWillDeallocateNotification object:_playbackController];
+    }
     _playbackController = playbackController;
     [self _needUpdatePlaybackControllerProperties];
 }
@@ -790,12 +802,22 @@ typedef struct _SJPlayerControlInfo {
     return _playbackController.timeControlStatus;
 }
 
+- (BOOL)isPaused { return self.timeControlStatus == SJPlaybackTimeControlStatusPaused; }
+- (BOOL)isPlaying { return self.timeControlStatus == SJPlaybackTimeControlStatusPlaying; }
+- (BOOL)isBuffering { return self.timeControlStatus == SJPlaybackTimeControlStatusWaitingToPlay && self.reasonForWaitingToPlay == SJWaitingToMinimizeStallsReason; }
+- (BOOL)isEvaluating { return self.timeControlStatus == SJPlaybackTimeControlStatusWaitingToPlay && self.reasonForWaitingToPlay == SJWaitingWhileEvaluatingBufferingRateReason; }
+- (BOOL)isNoAssetToPlay { return self.timeControlStatus == SJPlaybackTimeControlStatusWaitingToPlay && self.reasonForWaitingToPlay == SJWaitingWithNoAssetToPlayReason; }
+
 - (nullable SJWaitingReason)reasonForWaitingToPlay {
     return _playbackController.reasonForWaitingToPlay;
 }
 
-- (BOOL)isPlayedToEndTime {
-    return _playbackController.isPlayedToEndTime;
+- (BOOL)isPlaybackFinished {
+    return _playbackController.isPlaybackFinished;
+}
+
+- (nullable SJFinishedReason)finishedReason {
+    return _playbackController.finishedReason;
 }
 
 - (BOOL)isPlayed {
@@ -829,13 +851,14 @@ typedef struct _SJPlayerControlInfo {
 #pragma mark -
 // 1.
 - (void)setURLAsset:(nullable SJVideoPlayerURLAsset *)URLAsset {
-    if ( _URLAsset && self.assetDeallocExeBlock != nil ) {
-        self.assetDeallocExeBlock(self);
-    }
-
+    
     [self _resetDefinitionSwitchingInfo];
+
+    [self _postNotification:SJVideoPlayerURLAssetWillChangeNotification];
     
     _URLAsset = URLAsset;
+    
+    [self _postNotification:SJVideoPlayerURLAssetDidChangeNotification];
       
     //
     // prepareToPlay
@@ -854,14 +877,12 @@ typedef struct _SJPlayerControlInfo {
         return;
     }
 
-    if ( URLAsset.subtitles != nil ) self.subtitlesPromptController.subtitles = URLAsset.subtitles;
+    if ( URLAsset.subtitles != nil ) {
+        self.subtitlesPromptController.subtitles = URLAsset.subtitles;
+    }
     
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [self.playbackController prepareToPlay];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self _tryToPlayIfNeeded];
-        });
-    });
+    [self.playbackController prepareToPlay];
+    [self _tryToPlayIfNeeded];
 }
 - (nullable SJVideoPlayerURLAsset *)URLAsset {
     return _URLAsset;
@@ -893,15 +914,10 @@ typedef struct _SJPlayerControlInfo {
 
 - (void)refresh {
     if ( !self.URLAsset ) return;
+    [self _postNotification:SJVideoPlayerPlaybackWillRereshNotification];
     [_playbackController refresh];
     [self play];
-}
-
-- (void)setAssetDeallocExeBlock:(nullable void (^)(__kindof SJBaseVideoPlayer * _Nonnull))assetDeallocExeBlock {
-    objc_setAssociatedObject(self, @selector(assetDeallocExeBlock), assetDeallocExeBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-- (nullable void (^)(__kindof SJBaseVideoPlayer * _Nonnull))assetDeallocExeBlock {
-    return objc_getAssociatedObject(self, _cmd);
+    [self _postNotification:SJVideoPlayerPlaybackDidRereshNotification];
 }
 
 - (void)setPlayerVolume:(float)playerVolume {
@@ -993,17 +1009,17 @@ typedef struct _SJPlayerControlInfo {
         if ( ![self.controlLayerDelegate canPerformStopForVideoPlayer:self] )
             return;
     }
-
-    if ( _URLAsset != nil && self.assetDeallocExeBlock ) {
-        self.assetDeallocExeBlock(self);
-    }
     
+    [self _postNotification:SJVideoPlayerPlaybackWillStopNotification];
+
     _subtitlesPromptController.subtitles = nil;
     _playModelObserver = nil;
     _URLAsset = nil;
     [_playbackController stop];
     [self _resetDefinitionSwitchingInfo];
     [self _showOrHiddenPlaceholderImageViewIfNeeded];
+    
+    [self _postNotification:SJVideoPlayerPlaybackDidStopNotification];
 }
 
 - (void)replay {
@@ -1121,7 +1137,7 @@ typedef struct _SJPlayerControlInfo {
 
 - (void)playbackController:(id<SJVideoPlayerPlaybackController>)controller timeControlStatusDidChange:(SJPlaybackTimeControlStatus)status {
     
-    BOOL isBuffering = controller.reasonForWaitingToPlay == SJWaitingToMinimizeStallsReason;
+    BOOL isBuffering = self.isBuffering || self.assetStatus == SJAssetStatusPreparing;
     isBuffering ? [self.reachability startRefresh] : [self.reachability stopRefresh];
     
     if ( [self.controlLayerDelegate respondsToSelector:@selector(videoPlayerPlaybackStatusDidChange:)] ) {
@@ -1157,7 +1173,7 @@ typedef struct _SJPlayerControlInfo {
     [self _postNotification:SJVideoPlayerCurrentTimeDidChangeNotification];
 }
 
-- (void)mediaDidPlayToEndForPlaybackController:(id<SJVideoPlayerPlaybackController>)controller {
+- (void)playbackController:(id<SJVideoPlayerPlaybackController>)controller playbackDidFinish:(SJFinishedReason)reason {
     if ( _floatSmallViewController.isAppeared && self.autoDisappearFloatSmallView ) {
         [_floatSmallViewController dismissFloatView];
     }
@@ -1165,8 +1181,8 @@ typedef struct _SJPlayerControlInfo {
     if ( [self.controlLayerDelegate respondsToSelector:@selector(videoPlayerPlaybackStatusDidChange:)] ) {
         [self.controlLayerDelegate videoPlayerPlaybackStatusDidChange:self];
     }
-
-    [self _postNotification:SJVideoPlayerDidPlayToEndTimeNotification];
+    
+    [self _postNotification:SJVideoPlayerPlaybackDidFinishNotification];
 }
 
 - (void)playbackController:(id<SJVideoPlayerPlaybackController>)controller presentationSizeDidChange:(CGSize)presentationSize {
@@ -1224,7 +1240,7 @@ typedef struct _SJPlayerControlInfo {
 }
 
 - (void)playbackController:(id<SJVideoPlayerPlaybackController>)controller didReplay:(id<SJMediaModelProtocol>)media {
-    [self _postNotification:SJVideoPlayerDidReplayNotification];
+    [self _postNotification:SJVideoPlayerPlaybackDidReplayNotification];
 }
 @end
 
@@ -1389,27 +1405,19 @@ typedef struct _SJPlayerControlInfo {
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (void)setFastForwardViewController:(nullable id<SJEdgeFastForwardViewController>)fastForwardViewController {
-    _fastForwardViewController = fastForwardViewController;
-    [self _needUpdateFastForwardControllerProperties];
-}
-- (id<SJEdgeFastForwardViewController>)fastForwardViewController {
-    if ( _fastForwardViewController == nil ) {
-        _fastForwardViewController = [[SJEdgeFastForwardViewController alloc] init];
-        [self _needUpdateFastForwardControllerProperties];
-    }
-    return _fastForwardViewController;
-}
-- (void)_needUpdateFastForwardControllerProperties {
-    _fastForwardViewController.target = self.presentView;
-}
-
 - (void)setAllowHorizontalTriggeringOfPanGesturesInCells:(BOOL)allowHorizontalTriggeringOfPanGesturesInCells {
     _controlInfo->gestureControl.allowHorizontalTriggeringOfPanGesturesInCells = allowHorizontalTriggeringOfPanGesturesInCells;
 }
 
 - (BOOL)allowHorizontalTriggeringOfPanGesturesInCells {
     return _controlInfo->gestureControl.allowHorizontalTriggeringOfPanGesturesInCells;
+}
+
+- (void)setRateWhenLongPressGestureTriggered:(CGFloat)rateWhenLongPressGestureTriggered {
+    _controlInfo->gestureControl.rateWhenLongPressGestureTriggered = rateWhenLongPressGestureTriggered;
+}
+- (CGFloat)rateWhenLongPressGestureTriggered {
+    return _controlInfo->gestureControl.rateWhenLongPressGestureTriggered;
 }
 
 @end
@@ -1788,7 +1796,7 @@ typedef struct _SJPlayerControlInfo {
             [self.controlLayerDelegate unlockedVideoPlayer:self];
         }
         
-        [self _postNotification:SJVideoPlayerLockedScreenDidChangeNotification];
+        [self _postNotification:SJVideoPlayeScreenLockStateDidChangeNotification];
     }
 }
 
@@ -2222,6 +2230,10 @@ typedef struct _SJPlayerControlInfo {
 
 - (nullable NSURL *)assetURL {
     return self.URLAsset.mediaURL;
+}
+
+- (BOOL)isPlayedToEndTime {
+    return self.isPlaybackFinished && self.finishedReason == SJFinishedReasonToEndTimePosition;
 }
 @end
 NS_ASSUME_NONNULL_END

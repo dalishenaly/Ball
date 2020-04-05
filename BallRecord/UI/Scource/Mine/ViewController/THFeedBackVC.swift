@@ -115,7 +115,7 @@ class THFeedBackVC: THBaseTableViewVC {
         func headerRefreshing() {
             page += 1
             requestData {
-                self.tableView.mj_header.endRefreshing()
+                self.tableView.mj_header?.endRefreshing()
 //                self.tableView.mj_footer.resetNoMoreData()
             }
         }
@@ -123,7 +123,7 @@ class THFeedBackVC: THBaseTableViewVC {
         func footerRefreshing() {
             page += 1
             requestData {
-                self.tableView.mj_footer.endRefreshing()
+                self.tableView.mj_footer?.endRefreshing()
             }
         }
         

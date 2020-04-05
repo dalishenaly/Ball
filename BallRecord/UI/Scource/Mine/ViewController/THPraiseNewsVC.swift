@@ -28,7 +28,7 @@ class THPraiseNewsVC: THBaseTableViewVC {
         tableView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.footerRefreshing()
         })
-        tableView.mj_footer.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
+        tableView.mj_footer?.ignoredScrollViewContentInsetBottom = isiPhoneX() ? 34 : 0
     }
     
     
@@ -39,15 +39,15 @@ class THPraiseNewsVC: THBaseTableViewVC {
     func headerRefreshing() {
         page = 0
         requestData {
-            self.tableView.mj_header.endRefreshing()
-            self.tableView.mj_footer.resetNoMoreData()
+            self.tableView.mj_header?.endRefreshing()
+            self.tableView.mj_footer?.resetNoMoreData()
         }
     }
     
     func footerRefreshing() {
         page += 1
         requestData {
-            self.tableView.mj_footer.endRefreshing()
+            self.tableView.mj_footer?.endRefreshing()
         }
     }
     
@@ -60,7 +60,7 @@ class THPraiseNewsVC: THBaseTableViewVC {
                 self.dataArr.removeAll()
             }
             if modelArr.count <= 0 {
-                self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                self.tableView.mj_footer?.endRefreshingWithNoMoreData()
             }
             self.dataArr += modelArr
             

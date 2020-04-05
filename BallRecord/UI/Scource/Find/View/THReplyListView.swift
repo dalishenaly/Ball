@@ -199,15 +199,15 @@ extension THReplyListView {
         tableView.mj_header = MJRefreshNormalHeader(refreshingBlock: {
             self.page = 0
             self.requestListData {
-                self.tableView.mj_header.endRefreshing()
-                self.tableView.mj_footer.resetNoMoreData()
+                self.tableView.mj_header?.endRefreshing()
+                self.tableView.mj_footer?.resetNoMoreData()
             }
         })
         
         tableView.mj_footer = MJRefreshBackNormalFooter(refreshingBlock: {
             self.page += 1
             self.requestListData {
-                self.tableView.mj_footer.endRefreshing()
+                self.tableView.mj_footer?.endRefreshing()
             }
         })
     }
@@ -223,7 +223,7 @@ extension THReplyListView {
                     self.dataArr.removeAll()
                 }
                 if arr.count <= 0 {
-                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                    self.tableView.mj_footer?.endRefreshingWithNoMoreData()
                 }
                 self.dataArr += arr
                 self.tableView.reloadData()
@@ -240,7 +240,7 @@ extension THReplyListView {
                     self.dataArr.removeAll()
                 }
                 if arr.count <= 0 {
-                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                    self.tableView.mj_footer?.endRefreshingWithNoMoreData()
                 }
                 self.dataArr += arr
                 self.tableView.reloadData()
@@ -287,6 +287,7 @@ extension THReplyListView: THInputViewDelegate {
             return
         }
         QMUITips.showLoading(in: AppDelegate.WINDOW!)
+<<<<<<< HEAD
         if self.isVideo ?? false {
             let param = ["replyText": inputPublishView.textView.text!, "vid": self.vidOrCid ?? "", "commentId": model?.commentId ?? ""]
             THFindRequestManager.requestCommentOrReply(param: param, successBlock: { (result) in
@@ -309,6 +310,17 @@ extension THReplyListView: THInputViewDelegate {
             }) { (error) in
                 QMUITips.hideAllTips()
             }
+=======
+        let param = ["content": inputPublishView.textView.text!, "placeId": self.vidOrCid ?? "", "replyId": model?.commentId ?? ""]
+        THPlaygroundManager.requestPlaygroundWriteComment(param: param, successBlock: { (result) in
+            QMUITips.hideAllTips()
+            self.inputPublishView.textView.resignFirstResponder()
+            self.inputPublishView.textView.text = ""
+            self.tableView.mj_header?.beginRefreshing()
+            QMUITips.show(withText: "提交成功")
+        }) { (error) in
+            QMUITips.hideAllTips()
+>>>>>>> master
         }
         
     }
