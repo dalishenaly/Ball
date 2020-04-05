@@ -181,11 +181,11 @@ extension THVideoCatVC {
             make.top.equalTo(videoView.snp_bottom).offset(20)
             make.height.equalTo(30)
         }
-        
+        let videoHeigt = self.view.bounds.size.width / 16 * 9
         videoPartView.snp.makeConstraints { (make) in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(videoPartView.height)
+            make.height.equalTo(videoHeigt)
             make.bottom.equalTo(bottomLayoutGuide.snp.bottom)
         }
         

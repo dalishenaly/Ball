@@ -169,11 +169,12 @@ extension THVideoDetailVC {
     }
     
     func configFrame() {
+        let playerHeight = view.bounds.size.width / 16 * 9
         playerContainerView.snp.makeConstraints { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.top.equalTo(view)
-            make.height.equalTo(SCREEN_WIDTH*5/8.0)
+            make.height.equalTo(playerHeight)
         }
         
         tableView.snp.makeConstraints { (make) in

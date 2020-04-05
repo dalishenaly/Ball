@@ -641,7 +641,7 @@ extension THPlaygroundDetailVC: THCollectionViewFlowLayoutDelegate {
         let colMagin: CGFloat = 10
         let cellWidth: CGFloat = (width - 10 - 10 - colMagin) / 2
         let model = dynamicArr[indexPath.row]
-        return model.caculateCellHeight(width: cellWidth, font: UIFont.systemFont(ofSize: 13))
+        return model.caculateCellHeight(width: cellWidth, fontSize:13)
     }
 }
 

@@ -113,7 +113,7 @@ extension THMyCollectVC: THCollectionViewFlowLayoutDelegate {
         let colMagin: CGFloat = 10
         let cellWidth: CGFloat = (width - 10 - 10 - colMagin) / 2
         let item = self.dataArray[indexPath.item]
-        return item.caculateCellHeight(width: cellWidth, font: UIFont.systemFont(ofSize: 13))
+        return item.caculateCellHeight(width: cellWidth, fontSize:13)
     }
 }
 

@@ -16,7 +16,7 @@ class THHomeCollectionCell: UICollectionViewCell {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "sdfasfasfasfasfadsf"
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = COLOR_333333
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -79,15 +79,14 @@ extension THHomeCollectionCell {
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalTo(9)
             make.right.equalTo(-9)
-            make.top.equalTo(coverView.snp_bottom).offset(5)
+            make.top.equalTo(coverView.snp_bottom).offset(7)
             make.height.equalTo(titleLabel)
         }
         
         iconView.snp.makeConstraints { (make) in
             make.left.equalTo(9)
             make.width.height.equalTo(25)
-            make.top.equalTo(titleLabel.snp_bottom).offset(5)
-            make.bottom.equalTo(-12)
+            make.top.equalTo(titleLabel.snp_bottom).offset(7)
         }
         
         nameLabel.snp.makeConstraints { (make) in
@@ -115,5 +114,11 @@ extension THHomeCollectionCell {
         likeBtn.setTitle(count, for: .normal)
         likeBtn.isSelected = model.hasPraise ?? false
         
+        titleLabel.snp.remakeConstraints { (make) in
+            make.left.equalTo(9)
+            make.right.equalTo(-9)
+            make.top.equalTo(coverView.snp_bottom).offset(7)
+            make.height.equalTo(model.titlLableHeight)
+        }
     }
 }

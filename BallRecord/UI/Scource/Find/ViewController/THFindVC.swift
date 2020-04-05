@@ -297,7 +297,7 @@ extension THFindVC: THCollectionViewFlowLayoutDelegate {
             model = focusArray[indexPath.item]
         }
         
-        return model!.caculateCellHeight(width: cellWidth, font: UIFont.systemFont(ofSize: 13))
+        return model!.caculateCellHeight(width: cellWidth, fontSize:13)
     }
 }
 
