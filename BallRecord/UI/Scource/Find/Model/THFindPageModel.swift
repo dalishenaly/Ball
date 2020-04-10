@@ -62,7 +62,7 @@ class THDynamicModel: NSObject {
         let dic = NSDictionary(object: font, forKey : kCTFontAttributeName as! NSCopying)
         let textSize = text.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: dic as? [NSAttributedString.Key:Any], context:nil).size
         let lineH = fontSize * 1.3
-        titlLableHeight = (textSize.height > lineH ? textSize.height : fontSize)
+        titlLableHeight = (textSize.height > lineH ? textSize.height : fontSize) + 4
         cellH += titlLableHeight
         cellH += 7
         //  头像高度

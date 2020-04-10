@@ -48,7 +48,7 @@ class THVideoCatVC: THBaseVC {
         player.showMoreItemToTopControlLayer = false
         player.rotationManager.isDisabledAutorotation = true
         player.defaultNotReachableControlLayer.delegate = self
-        player.isEnabledFilmEditing = true
+        player.isEnabledFilmEditing = false
         return player
     }()
     
@@ -102,10 +102,6 @@ class THVideoCatVC: THBaseVC {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         player.vc_viewDidAppear()
-//        if let url = URL(string: videoPath) {
-//            let asset = SJVideoPlayerURLAsset(url: url)
-//            player.urlAsset = asset;
-//        }
         self.videoPartView.updateDataSource()
     }
     
@@ -149,7 +145,7 @@ extension THVideoCatVC {
     func configPlayer() {
         player.defaultLoadFailedControlLayer.topContainerView.isHidden = true
         player.defaultEdgeControlLayer.topContainerView.isHidden = true
-        player.defaultEdgeControlLayer.bottomAdapter.removeItem(forTag: SJEdgeControlLayerBottomItem_FullBtn)
+//        player.defaultEdgeControlLayer.bottomAdapter.removeItem(forTag: SJEdgeControlLayerBottomItem_FullBtn)
         player.defaultEdgeControlLayer.bottomAdapter.removeItem(forTag: SJEdgeControlLayerBottomItem_Separator)
         player.defaultEdgeControlLayer.bottomAdapter.exchangeItem(forTag: SJEdgeControlLayerBottomItem_DurationTime, withItemForTag: SJEdgeControlLayerBottomItem_Progress)
         let durationItem = player.defaultEdgeControlLayer.bottomAdapter.item(forTag: SJEdgeControlLayerBottomItem_DurationTime)
@@ -167,11 +163,11 @@ extension THVideoCatVC {
     
     
     func configFrame() {
-        
-        videoView.snp.makeConstraints { (make) in
+        let videoHeight = self.view.bounds.size.width/16*9
+       videoView.snp.makeConstraints { (make) in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(200)
+            make.height.equalTo(videoHeight)
             make.top.equalTo(self.view)
         }
         
@@ -181,26 +177,25 @@ extension THVideoCatVC {
             make.top.equalTo(videoView.snp_bottom).offset(20)
             make.height.equalTo(30)
         }
-        let videoHeigt = self.view.bounds.size.width / 16 * 9
         videoPartView.snp.makeConstraints { (make) in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(videoHeigt)
-            make.bottom.equalTo(bottomLayoutGuide.snp.bottom)
+            make.height.equalTo(videoPartView.height)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
         player.view.snp.makeConstraints { (make) in
             make.edges.equalTo(0)
         }
-        
+        sweetRuler.top = 200 + 70
         catBtn.snp.makeConstraints { (make) in
+            make.top.equalTo(sweetRuler.snp_bottom).offset(40);
             make.left.equalTo(26)
             make.right.equalTo(-26)
             make.height.equalTo(40)
-            make.bottom.equalTo(videoPartView.snp_top).offset(-30)
         }
         catBtn.setCorner(cornerRadius: 20)
-        sweetRuler.top = 200 + 70
+
     }
     
     

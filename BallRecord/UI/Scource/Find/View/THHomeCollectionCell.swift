@@ -16,7 +16,7 @@ class THHomeCollectionCell: UICollectionViewCell {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "sdfasfasfasfasfadsf"
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = COLOR_333333
         label.setContentHuggingPriority(.required, for: .horizontal)

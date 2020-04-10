@@ -275,23 +275,25 @@ extension THVideoEditVC {
         videoBox.asyncFinishEdit(byFilePath: self.tempVideoPath, progress: { (process) in
 
         }) { (error) in
-            QMUITips.hideAllTips()
-            if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.tempVideoPath ?? "")) {
-                UISaveVideoAtPathToSavedPhotosAlbum(self.tempVideoPath ?? "", self, #selector(self.video(videoPath:didFinishSavingWithError:contextInfo:)), nil)
-            } else {
-                QMUITips.show(withText: "保存视频过程中发生错误")
-                self.showAlert(title: "您的视频已做好快珍藏到打球记录吧！", btnTitle: "珍藏到打球记录") {
-                    QMUITips.showLoading(in: self.view)
-                    /// 获取阿里云上传凭证，票据，videoId
-                    let fileName = "\(milliStamp).mp4"
-                    THVideoRequestManager.requestUploadAuth(title: "精彩瞬间", fileName: fileName, successBlock: { (result) in
-                        let model = THVideoAuthInfoModel.yy_model(withJSON: result)
-                        /// 视频上传到阿里云
-                        self.uploader.uploadFile(filePath: self.tempVideoPath ?? "", uploadAuth: model?.UploadAuth ?? "", uploadAddress: model?.UploadAddress ?? "", videoId: model?.VideoId ?? "")
-                        
-                    }) { (error) in
-                        QMUITips.hideAllTips()
-                        QMUITips.show(withText: error.localizedDescription)
+            DispatchQueue.main.async {
+                QMUITips.hideAllTips()
+                if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.tempVideoPath ?? "")) {
+                    UISaveVideoAtPathToSavedPhotosAlbum(self.tempVideoPath ?? "", self, #selector(self.video(videoPath:didFinishSavingWithError:contextInfo:)), nil)
+                } else {
+                    QMUITips.show(withText: "保存视频过程中发生错误")
+                    self.showAlert(title: "您的视频已做好快珍藏到打球记录吧！", btnTitle: "珍藏到打球记录") {
+                        QMUITips.showLoading(in: self.view)
+                        /// 获取阿里云上传凭证，票据，videoId
+                        let fileName = "\(milliStamp).mp4"
+                        THVideoRequestManager.requestUploadAuth(title: "精彩瞬间", fileName: fileName, successBlock: { (result) in
+                            let model = THVideoAuthInfoModel.yy_model(withJSON: result)
+                            /// 视频上传到阿里云
+                            self.uploader.uploadFile(filePath: self.tempVideoPath ?? "", uploadAuth: model?.UploadAuth ?? "", uploadAddress: model?.UploadAddress ?? "", videoId: model?.VideoId ?? "")
+                            
+                        }) { (error) in
+                            QMUITips.hideAllTips()
+                            QMUITips.show(withText: error.localizedDescription)
+                        }
                     }
                 }
             }
