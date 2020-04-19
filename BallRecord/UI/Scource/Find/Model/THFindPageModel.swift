@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import YYModel
 @objcMembers
 class THFindPageModel: NSObject {
     
@@ -40,7 +41,26 @@ class THDynamicModel: NSObject {
     var publisherName: String = ""
     var praiseCount: Int = 0
     var hasPraise: Bool?
-    var titlLableHeight:CGFloat = 0;
+    var titlLableHeight:CGFloat = 0
+    var releaseTime:Int64 = 0
+    var commentCount:Int = 0;
+    lazy var releaseString : String = {
+        let currentTime = Int64(Date().timeIntervalSince1970)
+        let timeSub = currentTime - releaseTime
+        var timeString = ""
+        if timeSub < 60{
+            timeString = "\(timeSub) 秒前"
+        }else if timeSub < 60*60{
+            timeString = "\(timeSub/60) 分钟前"
+        }else if timeSub < 60*60*24{
+            timeString = "\(timeSub/3600) 小时前"
+        }else if timeSub < 60*60*24*30{
+            timeString = "\(timeSub/86400) 天前"
+        }else{
+            timeString = "\(timeSub/86400/30) 月前"
+        }
+        return timeString
+    }()
 //    "praiseName": "",
 //    "praiseTime": "2020-01-07 15:48:35",
 //    "vid": 1,
@@ -52,22 +72,22 @@ class THDynamicModel: NSObject {
         
         var cellH: CGFloat = 0
         //  图片高度
-        let imageH = width * 1.2
-        cellH += imageH
-        cellH += 7
-        //  图片高度
+        cellH += 20
+        cellH += 42
+        cellH += 18;
         let text: NSString = content as NSString
-        let size = CGSize(width: width, height:1000) //CGSizeMake(width,1000)
+        let size = CGSize(width: width, height:CGFloat(MAXFLOAT))
         let font = UIFont.systemFont(ofSize: fontSize);
         let dic = NSDictionary(object: font, forKey : kCTFontAttributeName as! NSCopying)
         let textSize = text.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: dic as? [NSAttributedString.Key:Any], context:nil).size
         let lineH = fontSize * 1.3
         titlLableHeight = (textSize.height > lineH ? textSize.height : fontSize) + 4
-        cellH += titlLableHeight
-        cellH += 7
-        //  头像高度
-        cellH += 25
-        cellH += 5
+        cellH += titlLableHeight;
+        
+        cellH += 15;
+        cellH += 190   //图片高度
+        cellH += 42
+        
         return cellH
     }
 }

@@ -55,7 +55,7 @@ class THVideoCatVC: THBaseVC {
     lazy var catBtn: UIButton = {
         let button = UIButton()
         button.backgroundColor = MAIN_COLOR
-        button.setTitle("截取10秒", for: .normal)
+        button.setTitle("截取15秒", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
@@ -286,8 +286,8 @@ extension THVideoCatVC {
         let videoId = dateFormatter.string(from: Date())
         let catVideoPath = DownloadVideoPath + "/" + "\(videoId).mp4"
         
-        player.export(withBeginTime: player.currentTime, duration: 10, presetName: AVAssetExportPresetHighestQuality, progress: { (player, process) in
-            print("---- %.2f%", process * 100)
+        player.export(withBeginTime: player.currentTime, duration: 15, presetName: AVAssetExportPresetHighestQuality, progress: { (player, process) in
+
         }, completion: { (player, savePath, coverImg) in
             QMUITips.hideAllTips()
             print("视频剪切 success savePath: %@", savePath)

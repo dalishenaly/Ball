@@ -35,20 +35,9 @@ class THBannerView: UIView {
         pageControl.setFillColor(COLOR_5E6D82, for: .selected)
         return pageControl
     }()
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "推荐动态"
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = COLOR_333333
-        label.isHidden = true
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return label
-    }()
   
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 205))
+        super.init(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 180))
         
         configUI()
         configFrame()
@@ -63,13 +52,11 @@ class THBannerView: UIView {
         
         addSubview(viewPager)
         addSubview(pagerControl)
-        addSubview(titleLabel)
     }
     
     func configFrame() {
         viewPager.frame = CGRect(x: 15, y: 10, width: SCREEN_WIDTH - 30, height: 143)
         pagerControl.frame = CGRect(x: 15, y: viewPager.frame.maxY + 6, width: SCREEN_WIDTH - 30, height: 10)
-        titleLabel.frame = CGRect(x: 15, y: pagerControl.frame.maxY + 6, width: SCREEN_WIDTH - 30, height: 20)
     }
     
     func updateData(array: [THHomeBannerModel]) {

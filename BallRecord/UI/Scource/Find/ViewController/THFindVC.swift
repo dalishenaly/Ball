@@ -41,8 +41,11 @@ class THFindVC: THBaseVC {
     }()
     
     lazy var collectionView : UICollectionView = {
-        let layout = THFlowLayout()
-        layout.delegate = self
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 0.01;
+        layout.minimumInteritemSpacing = 0.01;
+        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 15, bottom: 0, right: 15)
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -53,8 +56,11 @@ class THFindVC: THBaseVC {
         return collectionView
     }()
     lazy var collectionView2 : UICollectionView = {
-        let layout = THFlowLayout()
-        layout.delegate = self
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 0.01;
+        layout.minimumInteritemSpacing = 0.01;
+        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 15, bottom: 0, right: 15)
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -65,8 +71,11 @@ class THFindVC: THBaseVC {
         return collectionView
     }()
     lazy var collectionView3 : UICollectionView = {
-        let layout = THFlowLayout()
-        layout.delegate = self
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 0.01;
+        layout.minimumInteritemSpacing = 0.01;
+        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 15, bottom: 0, right: 15)
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -148,7 +157,6 @@ extension THFindVC {
         let param = ["type": type, "page": page]
         QMUITips.showLoading(in: view)
         THFindRequestManager.requestFindPageData(param: param, successBlock: { (response) in
-            print(response)
             completion?()
             QMUITips.hideAllTips()
             
@@ -179,7 +187,6 @@ extension THFindVC {
                 self.bannerArr = model?.banner ?? []
                 self.banner.updateData(array: self.bannerArr)
                 self.recommendArray += model?.list ?? []
-                self.banner.titleLabel.isHidden = self.recommendArray.count == 0
                 self.collectionView.reloadData()
             } else if type == 1 {
                 self.recentArray += model?.list ?? []
@@ -279,29 +286,7 @@ extension THFindVC: THFindTitleViewDelegate, UIScrollViewDelegate {
     }
 }
 
-extension THFindVC: THCollectionViewFlowLayoutDelegate {
-    
-    func th_setCellHeght(layout: THFlowLayout, indexPath: NSIndexPath, itemWidth: CGFloat) -> CGFloat {
-        /// 获取宽度
-        let width: CGFloat = self.collectionView.frame.size.width
-        /// 获取列间距总和
-        let colMagin: CGFloat = 10
-        let cellWidth: CGFloat = (width - 10 - 10 - colMagin) / 2
-        
-        var model: THDynamicModel?
-        if collectionView == self.collectionView {
-            model = recommendArray[indexPath.item]
-        } else if collectionView == collectionView2 {
-            model = recentArray[indexPath.item]
-        } else {
-            model = focusArray[indexPath.item]
-        }
-        
-        return model!.caculateCellHeight(width: cellWidth, fontSize:13)
-    }
-}
-
-extension THFindVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension THFindVC: UICollectionViewDelegate, UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.collectionView {
@@ -325,8 +310,6 @@ extension THFindVC: UICollectionViewDelegate, UICollectionViewDataSource {
         }
         model = THDynamicController.INSTANCE.getdynamicModel(vid: model!.vid)
         let cell:THHomeCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "THHomeCollectionCell", for: indexPath) as! THHomeCollectionCell
-        setshadow(cell: cell)
-
         cell.updateModel(model: model!)
         return cell
     }
@@ -349,22 +332,17 @@ extension THFindVC: UICollectionViewDelegate, UICollectionViewDataSource {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
-    
-    func setshadow(cell: UICollectionViewCell) {
-        cell.contentView.layer.cornerRadius = 8.0
-        cell.contentView.layer.borderWidth = 1.0
-        cell.contentView.layer.borderColor = UIColor.clear.cgColor
-        cell.contentView.layer.masksToBounds = true
-        cell.contentView.backgroundColor = .white
-        
-        cell.layer.shadowColor = UIColor.lightGray.cgColor
-        cell.layer.shadowOffset = CGSize.zero
-        cell.layer.shadowRadius = 2.0   //  阴影扩散半径
-        cell.layer.shadowOpacity = 1.0
-        cell.layer.masksToBounds = false
-
-        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var model: THDynamicModel?
+        if collectionView == self.collectionView {
+            model = recommendArray[indexPath.item]
+        } else if collectionView == collectionView2 {
+            model = recentArray[indexPath.item]
+        } else {
+            model = focusArray[indexPath.item]
+        }
+        let width = collectionView.bounds.size.width-30
+        return CGSize(width: width, height: model!.caculateCellHeight(width: width, fontSize:15))
     }
 }
 

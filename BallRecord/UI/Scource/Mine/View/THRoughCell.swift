@@ -136,6 +136,8 @@ class videoCoverView: UIImageView {
     
     init() {
         super.init(frame: CGRect.zero)
+        self.layer.cornerRadius = 8
+        self.layer.masksToBounds = true
         configUI()
         configFrame()
     }
@@ -145,7 +147,6 @@ class videoCoverView: UIImageView {
     }
     
     func configUI() {
-        contentMode = .scaleAspectFill
         addSubview(playView)
     }
     

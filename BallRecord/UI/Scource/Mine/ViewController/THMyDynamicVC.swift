@@ -13,8 +13,11 @@ class THMyDynamicVC: THBaseVC {
     lazy var dataArray = [THDynamicModel]()
     var page: Int = 0
     lazy var collectionView : UICollectionView = {
-        let layout = THFlowLayout()
-        layout.delegate = self
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 0.01;
+        layout.minimumInteritemSpacing = 0.01;
+        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 15, bottom: 0, right: 15)
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -108,24 +111,7 @@ extension THMyDynamicVC {
     }
     
 }
-
-extension THMyDynamicVC: THCollectionViewFlowLayoutDelegate {
-    
-    func th_setCellHeght(layout: THFlowLayout, indexPath: NSIndexPath, itemWidth: CGFloat) -> CGFloat {
-        /// 获取宽度
-        let width: CGFloat = self.collectionView.frame.size.width
-        /// 获取列间距总和
-        let colMagin: CGFloat = 10
-        let cellWidth: CGFloat = (width - 10 - 10 - colMagin) / 2
-        
-        let item = self.dataArray[indexPath.item]
-        
-
-        return item.caculateCellHeight(width: cellWidth, fontSize:13)
-    }
-}
-
-extension THMyDynamicVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension THMyDynamicVC: UICollectionViewDelegate, UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataArray.count
@@ -133,7 +119,6 @@ extension THMyDynamicVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell:THHomeCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "THHomeCollectionCell", for: indexPath) as! THHomeCollectionCell
-        setshadow(cell: cell)
         let model = self.dataArray[indexPath.item]
         cell.updateModel(model: model)
         return cell
@@ -147,21 +132,9 @@ extension THMyDynamicVC: UICollectionViewDelegate, UICollectionViewDataSource {
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
-
-
-    func setshadow(cell: UICollectionViewCell) {
-        cell.contentView.layer.cornerRadius = 8.0
-        cell.contentView.layer.borderWidth = 1.0
-        cell.contentView.layer.borderColor = UIColor.clear.cgColor
-        cell.contentView.layer.masksToBounds = true
-        cell.contentView.backgroundColor = .white
-        
-        cell.layer.shadowColor = UIColor.lightGray.cgColor
-        cell.layer.shadowOffset = CGSize.zero
-        cell.layer.shadowRadius = 2.0   //  阴影扩散半径
-        cell.layer.shadowOpacity = 1.0
-        cell.layer.masksToBounds = false
-
-        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let item = self.dataArray[indexPath.item]
+        let width = collectionView.bounds.size.width-30
+        return CGSize(width: width, height: item.caculateCellHeight(width: width, fontSize:15))
     }
 }
