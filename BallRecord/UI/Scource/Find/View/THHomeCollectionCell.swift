@@ -137,7 +137,7 @@ extension THHomeCollectionCell {
             make.height.equalTo(15)
         }
         commentBtn.snp.makeConstraints { (make) in
-            make.left.equalTo(likeBtn.snp_right).offset(10)
+            make.centerX.equalTo(contentView.snp_centerX).offset(0)
             make.bottom.equalTo(lineView.snp_top).offset(-13)
             make.width.equalTo(40)
             make.height.equalTo(15)

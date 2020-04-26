@@ -187,7 +187,7 @@ extension THVideoCatVC {
         player.view.snp.makeConstraints { (make) in
             make.edges.equalTo(0)
         }
-        sweetRuler.top = 200 + 70
+        sweetRuler.top = videoHeight + 70
         catBtn.snp.makeConstraints { (make) in
             make.top.equalTo(sweetRuler.snp_bottom).offset(40);
             make.left.equalTo(26)
@@ -221,7 +221,7 @@ extension THVideoCatVC {
     func requestVideoUrl() {
         
         guard let videoUrl = self.catVideModel?.videoUrl else { return }
-        if videoUrl.contains("http") || videoUrl.contains(".mp4") {
+        if videoUrl.hasPrefix("http") || videoUrl.contains(".mp4") {
             let asset = SJVideoPlayerURLAsset(url: URL(string: videoUrl)!)
             self.player.urlAsset = asset
             return

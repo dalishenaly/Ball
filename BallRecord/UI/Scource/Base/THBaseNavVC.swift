@@ -22,7 +22,6 @@ class THBaseNavVC: UINavigationController {
             image: image,
             selectedImage: selectedImage
         )
-        
 //        tabBarItem.setTitleTextAttributes([
 //            .foregroundColor: COLOR_8492A6,
 //            .font: UIFont.systemFont(ofSize: 10)

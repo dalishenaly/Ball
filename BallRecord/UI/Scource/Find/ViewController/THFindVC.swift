@@ -362,7 +362,7 @@ class THFindTitleView: UIView {
         button.tag = 55
         button.setTitle("推荐", for: .normal)
         button.setTitleColor(COLOR_999999, for: .normal)
-        button.setTitleColor(COLOR_333333, for: .selected)
+        button.setTitleColor(MAIN_COLOR, for: .selected)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
         return button
@@ -372,7 +372,7 @@ class THFindTitleView: UIView {
         button.tag = 56
         button.setTitle("最新", for: .normal)
         button.setTitleColor(COLOR_999999, for: .normal)
-        button.setTitleColor(COLOR_333333, for: .selected)
+        button.setTitleColor(MAIN_COLOR, for: .selected)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
         return button
@@ -382,7 +382,7 @@ class THFindTitleView: UIView {
         button.tag = 57
         button.setTitle("关注", for: .normal)
         button.setTitleColor(COLOR_999999, for: .normal)
-        button.setTitleColor(COLOR_333333, for: .selected)
+        button.setTitleColor(MAIN_COLOR, for: .selected)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
         return button

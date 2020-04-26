@@ -74,6 +74,8 @@ class THVideoDetailVC: THBaseVC {
         player.showMoreItemToTopControlLayer = false
         player.rotationManager.isDisabledAutorotation = true
         player.defaultNotReachableControlLayer.delegate = self
+        player.isEnabledFilmEditing = false
+        player.defaultEdgeControlLayer.topContainerView.isHidden = true
         return player
     }()
 
@@ -84,7 +86,7 @@ class THVideoDetailVC: THBaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = "视频播放"
         configUI()
         configFrame()
         configData()
@@ -118,7 +120,7 @@ class THVideoDetailVC: THBaseVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.navigationBar.isHidden = true
+//        navigationController?.navigationBar.isHidden = true
         IQKeyboardManager.shared().isEnabled = false
     }
     
@@ -129,7 +131,7 @@ class THVideoDetailVC: THBaseVC {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.navigationBar.isHidden = false
+//        navigationController?.navigationBar.isHidden = false
         IQKeyboardManager.shared().isEnabled = true
         player.vc_viewWillDisappear()
     }

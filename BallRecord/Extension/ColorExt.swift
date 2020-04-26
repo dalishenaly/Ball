@@ -9,7 +9,7 @@
 import UIKit
 
 
-let MAIN_COLOR = #colorLiteral(red: 0, green: 0.462745098, blue: 1, alpha: 1)
+let MAIN_COLOR = #colorLiteral(red: 0.4235294118, green: 0.7019607843, blue: 0.4862745098, alpha: 1)
 let COLOR_333333 = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
 let COLOR_666666 = #colorLiteral(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
 let COLOR_999999 = #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)

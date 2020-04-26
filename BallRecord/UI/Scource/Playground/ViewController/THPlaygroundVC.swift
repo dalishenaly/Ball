@@ -256,7 +256,7 @@ class THPlaygroundTitleView: UIView {
         button.setTitle("全国", for: .selected)
         button.setImage(UIImage(named: "down_arrow"), for: .normal)
         button.setImage(UIImage(named: "up_arrow"), for: .selected)
-        button.setTitleColor(MAIN_COLOR, for: .normal)
+        button.setTitleColor(COLOR_333333, for: .normal)
         button.setTitleColor(MAIN_COLOR, for: .selected)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(clickButtonEvent(sender:)), for: .touchUpInside)
