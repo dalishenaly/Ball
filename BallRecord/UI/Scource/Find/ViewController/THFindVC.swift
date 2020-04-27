@@ -390,7 +390,7 @@ class THFindTitleView: UIView {
     
     lazy var indicator: UIView = {
         let view = UIView()
-        view.backgroundColor = COLOR_333333
+        view.backgroundColor = MAIN_COLOR
         return view
     }()
     

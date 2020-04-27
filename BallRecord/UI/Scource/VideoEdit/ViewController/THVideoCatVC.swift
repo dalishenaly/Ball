@@ -22,7 +22,7 @@ class CatVideoModel: NSObject {
 
 class THVideoCatVC: THBaseVC {
     
-    let videoPath = "https://dhxy.v.netease.com/2019/0814/5757db881a2aff4543b7d9c846f3f415qt.mp4"//"https://xy2.v.netease.com/r/video/20190110/bea8e70d-ffc0-4433-b250-0393cff10b75.mp4" //"https://1252068037.vod2.myqcloud.com/46d0b624vodcq1252068037/aee3f0db5285890797118433949/XaYvA7egCYUA.mp4"
+    let videoPath = "https://dhxy.v.netease.com/2019/0814/5757db881a2aff4543b7d9c846f3f415qt.mp4"
     let videoBox = WAVideoBox()//   视频处理类
     
     var cid: String?

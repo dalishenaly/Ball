@@ -87,7 +87,6 @@ class THDynamicModel: NSObject {
         cellH += 15;
         cellH += 190   //图片高度
         cellH += 42
-        
         return cellH
     }
 }

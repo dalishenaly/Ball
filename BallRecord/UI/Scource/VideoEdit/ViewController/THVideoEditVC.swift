@@ -238,9 +238,7 @@ extension THVideoEditVC {
         
         THPlaygroundManager.requestBGMListData(param: nil, successBlock: { (result) in
             self.bgmArr = NSArray.yy_modelArray(with: THBGMTypeModel.self, json: result) as? [THBGMTypeModel] ?? []
-            print("-----")
         }) { (error) in
-            print("-----")
         }
     }
     
