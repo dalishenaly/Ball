@@ -3,16 +3,17 @@
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="THLoginVC" customModule="球志" customModuleProvider="target">
             <connections>
+                <outlet property="appleIdButton" destination="ghe-Wl-VsP" id="AwP-LX-udh"/>
                 <outlet property="password" destination="0HG-6i-N25" id="Qeo-5k-gvc"/>
                 <outlet property="scrollView" destination="s11-V9-IHW" id="sKb-dz-6hX"/>
-                <outlet property="stackView" destination="xR8-pp-K9Y" id="4qc-g8-LOX"/>
+                <outlet property="stackView" destination="q61-KQ-PLf" id="EJB-wc-fVA"/>
                 <outlet property="userName" destination="pSv-GG-YH6" id="Rtr-xY-hNZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -122,35 +123,43 @@
                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xR8-pp-K9Y">
-                            <rect key="frame" x="30" y="538" width="315" height="40"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q61-KQ-PLf">
+                            <rect key="frame" x="30" y="545" width="315" height="40"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tLm-FN-m5V">
-                                    <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="78.666666666666671" height="40"/>
                                     <state key="normal" image="weChat_icon"/>
                                     <connections>
                                         <action selector="weChatLoginEvent:" destination="-1" eventType="touchUpInside" id="BqD-07-ISD"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37A-ZP-LZE">
-                                    <rect key="frame" x="105" y="0.0" width="105" height="40"/>
+                                    <rect key="frame" x="78.666666666666671" y="0.0" width="79.000000000000014" height="40"/>
                                     <state key="normal" image="QQ_icon"/>
                                     <connections>
                                         <action selector="qqLoginEvent:" destination="-1" eventType="touchUpInside" id="NT1-dP-Tvr"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWQ-ce-uwB">
-                                    <rect key="frame" x="210" y="0.0" width="105" height="40"/>
+                                    <rect key="frame" x="157.66666666666666" y="0.0" width="78.666666666666657" height="40"/>
                                     <state key="normal" image="weibo_icon"/>
                                     <connections>
                                         <action selector="weiboLoginEvent:" destination="-1" eventType="touchUpInside" id="Qe4-zf-UcX"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghe-Wl-VsP">
+                                    <rect key="frame" x="236.33333333333334" y="0.0" width="78.666666666666657" height="40"/>
+                                    <state key="normal" image="appleId_icon"/>
+                                    <connections>
+                                        <action selector="appleIdLoginEvent:" destination="-1" eventType="touchUpInside" id="fMD-WW-t4m"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="dmC-yZ-xeQ"/>
-                                <constraint firstItem="aWQ-ce-uwB" firstAttribute="width" secondItem="37A-ZP-LZE" secondAttribute="width" id="f6I-Hg-SNN"/>
-                                <constraint firstItem="37A-ZP-LZE" firstAttribute="width" secondItem="tLm-FN-m5V" secondAttribute="width" id="rnA-OZ-jog"/>
+                                <constraint firstItem="ghe-Wl-VsP" firstAttribute="width" secondItem="tLm-FN-m5V" secondAttribute="width" id="2tu-7F-GdV"/>
+                                <constraint firstItem="aWQ-ce-uwB" firstAttribute="width" secondItem="tLm-FN-m5V" secondAttribute="width" id="ABe-6c-fi5"/>
+                                <constraint firstItem="37A-ZP-LZE" firstAttribute="width" secondItem="tLm-FN-m5V" secondAttribute="width" id="PCu-Gm-HDl"/>
+                                <constraint firstAttribute="height" constant="40" id="qYh-U6-KHA"/>
                             </constraints>
                         </stackView>
                     </subviews>
@@ -159,22 +168,22 @@
                         <constraint firstItem="gk6-BB-i1V" firstAttribute="trailing" secondItem="ed3-aR-wR0" secondAttribute="trailing" id="2YY-WV-f1G"/>
                         <constraint firstItem="6pY-1H-Tvt" firstAttribute="top" secondItem="pSv-GG-YH6" secondAttribute="bottom" id="3Eo-Bs-ikN"/>
                         <constraint firstItem="o5b-RA-L08" firstAttribute="top" secondItem="qZn-Tn-ZI4" secondAttribute="top" constant="45" id="3gY-Je-7yW"/>
-                        <constraint firstItem="xR8-pp-K9Y" firstAttribute="leading" secondItem="gk6-BB-i1V" secondAttribute="leading" id="4D3-Li-6Ww"/>
                         <constraint firstItem="amc-r3-aiN" firstAttribute="trailing" secondItem="6pY-1H-Tvt" secondAttribute="trailing" constant="30" id="4N6-WN-hCj"/>
+                        <constraint firstItem="q61-KQ-PLf" firstAttribute="trailing" secondItem="gk6-BB-i1V" secondAttribute="trailing" id="4nv-Bj-IND"/>
                         <constraint firstItem="gk6-BB-i1V" firstAttribute="top" secondItem="ed3-aR-wR0" secondAttribute="bottom" constant="82" id="6xY-Wq-eeQ"/>
                         <constraint firstItem="amc-r3-aiN" firstAttribute="trailing" secondItem="720-z1-wHs" secondAttribute="trailing" constant="30" id="7f8-0k-3Hu"/>
                         <constraint firstItem="6pY-1H-Tvt" firstAttribute="leading" secondItem="amc-r3-aiN" secondAttribute="leading" constant="30" id="7t8-dM-y2s"/>
+                        <constraint firstItem="q61-KQ-PLf" firstAttribute="leading" secondItem="gk6-BB-i1V" secondAttribute="leading" id="8iZ-To-OAv"/>
                         <constraint firstItem="ed3-aR-wR0" firstAttribute="leading" secondItem="0HG-6i-N25" secondAttribute="leading" id="9zi-rg-7Nv"/>
                         <constraint firstItem="iqd-yi-oQv" firstAttribute="trailing" secondItem="0HG-6i-N25" secondAttribute="trailing" id="IKT-Xu-4IW"/>
-                        <constraint firstItem="xR8-pp-K9Y" firstAttribute="trailing" secondItem="gk6-BB-i1V" secondAttribute="trailing" id="KRn-OA-UVc"/>
                         <constraint firstItem="ed3-aR-wR0" firstAttribute="top" secondItem="8rC-sT-OGP" secondAttribute="bottom" constant="55" id="Lsk-s9-PxV"/>
                         <constraint firstItem="o5b-RA-L08" firstAttribute="leading" secondItem="qZn-Tn-ZI4" secondAttribute="leading" constant="30" id="NJS-ok-zeg"/>
                         <constraint firstItem="pSv-GG-YH6" firstAttribute="top" secondItem="tBK-AB-zWZ" secondAttribute="bottom" constant="48" id="NMx-pI-FPa"/>
                         <constraint firstItem="8rC-sT-OGP" firstAttribute="top" secondItem="0HG-6i-N25" secondAttribute="bottom" constant="10" id="Tgs-A2-mh6"/>
                         <constraint firstItem="0HG-6i-N25" firstAttribute="top" secondItem="pSv-GG-YH6" secondAttribute="bottom" id="WPl-S3-fcQ"/>
+                        <constraint firstItem="q61-KQ-PLf" firstAttribute="top" secondItem="gk6-BB-i1V" secondAttribute="bottom" constant="30" id="Xwz-8A-Rgj"/>
                         <constraint firstItem="0HG-6i-N25" firstAttribute="leading" secondItem="pSv-GG-YH6" secondAttribute="leading" id="YDJ-ar-ACG"/>
                         <constraint firstItem="pSv-GG-YH6" firstAttribute="leading" secondItem="amc-r3-aiN" secondAttribute="leading" constant="30" id="Zzk-7G-Q05"/>
-                        <constraint firstItem="xR8-pp-K9Y" firstAttribute="top" secondItem="gk6-BB-i1V" secondAttribute="bottom" constant="23" id="det-WT-lPo"/>
                         <constraint firstItem="iqd-yi-oQv" firstAttribute="top" secondItem="0HG-6i-N25" secondAttribute="bottom" constant="10" id="ehS-NU-9Lw"/>
                         <constraint firstItem="tBK-AB-zWZ" firstAttribute="top" secondItem="o5b-RA-L08" secondAttribute="bottom" constant="18" id="fQS-tH-wpY"/>
                         <constraint firstItem="8rC-sT-OGP" firstAttribute="leading" secondItem="0HG-6i-N25" secondAttribute="leading" id="gKr-Hh-yDb"/>
@@ -184,7 +193,6 @@
                         <constraint firstItem="pSv-GG-YH6" firstAttribute="trailing" secondItem="0HG-6i-N25" secondAttribute="trailing" id="qd2-Cg-XnJ"/>
                         <constraint firstItem="gk6-BB-i1V" firstAttribute="leading" secondItem="ed3-aR-wR0" secondAttribute="leading" id="sgj-I9-JMC"/>
                         <constraint firstItem="pSv-GG-YH6" firstAttribute="trailing" secondItem="amc-r3-aiN" secondAttribute="trailing" constant="-30" id="uec-AX-uLd"/>
-                        <constraint firstItem="qZn-Tn-ZI4" firstAttribute="bottom" secondItem="xR8-pp-K9Y" secondAttribute="bottom" constant="44" id="wMw-nf-8zS"/>
                     </constraints>
                     <viewLayoutGuide key="contentLayoutGuide" id="qZn-Tn-ZI4"/>
                     <viewLayoutGuide key="frameLayoutGuide" id="amc-r3-aiN"/>
@@ -203,6 +211,7 @@
     </objects>
     <resources>
         <image name="QQ_icon" width="38" height="38"/>
+        <image name="appleId_icon" width="38" height="38"/>
         <image name="weChat_icon" width="38" height="38"/>
         <image name="weibo_icon" width="38" height="38"/>
     </resources>

@@ -1,6 +1,10 @@
 PODS:
   - Alamofire (4.8.2)
+  - AlivcConan (1.0.2):
+    - AlivcConan/AlivcConan (= 1.0.2)
+  - AlivcConan/AlivcConan (1.0.2)
   - AliyunOSSiOS (2.10.8)
+  - AliyunVideoSDKBasic (3.14.0)
   - FSPagerView (0.8.3)
   - IQKeyboardManager (6.5.5)
   - Masonry (1.1.0)
@@ -10,6 +14,9 @@ PODS:
     - mob_sharesdk/ShareSDK (= 4.3.7)
     - MOBFoundation (>= 3.2.9)
   - mob_sharesdk/ShareSDK (4.3.7):
+    - MOBFoundation (>= 3.2.9)
+  - mob_sharesdk/ShareSDKPlatforms/Apple (4.3.7):
+    - mob_sharesdk/ShareSDK
     - MOBFoundation (>= 3.2.9)
   - mob_sharesdk/ShareSDKPlatforms/QQ (4.3.7):
     - mob_sharesdk/ShareSDK
@@ -324,6 +331,7 @@ PODS:
     - QMUIKit/QMUICore
     - QMUIKit/QMUILog
   - QMUIKit/QMUIWeakObjectContainer (4.1.1)
+  - QuCore-ThirdParty (3.14.0)
   - Reachability (3.2)
   - SDWebImage (5.6.1):
     - SDWebImage/Core (= 5.6.1)
@@ -398,15 +406,20 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.8.2)
+  - AlivcConan (= 1.0.2)
+  - AliyunOSSiOS
+  - AliyunVideoSDKBasic (= 3.14.0)
   - FSPagerView
   - IQKeyboardManager
   - MJExtension
   - MJRefresh
   - mob_sharesdk
+  - mob_sharesdk/ShareSDKPlatforms/Apple
   - mob_sharesdk/ShareSDKPlatforms/QQ
   - mob_sharesdk/ShareSDKPlatforms/SinaWeibo
   - mob_sharesdk/ShareSDKPlatforms/WeChat
   - QMUIKit
+  - QuCore-ThirdParty (= 3.14.0)
   - SDWebImage (~> 5.0)
   - SJVideoPlayer
   - SnapKit (~> 4.2.0)
@@ -415,9 +428,11 @@ DEPENDENCIES:
   - YYModel
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - Alamofire
+    - AlivcConan
     - AliyunOSSiOS
+    - AliyunVideoSDKBasic
     - FSPagerView
     - IQKeyboardManager
     - Masonry
@@ -426,6 +441,7 @@ SPEC REPOS:
     - mob_sharesdk
     - MOBFoundation
     - QMUIKit
+    - QuCore-ThirdParty
     - Reachability
     - SDWebImage
     - SJBaseVideoPlayer
@@ -438,7 +454,9 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  AlivcConan: df8627643b3794c329e4c8eb894428610be83e88
   AliyunOSSiOS: 8db92936545593b9e5c66d680ef2ac0738946651
+  AliyunVideoSDKBasic: 678798adec17f978b04bc750d1c6f304a7ba20fe
   FSPagerView: 670405b2f18e2a87fa37f20b00de783e562c25a8
   IQKeyboardManager: 3a8b9e603f8b0eeaf5f096a1f2b2cfcf121992ef
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -447,6 +465,7 @@ SPEC CHECKSUMS:
   mob_sharesdk: bcbb8662136487fd94dd3afd36b0504366b40a9f
   MOBFoundation: 8b679c59f14588770fa307b830e64290d31f3227
   QMUIKit: 5a1a39630f404bd34824d0769ffac9531744602c
+  QuCore-ThirdParty: 04b95bda641d0f870247e0e0b46fa6290eefec01
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 7edb9c3ea661e77a66661f7f044de8c1b55d1120
   SJBaseVideoPlayer: 6e99f0f76da61ebeeaf4d9ceb9c7657694cd1411
@@ -457,6 +476,6 @@ SPEC CHECKSUMS:
   VODUpload: 187c8b305ddc21661000377989fe9b1dfbc4ac3d
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: bd852502673816da11f742e4b5f81410a2bdcdbf
+PODFILE CHECKSUM: ad9acf7b29bed9dc9684cc912c9520ec05ba2397
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

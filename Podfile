@@ -1,11 +1,12 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-source 'https://cdn.cocoapods.org/'
-#source 'https://github.com/CocoaPods/Specs.git'
-
+platform :ios, '9.0'
+inhibit_all_warnings!
+source 'https://github.com/CocoaPods/Specs.git'
+workspace 'BallRecord.xcworkspace'
 target 'BallRecord' do
+  project 'BallRecord.xcodeproj'
   # Comment the next line if you don't want to use dynamic frameworks
-  platform :ios, '9.0'
   use_frameworks!
   # 网络
   pod 'Alamofire', '~> 4.8.2'
@@ -47,5 +48,5 @@ target 'BallRecord' do
   pod 'mob_sharesdk/ShareSDKPlatforms/QQ'
   pod 'mob_sharesdk/ShareSDKPlatforms/SinaWeibo'
   pod 'mob_sharesdk/ShareSDKPlatforms/WeChat'   #（微信sdk不带支付的命令）
-  
+  pod 'mob_sharesdk/ShareSDKPlatforms/Apple'
 end

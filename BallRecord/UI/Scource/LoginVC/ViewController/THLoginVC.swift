@@ -17,12 +17,19 @@ class THLoginVC: THBaseVC {
     
     @IBOutlet weak var stackView: UIStackView!
     
+    @IBOutlet weak var appleIdButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let item = UIBarButtonItem(title: "注册", style: .plain, target: self, action: #selector(clickItem))
         navigationItem.rightBarButtonItem = item
+        
+        if #available(iOS 13.0, *) {
+            appleIdButton.isHidden = false
+        }else{
+            appleIdButton.isHidden = true
+        }
     }
 
     @objc func clickItem() {
@@ -93,21 +100,36 @@ class THLoginVC: THBaseVC {
             self.authorizeHandle(status: status, user: user)
         }
     }
-    
-    
+    @IBAction func appleIdLoginEvent(_ sender: Any) {
+        ShareSDK.authorize(SSDKPlatformType.typeAppleAccount, settings: nil) { (status: SSDKResponseState, user: SSDKUser?, error: Error?) in
+            self.authorizeHandle(status: status, user: user)
+        }
+    }
     /// 授权登录处理
     func authorizeHandle(status: SSDKResponseState, user: SSDKUser?) {
         if status == .success {
             QMUITips.showLoading(in: self.view)
             var platform = ""
-            if user?.platformType == SSDKPlatformType.typeWechat {
-                platform = "wechat"
-            } else if user?.platformType == SSDKPlatformType.typeQQ {
-                platform = "qq"
-            } else {
-                platform = "weibo"
+            var param:Dictionary<String,String>
+            if user?.platformType == SSDKPlatformType.typeAppleAccount {
+                platform = "appleid"
+                guard let data = user?.rawData["identityToken"] as? Data else {
+                    return;
+                }
+                guard let tokenString = String(data: data, encoding: String.Encoding.utf8) else {
+                    return;
+                }
+                param = ["type": platform, "identityToken":tokenString]
+            }else{
+                if user?.platformType == SSDKPlatformType.typeWechat {
+                    platform = "wechat"
+                } else if user?.platformType == SSDKPlatformType.typeQQ {
+                    platform = "qq"
+                } else if user?.platformType == SSDKPlatformType.typeSinaWeibo{
+                    platform = "weibo"
+                }
+                param = ["type": platform, "openid": user?.uid ?? "", "nickname": user?.nickname ?? "", "imagePath": user?.icon ?? ""]
             }
-            let param = ["type": platform, "openid": user?.uid ?? "", "nickname": user?.nickname ?? "", "imagePath": user?.icon ?? ""]
             THLoginRequestManager.requestThirdLogin(param: param, successBlock: { (result) in
                 QMUITips.hideAllTips()
                 
