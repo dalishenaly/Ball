@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		02D85A4633CD4A4A5D18B670 /* Pods_BallRecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0DBC351294CFEF8958F6A5 /* Pods_BallRecord.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		A415B10324BDCC880026CE3A /* THPrivateAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A415B10224BDCC880026CE3A /* THPrivateAlertView.swift */; };
 		DE09EACE2381075800E70EB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09EACD2381075800E70EB4 /* AppDelegate.swift */; };
 		DE09EAD52381075800E70EB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE09EAD32381075800E70EB4 /* Main.storyboard */; };
 		DE09EAD72381075900E70EB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE09EAD62381075900E70EB4 /* Assets.xcassets */; };
@@ -210,6 +211,7 @@
 /* Begin PBXFileReference section */
 		3A5CC1A05F23657EB37BE0F3 /* Pods-BallRecord.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BallRecord.debug.xcconfig"; path = "Target Support Files/Pods-BallRecord/Pods-BallRecord.debug.xcconfig"; sourceTree = "<group>"; };
 		9E0DBC351294CFEF8958F6A5 /* Pods_BallRecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BallRecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A415B10224BDCC880026CE3A /* THPrivateAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THPrivateAlertView.swift; sourceTree = "<group>"; };
 		A436DAC0246D7B8D0083269A /* 球志.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "球志.entitlements"; sourceTree = "<group>"; };
 		DE09EACA2381075800E70EB4 /* 球志.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "球志.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE09EACD2381075800E70EB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				A436DAC0246D7B8D0083269A /* 球志.entitlements */,
 				DE09EACD2381075800E70EB4 /* AppDelegate.swift */,
 				DE09EAFF2381083900E70EB4 /* THMainTabbarVC.swift */,
+				A415B10224BDCC880026CE3A /* THPrivateAlertView.swift */,
 				DECF18FE2381634F0077D102 /* UI */,
 				DECF18EF23811D700077D102 /* Vonder */,
 				DE09EB082381098A00E70EB4 /* Extension */,
@@ -1355,6 +1358,7 @@
 				DE59FEBA23A23359009C9687 /* THInputView.swift in Sources */,
 				DE119D0023C4B0F200E22122 /* YYTextWeakProxy.m in Sources */,
 				DE119CF823C4B0F200E22122 /* YYTextRubyAnnotation.m in Sources */,
+				A415B10324BDCC880026CE3A /* THPrivateAlertView.swift in Sources */,
 				DE119CAB23C4380E00E22122 /* THPlayRecordVC.swift in Sources */,
 				DEE9279023AC77FD00BBD8A1 /* WAAVSEReplaceSoundCommand.m in Sources */,
 				DE92899E238D44360044D54D /* THCommentCell.swift in Sources */,
@@ -1661,7 +1665,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BallRecord/球志.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.4;
+				CURRENT_PROJECT_VERSION = 1.6;
 				DEVELOPMENT_TEAM = SU739B9KZ3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BallRecord/Info.plist;
@@ -1692,7 +1696,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BallRecord/球志.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.4;
+				CURRENT_PROJECT_VERSION = 1.6;
 				DEVELOPMENT_TEAM = SU739B9KZ3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BallRecord/Info.plist;
