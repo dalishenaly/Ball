@@ -347,7 +347,10 @@ extension THVideoDetailVC: THCommentBottomBarDelegate, QMUIKeyboardManagerDelega
     func onTapCommentView() {
         textView.becomeFirstResponder()
     }
-    
+    func onTapRemindBtn() {
+        let remindVC = THRemindViewController()
+        self.navigationController?.pushViewController(remindVC, animated: true)
+    }
     func keyboardWillChangeFrame(with keyboardUserInfo: QMUIKeyboardUserInfo!) {
         
         QMUIKeyboardManager.handleKeyboardNotification(with: keyboardUserInfo, show: { (keyboardUserInfo: QMUIKeyboardUserInfo?) in
@@ -433,6 +436,7 @@ extension THVideoDetailVC: UITableViewDelegate, UITableViewDataSource {
     func onTapCommentView()
     func onTapCommentCollect()
     func onTapCommentLike()
+    func onTapRemindBtn()
 }
 
 
@@ -476,7 +480,12 @@ class THCommentBottomBar: UIView {
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
-    
+    lazy var remindBtn:UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.setImage(UIImage(named: "report_bottom"), for: UIControl.State.normal)
+        button.addTarget(self, action: #selector(clickRemindBtnEvent(sender:)), for: UIControl.Event.touchUpInside)
+        return button
+    }()
     lazy var collectBtn: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "collect_normal"), for: .normal)
@@ -514,6 +523,7 @@ class THCommentBottomBar: UIView {
         inputCmtView.addSubview(titleLabel)
         addSubview(collectBtn)
         addSubview(likeBtn)
+        addSubview(remindBtn)
         addSubview(countLabel)
     }
     
@@ -522,23 +532,30 @@ class THCommentBottomBar: UIView {
         inputCmtView.snp.makeConstraints { (make) in
             make.top.equalTo(self).offset(5)
             make.left.equalTo(self).offset(20)
-            make.right.equalTo(collectBtn.snp_left).offset(-10)
+            make.right.equalTo(remindBtn.snp_left).offset(-10)
             make.height.equalTo(30)
             make.bottom.equalTo(self).offset(-5)
         }
         
         likeBtn.snp.makeConstraints { (make) in
-            make.right.equalTo(-16)
+            make.right.equalTo(-8)
             make.centerY.equalTo(self)
-            make.width.equalTo(40)
+            make.width.equalTo(30)
             make.height.equalTo(likeBtn)
         }
         
         collectBtn.snp.makeConstraints { (make) in
             make.right.equalTo(likeBtn.snp_left).offset(-8)
             make.centerY.equalTo(self)
-            make.width.equalTo(40)
+            make.width.equalTo(30)
             make.height.equalTo(collectBtn)
+        }
+        
+        remindBtn.snp.makeConstraints { (make) in
+            make.right.equalTo(collectBtn.snp_left).offset(-8)
+            make.centerY.equalTo(self)
+            make.width.equalTo(30)
+            make.height.equalTo(remindBtn)
         }
         
         countLabel.snp.makeConstraints { (make) in
@@ -578,7 +595,9 @@ class THCommentBottomBar: UIView {
         countLabel.text = countStr
     }
     
-    
+    @objc func clickRemindBtnEvent(sender:UIButton){
+        delegate?.onTapRemindBtn()
+    }
     @objc func clickCollectBtnEvent(sender: UIButton) {
         sender.isSelected = !sender.isSelected
         delegate?.onTapCommentCollect()
